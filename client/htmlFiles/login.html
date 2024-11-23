@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="..css/login.css">
+        <title>ViewCorp</title>
+    </head>
+    <body>
+        <div class="col" id="login">
+            <h1>Login to Your Account</h1><hr>
+            <form>
+                <label for="emailLogin"></label>
+                <input type="email" id="emailLogin" name="emailLogin"
+                pattern="[a-z0-9._%+\-]+@[a-z0-9._%+\-]+\.[a-z]{2,}$" 
+                placeholder="Email" required>
+
+                <input type="submit" value="Login">
+            </form>
+        </div>
+        <div class="col" id="create">
+            <h1>Create a New Account</h1><hr>
+            <form>
+                <label for="firstName"></label>
+                <input type="text" id="firstName" name="firstName"
+                pattern="[A-Z]+[a-z]+" placeholder="First Name" required>
+
+                <label for="lastName"></label>
+                <input type="text" id="lastName" name="lastName"
+                pattern="[A-Z]+[a-z]+" placeholder="Last Name" required>
+
+                <label for="emailCreate"></label>
+                <input type="email" id="emailCreate" name="emailCreate"
+                pattern="[a-z0-9._%+\-]+@[a-z0-9._%+\-]+\.[a-z]{2,}$" 
+                placeholder="Email" required>
+
+                <input type="submit" value="Create">
+            </form>
+        </div>
+    </body>
+</html>
