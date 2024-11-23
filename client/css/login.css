@@ -1,0 +1,17 @@
+* {
+    overflow: hidden;
+}
+
+.col {
+    width: 50%;
+    height: 100%;
+}
+
+#login {
+    left: 0;
+}
+
+#create {
+    left: 50%;
+}
+
