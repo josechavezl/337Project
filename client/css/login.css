@@ -1,7 +1,14 @@
 * {
     overflow: hidden;
+    font-family: Helvetica, sans-serif;
 }
-
+/*
+edit: dipson 
+removerd the white margin on the top of the page
+*/
+body{
+    margin: 0px;
+}
 .col {
     display: block;
     width: 50%;
@@ -35,11 +42,26 @@ input {
     margin: 10px;
     padding: 7px;
     width: 50%;
-    border-radius: 10px;
+    border-radius: 5px;
     text-indent: 5px;
+    /*
+    edit: dipson 
+    added effects and smooth transitions 
+    */
+    border: 1px solid #ccc; 
+    box-shadow: 0 2px 4px rgba(0,0,0, 0.1);
+    transition: all 0.3s;
 }
 
+input:focus{
+    outline: none;
+    box-shadow: 0 4px 6px rgba(0,0,0, 0.2);
+}
+
+
 input[type=submit] {
+    cursor: pointer;
+    font-weight: bolder;
     margin: 10px;
     padding: 5px;
     width: 40%;
@@ -51,8 +73,24 @@ input[type=submit] {
     color: white;
     background-color: #4fd6ff;
 }
+/*
+edit: dipson 
+added hover effect
+*/
+#loginButton:hover {
+    background-color: #3ba3c3;
+}
 
 #createButton {
     color: white;
     background-color: #19d104;
 }
+/*
+edit: dipson 
+added hover effect
+*/
+#createButton:hover{
+    background-color: #129c03;
+}
+
+

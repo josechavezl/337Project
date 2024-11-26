@@ -11,8 +11,9 @@
             <h1>Login to Your Account</h1><hr>
             <form>
                 <label for="emailLogin"></label>
+                <!-- Pattern ensures a valid email address with no error-->
                 <input type="email" id="emailLogin" name="emailLogin"
-                pattern="[a-z0-9._%+\-]+@[a-z0-9._%+\-]+\.[a-z]{2,}$" 
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
                 placeholder="Email" required><br>
 
                 <input id="loginButton" type="submit" value="Login">
@@ -23,15 +24,16 @@
             <form>
                 <label for="firstName"></label>
                 <input type="text" id="firstName" name="firstName"
-                pattern="[A-Z]+[a-z]+" placeholder="First Name" required><br>
+                pattern="^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,}$" placeholder="First Name" required><br>
 
                 <label for="lastName"></label>
                 <input type="text" id="lastName" name="lastName"
-                pattern="[A-Z]+[a-z]+" placeholder="Last Name" required><br>
+                pattern="^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,}$" placeholder="Last Name" required><br>
 
                 <label for="emailCreate"></label>
+                <!-- Pattern ensures a valid email address with no error-->
                 <input type="email" id="emailCreate" name="emailCreate"
-                pattern="[a-z0-9._%+\-]+@[a-z0-9._%+\-]+\.[a-z]{2,}$" 
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
                 placeholder="Email" required><br>
 
                 <input id="createButton" type="submit" value="Create">
