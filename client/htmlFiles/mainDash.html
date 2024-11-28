@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/mainDash.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <title>ViewCorp</title>
+  </head>
+
+  <body>
+
+    <nav class="navbar">
+
+      <h1 id="userDashTitle">User Dashboard</h1>
+
+      <div class="sideButtons">
+
+        <button class="addFolder-btn">
+          <span class="plus">+ </span> New Folder
+        </button>
+
+        <button id="changeDashboard" class="mainbtns">
+          <i id="changeDashSwirl" class="fa-solid fa-repeat"></i>
+        </button>
+
+        <button id="myBtn" onclick="showModal()" class="mainbtns">
+          <i class="fa-solid fa-circle-question"></i>
+        </button>
+
+        <button id="account" class="mainbtns">
+          <i class="fa-solid fa-user"></i>
+        </button>
+
+      </div>
+
+    </nav>
+
+    <section class="search-bar-section">
+
+      <div class="search-container">
+
+        <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search folders..."
+        />
+
+      </div>
+      
+    </section>
+
+    <main>
+
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <p>
+                    help box content yet to add
+                </p>
+
+            </div>
+            
+        </div>
+
+    </main>
+
+  </body>
+
+  <script src="../javascript/mainDash.js"></script>
+
+</html>
