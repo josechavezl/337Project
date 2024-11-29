@@ -8,19 +8,31 @@ async function main() {
 main();
 
 const UserSchema = new mongoose.Schema({
-    firstName: {
+    userFirstName: {
         type: String,
         require: true
     },
-    lastName: {
+    userLastName: {
         type: String,
         require: true
     },
-    email: {
+    userEmail: {
         type: String,
         require: true
     }
 });
 
+UserSchema.virtual("name").get(function() {
+    let userFullName = "";
+
+    if (this.userFirstName && this.userLastName) {
+        userFullName = `${this.userFirstName} ${this.userLastName}`;
+    }
+    return userFullName;
+});
+
+
+
 const User = mongoose.model("User", UserSchema);
 
+module.exports = User;
