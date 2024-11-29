@@ -130,7 +130,7 @@ body {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 50%;
 }
 
 /* The Close Button */
@@ -146,4 +146,25 @@ body {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+
+#HelpHeader{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 65px;
+}
+
+#HelpHeader h2 {
+  margin-top: -55px;
+  margin-bottom: 25px;
+  font-size: 40px; 
+}
+
+#HelpText {
+  font-size: 20px;
+  padding: 5%;
 }
