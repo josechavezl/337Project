@@ -10,6 +10,7 @@ body{
     margin: 0px;
 }
 .col {
+    padding-top:100px;
     display: block;
     width: 100%;
     height: 100%;
@@ -23,7 +24,6 @@ body{
 }
 
 #create {
-    padding-top: 50px;
     position: fixed;
     display: block;
     background: linear-gradient(135deg, #07f79b, blue);
@@ -91,14 +91,6 @@ added hover effect
 */
 #createButton:hover{
     background-color: #129c03;
-}
-
-#CreateAcc{
-    color: rgb(350,350,350);
-}
-
-a:visited{
-    color: #a1e9ff;
 }
 
 
