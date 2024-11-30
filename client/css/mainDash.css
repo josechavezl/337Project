@@ -150,8 +150,7 @@ body {
   cursor: pointer;
 }
 
-
-#HelpHeader{
+#HelpHeader {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -163,10 +162,103 @@ body {
 #HelpHeader h2 {
   margin-top: -55px;
   margin-bottom: 25px;
-  font-size: 40px; 
+  font-size: 40px;
 }
 
 #HelpText {
   font-size: 20px;
   padding: 5%;
+}
+#outerLayerFolder {
+  border: 2px solid black;
+  margin: 1.5rem;
+  border-radius: 8px;
+}
+#outerLayerFolder h2 {
+  margin: 1rem;
+}
+.folders-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 40px;
+  padding: 20px;
+}
+
+.folder {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.folder:hover {
+  background-color: #e0e0e0;
+}
+
+.folder i {
+  font-size: 64px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.folder span {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.folder small {
+  color: #666;
+  font-size: 0.8em;
+}
+
+#newFolderModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#newFolderModal .modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+#newFolderModal input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+#newFolderModal button {
+  background-color: #4fd6ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#newFolderModal button:hover {
+  background-color: #3ba3c3;
 }

@@ -12,14 +12,11 @@
   </head>
 
   <body>
-
     <nav class="navbar">
-
       <h1 id="userDashTitle">User Dashboard</h1>
 
       <div class="sideButtons">
-
-        <button class="addFolder-btn">
+        <button class="addFolder-btn" id="newFolderBtn">
           <span class="plus">+ </span> New Folder
         </button>
 
@@ -34,44 +31,85 @@
         <button id="account" onclick="showModal()" class="mainbtns">
           <i class="fa-solid fa-user"></i>
         </button>
-
       </div>
-
     </nav>
 
     <section class="search-bar-section">
-
       <div class="search-container">
-
         <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
         <input
           type="text"
           class="search-input"
           placeholder="Search folders..."
         />
-
       </div>
-      
     </section>
 
     <main>
+      
+      <!-- Folder Section-->
+      <div id="outerLayerFolder">
 
-        <div id="myModal" class="modal">
-            <!-- Modal content -->
-             
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeModal()">&times;</span>
-                <i class="fa-solid fa-circle-question" id="HelpHeader"><br><h2>Help</h2></i>
-                <p id="HelpText">
-                  Create or join a work environment and enjoy a collaborative space like no other!<br><br>
-                  Inside a work environment, create folders to upload your work, i.e., code scripts, spreadsheets or document reports. Let others comment and rate your work!<br><br>
-                  You get what you give! Inside <b>ViewCorp</b>, we expect every user to comment and rate everyone's work. That's how we grow.<br><br>
-                </p>
+        <h2>Your Folders</h2>
 
-            </div>
-            
+
+        <section id="foldersContainer" class="folders-grid">
+          
+          <!-- New folders -->
+
+        </section>
+
+      </div>
+
+      <!-- Create Folder Modal -->
+      <div id="newFolderModal" class="modal">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeNewFolderModal()">&times;</span>
+          <h2>Create New Folder</h2>
+          <input
+            type="text"
+            id="newFolderName"
+            placeholder="Folder Name"
+            required
+          />
+          <button id="createFolderBtn">Create</button>
+        </div>
+      </div>
+
+
+      <!-- Help Modal content -->
+      <div id="helpModal" class="modal">
+
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal()">&times;</span>
+          <i class="fa-solid fa-circle-question" id="HelpHeader"
+            ><br />
+            <h2>Help</h2></i
+          >
+          <p id="HelpText">
+            Create or join a work environment and enjoy a collaborative space
+            like no other!<br /><br />
+            Inside a work environment, create folders to upload your work, i.e.,
+            code scripts, spreadsheets or document reports. Let others comment
+            and rate your work!<br /><br />
+            You get what you give! Inside <b>ViewCorp</b>, we expect every user
+            to comment and rate everyone's work. That's how we grow.<br /><br />
+          </p>
+        </div>
+
+      </div>
+
+      <div id="accountModal" class="modal">
+
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal()">&times;</span>
+            <i class="fa-solid fa-user" id="AccountHeader"
+            ><br />
+            <h2>Account</h2></i>
             
         </div>
+
+      </div>
 
     </main>
 
