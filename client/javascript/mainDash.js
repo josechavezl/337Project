@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const folderDiv = document.createElement('div');
       folderDiv.classList.add('folder');
       folderDiv.innerHTML = `
-          <i class="fas fa-folder"></i>
+          <i class="fa-solid fa-folder-closed" style="color: #38b6ff"></i>
           <span>${folder.name}</span>
           <small>${folder.files} files</small>
       `;
@@ -126,3 +126,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load exsiting folders on page load
   loadExistingFolders();
 });
+
+
+
+
+
+
+
+

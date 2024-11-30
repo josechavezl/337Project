@@ -12,12 +12,16 @@
   </head>
 
   <body>
+
+
+
+
     <nav class="navbar">
       <h1 id="userDashTitle">User Dashboard</h1>
 
       <div class="sideButtons">
         <button class="addFolder-btn" id="newFolderBtn">
-          <span class="plus">+ </span> New Folder
+          <span class="plus"><i class="fa-solid fa-folder-plus"></i> </span> New Folder
         </button>
 
         <button id="changeDashboard" class="mainbtns">
@@ -34,6 +38,10 @@
       </div>
     </nav>
 
+
+
+
+
     <section class="search-bar-section">
       <div class="search-container">
         <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
@@ -45,21 +53,43 @@
       </div>
     </section>
 
+
+
+
+
     <main>
       
       <!-- Folder Section-->
-      <div id="outerLayerFolder">
+      <section id="outerLayerFolder">
 
         <h2>Your Folders</h2>
 
+        <!-- New folders -->
+        <div id="foldersContainer" class="folders-grid">
+          <!-- Folder Detail Will Appear Hear -->
+        </div>
 
-        <section id="foldersContainer" class="folders-grid">
+
+      </section>
+
+
+      <!-- Recent Activity -->
+      <section id="outerLayerActivity">
+
+        <h2>Recent Activity</h2>
+
+        <div id="recent-activity" class="recent-activity-grid">
           
-          <!-- New folders -->
+          <p>this will be added when most of the backend is done --> to remove go to html line 83</p>
+          
+        </div>
+        
+      </section>
 
-        </section>
 
-      </div>
+
+
+      <!--Modals Only Below -->
 
       <!-- Create Folder Modal -->
       <div id="newFolderModal" class="modal">
@@ -75,6 +105,8 @@
           <button id="createFolderBtn">Create</button>
         </div>
       </div>
+
+
 
 
       <!-- Help Modal content -->
@@ -99,19 +131,34 @@
 
       </div>
 
+
+
+      <!-- Account Modal content -->
       <div id="accountModal" class="modal">
 
         <div class="modal-content">
           <span class="close-btn" onclick="closeModal()">&times;</span>
             <i class="fa-solid fa-user" id="AccountHeader"
             ><br />
+
             <h2>Account</h2></i>
-            
+
+          <!-- fetch from database the name and the email-->
+          <div id="AccountText">
+            <h4>Full Name</h4>
+            <h4>Email Address</h4>
+          </div>   
         </div>
 
       </div>
 
+
+
+
     </main>
+
+
+
 
   </body>
 
