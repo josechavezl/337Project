@@ -2,9 +2,10 @@
 
 
 
-// by: dipson kc
-// Modal functions
-// modified to make it useful
+// ************************
+// Open and Close Modals Functions
+// ************************
+
 
 function showModal(modalId) {
   var modal = document.getElementById(modalId);
@@ -58,73 +59,159 @@ document.getElementById("accountModal").onclick = (event) => {
 
 
 
-// New Folder Functionality
-document.addEventListener('DOMContentLoaded', () => {
-  const newFolderModal = document.getElementById('newFolderModal');
-  const createFolderBtn = document.getElementById('createFolderBtn');
-  const newFolderNameInput = document.getElementById('newFolderName');
-  const foldersContainer = document.getElementById('foldersContainer');
 
-  // Existing folders that can be loaded from backend
-  // commented out as i'm not sure if we need this or not
+
+
+
+// ************************
+// New Folder Functionality
+// ************************
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const newFolderModal = document.getElementById("newFolderModal");
+  const createFolderBtn = document.getElementById("createFolderBtn");
+  const newFolderNameInput = document.getElementById("newFolderName");
+  const foldersContainer = document.getElementById("foldersContainer");
+
   const ExistingFolders = [
-      { name: 'Example Folders', files: 1 },
-      { name: 'To Remove These or rename', files: 8 },
-      { name: 'JS file line 38-41, 100', files: 2 }
+    { name: "Example Folders", files: 3 },
+    { name: "To Remove These or rename", files: 2 },
+    { name: "JS file line 38-41, 100", files: 2 }
   ];
 
   // Load Existing folders
   function loadExistingFolders() {
-      ExistingFolders.forEach(folder => createFolderElement(folder));
+    ExistingFolders.forEach(folder => createFolderElement(folder));
   }
 
   // Create folder element
   function createFolderElement(folder) {
-      const folderDiv = document.createElement('div');
-      folderDiv.classList.add('folder');
-      folderDiv.innerHTML = `
+    const folderDiv = document.createElement("div");
+    folderDiv.classList.add("folder");
+    folderDiv.innerHTML = `
           <i class="fa-solid fa-folder-closed" style="color: #38b6ff"></i>
           <span>${folder.name}</span>
           <small>${folder.files} files</small>
       `;
 
-      // Add to folders container
-      foldersContainer.appendChild(folderDiv);
+    // Add to folders container
+    foldersContainer.appendChild(folderDiv);
   }
 
   // Close New Folder Modal
   function closeNewFolderModal() {
-      newFolderModal.style.display = 'none';
-      newFolderNameInput.value = ''; 
+    newFolderModal.style.display = "none";
+    newFolderNameInput.value = "";
   }
 
   // Create Folder
-  createFolderBtn.addEventListener('click', () => {
-      const folderName = newFolderNameInput.value.trim();
-      
-      if (folderName) {
-          // Create folder object
-          const newFolder = { 
-              name: folderName, 
-              files: 0 
-          };
+  createFolderBtn.addEventListener("click", () => {
+    const folderName = newFolderNameInput.value.trim();
 
-          // Create folder element
-          createFolderElement(newFolder);
-
-          // Close modal and clear input
-          closeNewFolderModal();
-      } else {
-          alert('Please enter a folder name');
-      }
+    if (folderName) {
+      const newFolder = { name: folderName, files: 0 };
+      createFolderElement(newFolder);
+      closeNewFolderModal();
+    } else {
+      alert("Please enter a folder name");
+    }
   });
 
   // Allow closing new folder modal with close button
-  const closeFolderModalBtn = newFolderModal.querySelector('.close-btn');
-  closeFolderModalBtn.addEventListener('click', closeNewFolderModal);
+  const closeFolderModalBtn = newFolderModal.querySelector(".close-btn");
+  closeFolderModalBtn.addEventListener("click", closeNewFolderModal);
 
-  // Load exsiting folders on page load
+  // Load existing folders on page load
   loadExistingFolders();
+
+
+
+
+
+
+
+
+
+
+// ************************
+// Folder Navigation Logic
+// ************************
+
+
+  const folderContentPage = document.getElementById("folderContentPage");
+  const dashboardPage = document.getElementById("outerLayerFolder");
+  const backToDashboard = document.getElementById("backToDashboard");
+  const currentFolderTitle = document.getElementById("currentFolderTitle");
+  const folderFiles = document.getElementById("folderFiles");
+
+  // new folder button
+  const newFolderButton = document.getElementById("newFolderBtn");
+  // new file button 
+  const newFileButton = document.getElementById("newFileBtn");
+
+  const folderSearchButton = document.getElementById("search-container");
+  const fileSearchButton = document.getElementById("search-container-files");
+  
+  const folderData = {
+    "Example Folders": ["File1.jsx", "File2.js", "File3.html"],
+    "To Remove These or rename": ["mainDash.html", "mainDash.js"],
+    "JS file line 38-41, 100": ["CodeSnippet.js", "page.css"]
+  };
+
+ 
+const recentActivitySection = document.getElementById("outerLayerActivity");
+
+// Handle folder click
+foldersContainer.addEventListener("click", (e) => {
+  if (e.target.closest(".folder")) {
+    // Hide Recent Activity
+    recentActivitySection.style.display = "none";
+
+    // Get the folder name
+    const folderName = e.target.closest(".folder").querySelector("span").innerText;
+
+    // Set the folder title and number of files
+    const files = folderData[folderName] || [];
+    currentFolderTitle.innerText = `${folderName} - ${files.length} files`; 
+
+    // Populate the files list
+    folderFiles.innerHTML = files.map(file => `<li>${file}</li>`).join("");
+
+    // Hide Dashboard and show Folder Content Page
+    dashboardPage.style.display = "none";
+    
+    // Hide New folder button and show upload file button
+    newFolderButton.style.display = "none";
+    newFileButton.style.display = "block";
+
+    folderContentPage.style.display = "block";
+    folderContentPage.classList.add("active");
+
+    folderSearchButton.style.display = "none";
+
+    fileSearchButton.style.display = "flex";
+
+  }
+});
+
+
+// Back to Dashboard
+backToDashboard.addEventListener("click", () => {
+  // Show Recent Activity
+  recentActivitySection.style.display = "block";
+
+  folderContentPage.style.display = "none";
+  folderContentPage.classList.remove("active");
+  dashboardPage.style.display = "block";
+  newFileButton.style.display = "none";
+  newFolderButton.style.display = "block";
+
+  folderSearchButton.style.display = "flex";
+  fileSearchButton.style.display = "none";
+
+});
+
 });
 
 
@@ -134,3 +221,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
+// ************************
+// Search Folder Section 
+// ************************
+
+
+const searchInput = document.querySelector(".search-input");
+const foldersContainer = document.getElementById("foldersContainer");
+
+// Add event listener for the search input
+searchInput.addEventListener("input", (e) => {
+  const query = e.target.value.toLowerCase();
+  const folderElements = foldersContainer.querySelectorAll(".folder"); // Dynamically fetch all folders
+
+  folderElements.forEach(folder => {
+    const folderName = folder.querySelector("span").innerText.toLowerCase();
+
+    if (folderName.includes(query)) {
+      folder.style.display = "flex"; // Show matching folders
+    } else {
+      folder.style.display = "none"; // Hide non-matching folders
+    }
+  });  
+
+
+});

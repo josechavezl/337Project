@@ -1,6 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
+    
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="../css/mainDash.css" />
@@ -9,19 +12,29 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <title>ViewCorp</title>
+
   </head>
 
   <body>
 
-
-
+    <!--**************-->
+    <!--NAVBAR CONTENT-->
+    <!--**************-->
 
     <nav class="navbar">
+
       <h1 id="userDashTitle">User Dashboard</h1>
 
       <div class="sideButtons">
+
         <button class="addFolder-btn" id="newFolderBtn">
-          <span class="plus"><i class="fa-solid fa-folder-plus"></i> </span> New Folder
+          <span class="plus"><i class="fa-solid fa-folder-plus"></i> 
+          </span> New Folder
+        </button>
+
+        <button class="addFile-btn" id="newFileBtn" style="display: none;">
+          <span class="plus"><i class="fa-solid fa-file-import"></i>
+          </span> Upload File
         </button>
 
         <button id="changeDashboard" class="mainbtns">
@@ -35,66 +48,122 @@
         <button id="account" onclick="showModal()" class="mainbtns">
           <i class="fa-solid fa-user"></i>
         </button>
+
       </div>
+
     </nav>
 
 
 
 
 
+
+
+    <!--**************-->
+    <!--FOLDER SEARCH CONTENT-->
+    <!--**************-->
     <section class="search-bar-section">
-      <div class="search-container">
+
+      <div class="search-container" id="search-container">
+
         <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
         <input
           type="text"
           class="search-input"
           placeholder="Search folders..."
         />
+
       </div>
+
+      <!--FILE SEARCH CONTENT (STAYS HIDDEN)-->
+
+
+      <div class="search-container-files" style="display: none;" id="search-container-files">
+
+        <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+        <input
+          type="text"
+          class="search-input-files"
+          placeholder="Search files..."
+        />
+
+      </div>
+
     </section>
 
 
 
 
 
+
+
+    <!--**************-->
+    <!--MAIN SECTION -->
+    <!--**************-->
     <main>
-      
+
+
       <!-- Folder Section-->
       <section id="outerLayerFolder">
 
         <h2>Your Folders</h2>
 
+
         <!-- New folders -->
         <div id="foldersContainer" class="folders-grid">
-          <!-- Folder Detail Will Appear Hear -->
-        </div>
+          <!--NEW Folder Detail Will Appear Hear -->
 
+        </div>
 
       </section>
 
 
-      <!-- Recent Activity -->
+      <!-- Recent Activity Section-->
       <section id="outerLayerActivity">
 
         <h2>Recent Activity</h2>
 
         <div id="recent-activity" class="recent-activity-grid">
-          
-          <p>this will be added when most of the backend is done --> to remove go to html line 83</p>
-          
+
+          <p>
+            this will be added when most of the backend is done -> to remove go
+            to html line 83
+          </p>
+
         </div>
-        
+
+      </section>
+
+      
+      <!-- File Section -->
+      <section id="folderContentPage" class="page" style="display: none;">
+        <div class="titleFolderWfile">
+
+          <button id="backToDashboard" class="mainbtns">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+
+          <h2 id="currentFolderTitle"></h2>
+
+        </div>
+        <ul id="folderFiles"></ul>
       </section>
 
 
 
 
+      <!--**************-->
       <!--Modals Only Below -->
+      <!--**************-->
+
+
+
+
 
       <!-- Create Folder Modal -->
       <div id="newFolderModal" class="modal">
         <div class="modal-content">
-          <span class="close-btn" onclick="closeNewFolderModal()">&times;</span>
+          <span class="close-btn" onclick="closeNewFolderModal('newFolderModal')">&times;</span>
           <h2>Create New Folder</h2>
           <input
             type="text"
@@ -108,12 +177,10 @@
 
 
 
-
       <!-- Help Modal content -->
       <div id="helpModal" class="modal">
-
         <div class="modal-content">
-          <span class="close-btn" onclick="closeModal()">&times;</span>
+          <span class="close-btn" onclick="closeModal('helpModal')">&times;</span>
           <i class="fa-solid fa-circle-question" id="HelpHeader"
             ><br />
             <h2>Help</h2></i
@@ -128,40 +195,47 @@
             to comment and rate everyone's work. That's how we grow.<br /><br />
           </p>
         </div>
-
       </div>
 
 
 
       <!-- Account Modal content -->
       <div id="accountModal" class="modal">
-
         <div class="modal-content">
-          <span class="close-btn" onclick="closeModal()">&times;</span>
-            <i class="fa-solid fa-user" id="AccountHeader"
+          <span class="close-btn" onclick="closeModal('accountModal')">&times;</span>
+          <i class="fa-solid fa-user" id="AccountHeader"
             ><br />
 
-            <h2>Account</h2></i>
+            <h2>Account</h2></i
+          >
 
           <!-- fetch from database the name and the email-->
           <div id="AccountText">
             <h4>Full Name</h4>
             <h4>Email Address</h4>
-          </div>   
+          </div>
         </div>
-
       </div>
 
 
 
+      <!-- Add "Upload File" Modal -->
+      <div id="uploadFileModal" class="modal">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal('uploadFileModal')"
+            >&times;</span
+          >
+          <h2>Upload File</h2>
+          <input type="file" id="fileInput" />
+          <button id="uploadFileBtn">Upload</button>
+        </div>
+      </div>
+      
 
     </main>
 
-
-
-
   </body>
 
-  <script src="../javascript/mainDash.js"></script>
-
+  <script src="../javascript/mainDash.js">  </script>
+  
 </html>

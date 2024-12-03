@@ -193,7 +193,7 @@ body {
   align-items: flex-start;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease; 
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -292,4 +292,112 @@ body {
   font-size: 20px;
   padding: 5%;
   text-align: center;
+}
+
+
+
+
+
+
+/* NEWLY ADDED CSS */
+/* Mix of folder files and search buttons */
+
+
+.page {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.page.active {
+  display: block;
+  opacity: 1;
+}
+
+.titleFolderWfile{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 1.2rem;
+
+}
+.titleFolderWfile h2{ 
+  margin-left: 1rem;
+}
+#folderFiles {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem;
+}
+#folderFiles li:hover{
+  background-color: #e0e0e0;
+}
+
+#folderFiles li {
+  background-color: #f4f4f4;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.addFile-btn {
+  height: clamp(40px, 8vw, 54px);
+  width: clamp(120px, 20vw, 200px);
+  background-color: #38b6ff;
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.addFile-btn .plus {
+  margin-right: 0.5rem;
+}
+
+.addFile-btn:hover {
+  cursor: pointer;
+  background-color: #3ba3c3;
+}
+.search-container-files {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: clamp(8px, 2vw, 10px) clamp(15px, 4vw, 20px);
+}
+.search-container:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); 
+}
+#search-icon {
+  color: #9aa0a6;
+  margin-right: clamp(10px, 3vw, 15px);
+  font-size: clamp(0.9rem, 3vw, 1rem);
+}
+
+.search-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  font-size: clamp(0.9rem, 3vw, 1rem);
+  background-color: transparent;
+  width: 100%;
+}
+
+.search-input-files {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  font-size: clamp(0.9rem, 3vw, 1rem);
+  background-color: transparent;
+  width: 100%;
 }
