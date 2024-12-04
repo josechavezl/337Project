@@ -95,3 +95,18 @@ added hover effect
 }
 
 
+#LoginAcc{
+    color: white;
+    font-size: 1.2rem;
+}
+
+
+#login-account-link{
+    color: #38b6ff;
+}
+#login-account-link:hover{
+    color: #3ba3c3;
+}
+a:visited{
+    color: #38b6ff;
+}

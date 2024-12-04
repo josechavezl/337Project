@@ -33,6 +33,6 @@ UserSchema.virtual("name").get(function() {
 
 
 
-const User = mongoose.model("User", UserSchema);
+const UserCollection = new mongoose.model("User", UserSchema);
 
-module.exports = User;
+module.exports = UserCollection;

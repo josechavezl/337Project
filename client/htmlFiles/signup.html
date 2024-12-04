@@ -7,10 +7,10 @@
         <title>ViewCorp</title>
     </head>
     <body>
-        
+
         <div class="col" id="create">
             <h1>Create a New Account</h1><hr>
-            <form action="/login" method="post">
+            <form action="/signup" method="post">
                 <label for="firstName"></label>
                 <input type="text" id="firstName" name="firstName"
                 pattern="^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,}$" placeholder="First Name" required><br>
@@ -26,6 +26,11 @@
                 placeholder="Email" required><br>
 
                 <input id="createButton" type="submit" value="Create">
+
+                <div id="LoginAcc">
+                    <br>
+                    Already a User? <a id="login-account-link" href="login.html">Login to an Account </a>
+                </div>
             </form>
         </div>
         <script src="../javascript/script.js"></script>
