@@ -49,11 +49,11 @@ document.getElementById("newFolderBtn").addEventListener("click", () => {
   showModal("newFolderModal");
 });
 
-// Close New FOLDER modal
-document.getElementById("accountModal").onclick = (event) => {
-  closeModalOutside(event, "accountModal");
-};
 
+// Upload New File modal
+document.getElementById("newFileBtn").addEventListener("click", () => {
+  showModal("uploadFileModal");
+});
 
 
 
@@ -125,6 +125,76 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load existing folders on page load
   loadExistingFolders();
 
+
+
+
+
+
+
+
+
+
+  //****************************
+  // UPLOAD FILE FUNCTIONALITY**
+  //****************************
+
+
+  // document.addEventListener("DOMContentLoaded", () => {
+  //   const uploadFileModal = document.getElementById("uploadFileModal");
+  //   const uploadFileBtn = document.getElementById("uploadFileBtn");
+  //   const newFileNameInput = document.getElementById("newFileName");
+  //   const filesContainer = document.getElementById("folderFiles");
+  
+  //   const ExistingFiles = [
+  //     { name: "Example Folders", files: 3 },
+  //     { name: "To Remove These or rename", files: 2 },
+  //     { name: "JS file line 38-41, 100", files: 2 }
+  //   ];
+  
+  //   // Load Existing folders
+  //   function loadExistingFiles() {
+  //     ExistingFiles.forEach(folder => createFolderElement(folder));
+  //   }
+  
+  //   // Create folder element
+  //   function createFolderElement(folder) {
+  //     const folderDiv = document.createElement("div");
+  //     folderDiv.classList.add("folder");
+  //     folderDiv.innerHTML = `
+  //           <i class="fa-solid fa-folder-closed" style="color: #38b6ff"></i>
+  //           <span>${folder.name}</span>
+  //           <small>${folder.files} files</small>
+  //       `;
+  
+  //     // Add to folders container
+  //     filesContainer.appendChild(folderDiv);
+  //   }
+  
+  //   // Close New Folder Modal
+  //   function closeuploadFileModal() {
+  //     uploadFileModal.style.display = "none";
+  //     newFileNameInput.value = "";
+  //   }
+  
+  //   // Create Folder
+  //   uploadFileBtn.addEventListener("click", () => {
+  //     const folderName = newFileNameInput.value.trim();
+  
+  //     if (folderName) {
+  //       const newFolder = { name: folderName, files: 0 };
+  //       createFolderElement(newFolder);
+  //       closeuploadFileModal();
+  //     } else {
+  //       alert("Please enter a folder name");
+  //     }
+  //   });
+  
+  //   // Allow closing new folder modal with close button
+  //   const closeFolderModalBtn = uploadFileModal.querySelector(".close-btn");
+  //   closeFolderModalBtn.addEventListener("click", closeuploadFileModal);
+  
+  //   // Load existing folders on page load
+  //   loadExistingFiles();
 
 
 
