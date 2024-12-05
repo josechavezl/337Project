@@ -6,19 +6,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const UserCollection = require("./user");
-const clientPath = path.join(__dirname, '../../client/');
+const clientPath = path.join(__dirname, "../../client");
 
 app.use(express.static(clientPath));
 
 const port = 5000;
 const hostname = "127.0.0.1";
 
+
+// added root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(clientPath, 'htmlFiles', 'login.html'));
+    console.log("ROOT");
+});
+
+
+
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(clientPath, 'htmlFiles\\login.html'));
+    res.sendFile(path.join(clientPath, 'htmlFiles', 'login.html'));
 });
 
 app.get('/signup', (req, res) => {
-    res.sendFile(path.join(clientPath, 'htmlFiles\\signup.html'));
+    res.sendFile(path.join(clientPath, 'htmlFiles', 'signup.html'));
     console.log("SIGNUP!");
 });
 
@@ -43,7 +52,7 @@ app.post("/login", async(req, res) => {
         const user = await UserCollection.findOne({userEmail: req.body.userEmail});
 
         if (user) {  // access dashboard
-            res.sendFile(path.join(clientPath, 'htmlFiles\\mainDash.html'));
+            res.sendFile(path.join(clientPath, 'htmlFiles', 'mainDash.html'));
         }
         else {
             res.status(400).json({error: "User does not exist"});
