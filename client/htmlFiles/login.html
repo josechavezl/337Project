@@ -10,7 +10,7 @@
         
         <div class="col" id="create">
             <h1>Login to Your Account</h1><hr>
-            <form action="/login" method="post">
+            <form action="/login" method="post" id="login-form">
                 <label for="emailLogin"></label>
                 <!-- Pattern ensures a valid email address with no error-->
                 <input type="email" id="emailLogin" name="emailLogin"
@@ -20,7 +20,7 @@
                 <input id="loginButton" type="submit" value="Login">
                 <div id="CreateAcc">
                     <br>
-                    Not a User Yet? <a id="create-account-link" href="signup.html">Create an Account </a>
+                    Not a User Yet? <a id="create-account-link" href="/signup">Create an Account </a>
                 </div>
                 
             </form>

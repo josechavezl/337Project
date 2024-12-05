@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const URL = "mongodb://127.0.0.1/viewcorp";
+const URL = "mongodb://127.0.0.1/ViewCorp";
 
 async function main() {
     await mongoose.connect(URL);
