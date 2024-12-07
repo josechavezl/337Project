@@ -1,17 +1,24 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const mongoose = require('mongoose');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+const Users = require('./user.js'); 
 
-const UserCollection = require("./user");
+
 const clientPath = path.join(__dirname, "../../client");
 
 app.use(express.static(clientPath));
+mongoose.connect('mongodb://127.0.0.1:27017/users')
 
 const port = 5000;
 const hostname = "127.0.0.1";
+const db = mongoose.connection
+db.once('open', ()=>{
+    console.log("Mongo db connection")
+})
 
 
 // added root route
@@ -19,8 +26,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(clientPath, 'htmlFiles', 'login.html'));
     console.log("ROOT");
 });
-
-
 
 app.get('/login', (req, res) => {
     res.sendFile(path.join(clientPath, 'htmlFiles', 'login.html'));
@@ -32,19 +37,17 @@ app.get('/signup', (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-    console.log(req.body);
-    try {
-        const user = await UserCollection.create({
-            userFirstName: req.body.userFirstName,
-            userLastName: req.body.userLastName,
-            userEmail: req.body.userEmail
-        });
-        return res.status(200).json(user);
-    }
-    catch (error) {
-        console.log(error);
-        return res.status(500).json({error: error.message});
-    }
+    console.log(req.body)
+    const {firstName, lastName, emailCreate} = req.body
+    const user = new Users({
+        firstName,
+        lastName,
+        emailCreate
+    });
+
+    await user.save()
+    console.log(user)
+    res.send("From Submission successful")    
 });
 
 app.post("/login", async(req, res) => {
