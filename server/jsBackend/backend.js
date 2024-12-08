@@ -6,18 +6,20 @@ const mongoose = require('mongoose');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const Users = require('./user.js'); 
+const { Console } = require('console');
 
 
 const clientPath = path.join(__dirname, "../../client");
 
 app.use(express.static(clientPath));
-mongoose.connect('mongodb://127.0.0.1:27017/users')
+mongoose.connect('mongodb://127.0.0.1:27017/ViewCorp'); // DATABASE NAME, users is a collection
 
 const port = 5000;
 const hostname = "127.0.0.1";
-const db = mongoose.connection
-db.once('open', ()=>{
-    console.log("Mongo db connection")
+const database = mongoose.connection;
+
+database.once('open', ()=>{
+    console.log("Mongo db connection:", database.db.databaseName);
 })
 
 
@@ -37,32 +39,51 @@ app.get('/signup', (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-    console.log(req.body)
-    const {firstName, lastName, emailCreate} = req.body
-    const user = new Users({
-        firstName,
-        lastName,
-        emailCreate
-    });
+    console.log(req.body);
+    const {firstName, lastName, emailCreate} = req.body;
 
-    await user.save()
-    console.log(user)
-    res.send("From Submission successful")    
+    try {
+        const emailUsed = await Users.findOne({emailCreate});
+
+        if (emailUsed) {
+            return res.status(400).json({error: "Email in use."});
+        }
+
+        const user = new Users({
+            firstName,
+            lastName,
+            emailCreate
+        });
+
+        await user.save();
+        console.log(user);
+        res.status(200).json({message: "Form Submission Successful."});
+    }
+    catch(error) {
+
+    }
 });
 
 app.post("/login", async(req, res) => {
-    try {
-        const user = await UserCollection.findOne({userEmail: req.body.userEmail});
+    console.log(req.body);
+    const {emailLogin} = req.body;
+    console.log("email:", emailLogin);
 
-        if (user) {  // access dashboard
-            res.sendFile(path.join(clientPath, 'htmlFiles', 'mainDash.html'));
+    try {
+        const user = await Users.findOne({emailCreate: emailLogin});
+        console.log("EMAILL", emailLogin);
+
+        if (!user) {  // access dashboard
+            console.log("AYO");
+            return res.status(400).json({error: "Email does notexist ."});
         }
         else {
-            res.status(400).json({error: "User does not exist"});
+            console.log("EMAIL EXISSRS");
+            res.sendFile(path.join(clientPath, 'htmlFiles', 'mainDash.html'));
         }
     }
     catch (error) {
-        res.status(400).json({error});
+        res.status(400).json({error: "ayooooo"});
     }
 });
 

@@ -109,4 +109,10 @@ a:visited{
     color: #38b6ff;
 }
 
+#user-login-error {
+    display: none;
+    visibility: hidden;
+    margin-top: 20px;
+    color: red;
+}
 

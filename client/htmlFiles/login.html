@@ -14,7 +14,7 @@
                 <label for="emailLogin"></label>
                 <!-- Pattern ensures a valid email address with no error-->
                 <input type="email" id="emailLogin" name="emailLogin"
-                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+                pattern="[a-z0-9._%+\-]+@[a-z0-9._%+\-]+\.[a-z]{2,}$" 
                 placeholder="Email" required><br>
 
                 <input id="loginButton" type="submit" value="Login">
@@ -22,7 +22,7 @@
                     <br>
                     Not a User Yet? <a id="create-account-link" href="/signup">Create an Account </a>
                 </div>
-                
+                <div id="user-login-error"></div>
             </form>
         </div>
         

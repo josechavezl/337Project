@@ -110,3 +110,18 @@ added hover effect
 a:visited{
     color: #38b6ff;
 }
+
+
+#user-created-response, #user-created-error {
+    display: none;
+    visibility: hidden;
+    margin-top: 20px;
+}
+
+#user-created-response {
+    color: green;
+}
+
+#user-created-error {
+    color: red;
+}
