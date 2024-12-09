@@ -96,4 +96,3 @@ loginForm.addEventListener("submit", async function (event) {
         console.log("ERRORRR", error);
     }
 });
-
