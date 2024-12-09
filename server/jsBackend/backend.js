@@ -73,16 +73,9 @@ app.post("/login", async(req, res) => {
             return res.status(400).json({error: "Email does notexist ."});
         }
 
-        res.status(200).json({
-            user: {
-                name: user.name,  // full name (from virtual field)
-                email: user.emailCreate  // email
-            }
-        });
-        
-        res.redirect("/mainDash");
-
+        return res.redirect("/mainDash");
     }
+    
     catch (error) {
         res.status(400).json({error: "ayooooo"});
     }
