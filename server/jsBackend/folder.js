@@ -1,36 +1,29 @@
 const mongoose = require('mongoose');
-const URL = "mongodb://127.0.0.1/viewcorp";
-
-async function main() {
-    await mongoose.connect(URL);
-}
-
-main();
 
 const FolderSchema = new mongoose.Schema({
-    folderName: {
+    name: {
         type: String,
         require: true
     },
-    folderAuthor: {
+    author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Folder",
+        ref: "User",
         require: true
     },
-    folderFilesNumber: {
-        type: Number,
-        require: true
-    },
-    folderFiles: {
+    files: {
         type: Array,
-        require: true,
         files: [String]
     },
-    folderDate: {
+    date: {
         type: Date,
         require: true,
-        default: Date.now()
-    }
+        default: Date.now
+    },
+    shared: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"  
+    }]
 });
 
 const Folder = mongoose.model("Folder", FolderSchema);
+module.exports = Folder;

@@ -5,15 +5,14 @@ const userSchema = new mongoose.Schema({
     emailCreate:{type:String, unique: true}
 });
 
+userSchema.virtual("name").get(function() {
+    let fullName = "";
 
-const Users = mongoose.model("User", userSchema);
-module.exports = Users;
-
-/*UserSchema.virtual("name").get(function() {
-    let userFullName = "";
-
-    if (this.userFirstName && this.userLastName) {
-        userFullName = `${this.userFirstName} ${this.userLastName}`;
+    if (this.firstName && this.firstName) {
+        fullName = `${this.firstName} ${this.lastName}`;
     }
-    return userFullName;
-});*/
+    return fullName;
+});
+
+const User = mongoose.model("User", userSchema);
+module.exports = User;

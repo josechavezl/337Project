@@ -71,9 +71,14 @@ loginForm.addEventListener("submit", async function (event) {
         console.log("response:", data);
 
         
-        if(response.ok) {
-            console.log('GOOD RESPONSE!');
-            window.location.href = "dashboard.html";
+        if(response.ok ) {
+            localStorage.setItem('email', data.user.email);
+            localStorage.setItem('fullName', data.user.name);
+
+            /*if(data.redirected) {
+                console.log('GOOD RESPONSE!', data.redirect);
+                window.location.href = data.redirect;
+            }*/
         }
         else {
             console.log('BAD RESPONSE!');

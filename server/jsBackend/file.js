@@ -1,11 +1,4 @@
 const mongoose = require('mongoose');
-const URL = "mongodb://127.0.0.1/viewcorp";
-
-async function main() {
-    await mongoose.connect(URL);
-}
-
-main();
 
 const FileSchema = new mongoose.Schema({
     fileName: {
@@ -18,13 +11,17 @@ const FileSchema = new mongoose.Schema({
     },
     fileAuthor: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "File",
+        ref: "User",
         require: true
     },
     fileDate: {
         type: Date,
         require: true,
         default: Date.now()
+    },
+    fileFolder: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Folder"
     }
 });
 

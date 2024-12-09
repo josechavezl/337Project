@@ -37,6 +37,7 @@ document.getElementById("helpModal").onclick = (event) => {
 // Show Account modal
 document.getElementById("account").addEventListener("click", () => {
   showModal("accountModal");
+  showUser();
 });
 
 // Close Account modal
@@ -56,7 +57,30 @@ document.getElementById("newFileBtn").addEventListener("click", () => {
 });
 
 
+async function showUser() {
+  try {
+    const email = localStorage.getItem('email');
+    const user = localStorage.getItem('fullName');
+    
+    if (!user) {
+      console.error('No user found');
+      return;
+    }
+    if (!email) {
+      console.error('No email found');
+      return;
+    }
 
+    if (response.ok) {
+      document.getElementById('userFullName').textContent = data.fullName;
+      document.getElementById('userEmail').textContent = data.email;
+    }
+
+  }
+  catch (error) {
+
+  }
+}
 
 
 
@@ -106,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Create Folder
-  createFolderBtn.addEventListener("click", () => {
+  createFolderBtn.addEventListener("click", async () => {
     const folderName = newFolderNameInput.value.trim();
 
     if (folderName) {
@@ -116,7 +140,36 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       alert("Please enter a folder name");
     }
-  });
+    /*if (folderName) {
+      try {
+        const response = await fetch("/create-folder", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: folderName,
+          }),
+        });
+        
+        const data = await response.json();
+        if (response.ok) {
+          createFolderElement(data.folder);
+          closeNewFolderModal();
+        }
+        else {
+          alert("Error creating folder: " + data.error);
+        }
+      }
+      catch (error) {
+        console.log("Error creating folder:", error);
+        alert("Error creating folder.");
+      }
+    }
+    else {
+      alert("Please enter a folder name.");
+    }*/
+});
 
   // Allow closing new folder modal with close button
   const closeFolderModalBtn = newFolderModal.querySelector(".close-btn");
