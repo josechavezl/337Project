@@ -1,23 +1,19 @@
 const mongoose = require('mongoose');
 
-const invitiationSchema = new mongoose.Schema({
-    invSender: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
-    invRecipient: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
-    invFolder: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Folder"
-    },
-    invDate: {
-        type: Date,
-        default: Date.now
-    }
-});
+let Invitation;
 
-const Invitation = mongoose.model("User", userSchema);
+try {
+    Invitation = mongoose.model("Folder");
+} catch (error) {
+    const invitationSchema = new mongoose.Schema({
+        name: { type: String, required: true, unique: true },
+        author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        files: { type: Array, files: [String] },
+        date: { type: Date, default: Date.now },
+        shared: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
+    });
+
+    Invitation = mongoose.model("Folder", invitationSchema);
+}
+
 module.exports = Invitation;

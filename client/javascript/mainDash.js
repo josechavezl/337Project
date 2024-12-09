@@ -32,7 +32,7 @@ document.getElementById("helpModal").onclick = (event) => {
 
 // Show Account modal
 document.getElementById("account").addEventListener("click", () => {
-  console.log("hello at account event listner")
+  console.log("hello at account event listner");
   showModal("accountModal");
   showUser();
 });
@@ -105,20 +105,24 @@ async function showUser() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const emailP = urlParams.get("email"); 
+
   const newFolderModal = document.getElementById("newFolderModal");
   const createFolderBtn = document.getElementById("createFolderBtn");
   const newFolderNameInput = document.getElementById("newFolderName");
   const foldersContainer = document.getElementById("foldersContainer");
 
-  const ExistingFolders = [
-    { name: "Example Folders", files: 3 },
-    { name: "To Remove These or rename", files: 2 },
-    { name: "JS file line 38-41, 100", files: 2 }
-  ];
-
   // Load Existing folders
-  function loadExistingFolders() {
-    ExistingFolders.forEach(folder => createFolderElement(folder));
+  async function loadExistingFolders() {
+    try {
+      const response = await fetch(`/get-folders?email=${encodeURIComponent(emailP)}`);
+      const ExistingFolders = await response.json();
+      ExistingFolders.forEach(folder => createFolderElement(folder));
+    }
+    catch(error) {
+      console.log("error loading folders", error);
+    }
   }
 
   // Create folder element
@@ -146,41 +150,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const folderName = newFolderNameInput.value.trim();
 
     if (folderName) {
-      const newFolder = { name: folderName, files: 0 };
-      createFolderElement(newFolder);
-      closeNewFolderModal();
-    } else {
-      alert("Please enter a folder name");
-    }
-    /*if (folderName) {
+      const folderData = { name: folderName, email: emailP, files:[], shared: []};
       try {
         const response = await fetch("/create-folder", {
           method: "post",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            name: folderName,
-          }),
+          body: JSON.stringify(folderData)
         });
         
-        const data = await response.json();
-        if (response.ok) {
-          createFolderElement(data.folder);
-          closeNewFolderModal();
+        if(response.ok) {
+          const newFolder = await response.json();
+          createFolderElement(newFolder);
         }
-        else {
-          alert("Error creating folder: " + data.error);
+        else{
+          const errorFolder = await response.json();
+          alert("ERROR creating folder", errorFolder);
         }
-      }
-      catch (error) {
-        console.log("Error creating folder:", error);
-        alert("Error creating folder.");
-      }
+      closeNewFolderModal();
     }
+    catch(error) {
+      alert("Catch error", error);
+    }
+  }
     else {
-      alert("Please enter a folder name.");
-    }*/
+      alert("Please enter a folder name");
+    }
 });
 
   // Allow closing new folder modal with close button

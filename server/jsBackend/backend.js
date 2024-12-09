@@ -6,7 +6,11 @@ const mongoose = require('mongoose');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const Users = require('./user.js'); 
+
+const Users = require('./user.js');
+const Folders = require('./folder.js');
+const Files = require('./file.js');
+const Invitations = require('./invitation.js');
 
 const clientPath = path.join(__dirname, "../../client");
 
@@ -118,20 +122,35 @@ app.post("/show-user", async (req, res) => {
 
 
 app.post('/create-folder', async (req, res) => {
-    const {name} = req.body;
+    const {name, email, files, shared} = req.body;
+    const user = await Users.findOne({ emailCreate: email });
     try {
-        const newFolder = new Folder({
-            name: name,
-            author: req.user._id,
-            files: [],
-            shared: []
+        const newFolder = new Folders({
+            name,
+            author: user._id,
+            files: files || [],
+            shared: shared || []
         });
         await newFolder.save();
+        res.status(201).json(newFolder);
     }
 
     catch (error) {
-        
+        console.log("error creating folder", error);
     }
+});
+
+app.get('/get-folders', async (req, res) => {
+    const {email} = req.query;
+    try {
+        const user = await Users.findOne({emailCreate: email});
+        const folders = await Folders.find({author: user._id});
+        res.status(200).json(folders);
+    }
+    catch(error) {
+        console.log("cannot show folders", error);
+    }
+
 });
 
 app.listen(port, hostname, () => {

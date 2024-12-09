@@ -1,29 +1,19 @@
 const mongoose = require('mongoose');
 
-const FolderSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        require: true
-    },
-    author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        require: true
-    },
-    files: {
-        type: Array,
-        files: [String]
-    },
-    date: {
-        type: Date,
-        require: true,
-        default: Date.now
-    },
-    shared: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User"  
-    }]
-});
+let Folder;
 
-const Folder = mongoose.model("Folder", FolderSchema);
+try {
+    Folder = mongoose.model("Folder");
+} catch (error) {
+    const folderSchema = new mongoose.Schema({
+        name: { type: String, required: true, unique: true },
+        author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        files: { type: Array, files: [String] },
+        date: { type: Date, default: Date.now },
+        shared: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
+    });
+
+    Folder = mongoose.model("Folder", folderSchema);
+}
+
 module.exports = Folder;

@@ -1,29 +1,18 @@
 const mongoose = require('mongoose');
 
-const FileSchema = new mongoose.Schema({
-    fileName: {
-        type: String,
-        require: true
-    },
-    fileType: {
-        type: String,
-        require: true
-    },
-    fileAuthor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        require: true
-    },
-    fileDate: {
-        type: Date,
-        require: true,
-        default: Date.now()
-    },
-    fileFolder: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Folder"
-    }
-});
+let File;
 
-const File = mongoose.model("File", FileSchema);
+try {
+    File = mongoose.model("File");
+} catch (error) {
+    const fileSchema = new mongoose.Schema({
+        name: { type: String, required: true, unique: true },
+        author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        date: { type: Date, default: Date.now },
+        folder: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
+    });
+
+    File = mongoose.model("File", fileSchema);
+}
+
 module.exports = File;

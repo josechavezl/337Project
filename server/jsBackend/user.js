@@ -1,18 +1,17 @@
 const mongoose = require('mongoose');
-const userSchema = new mongoose.Schema({
-    firstName:{type:String},
-    lastName:{type:String},
-    emailCreate:{type:String, unique: true}
-});
 
-userSchema.virtual("name").get(function() {
-    let fullName = "";
+let User;
 
-    if (this.firstName && this.firstName) {
-        fullName = `${this.firstName} ${this.lastName}`;
-    }
-    return fullName;
-});
+try {
+    User = mongoose.model("User"); // Try to get the model if already defined
+} catch (error) {
+    const userSchema = new mongoose.Schema({
+        firstName: { type: String },
+        lastName: { type: String },
+        emailCreate: { type: String, unique: true }
+    });
 
-const User = mongoose.model("User", userSchema);
+    User = mongoose.model("User", userSchema);  // Register model only if not already defined
+}
+
 module.exports = User;
