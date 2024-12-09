@@ -1,7 +1,3 @@
-
-
-
-
 // ************************
 // Open and Close Modals Functions
 // ************************
@@ -36,6 +32,7 @@ document.getElementById("helpModal").onclick = (event) => {
 
 // Show Account modal
 document.getElementById("account").addEventListener("click", () => {
+  console.log("hello at account event listner")
   showModal("accountModal");
   showUser();
 });
@@ -58,28 +55,43 @@ document.getElementById("newFileBtn").addEventListener("click", () => {
 
 
 async function showUser() {
-  try {
-    const email = localStorage.getItem('email');
-    const user = localStorage.getItem('fullName');
+  // try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const firstName = urlParams.get("firstName");
+    const lastName = urlParams.get("lastName");
+    const email = urlParams.get("email"); 
+    console.log(email)
     
-    if (!user) {
-      console.error('No user found');
-      return;
-    }
-    if (!email) {
-      console.error('No email found');
-      return;
-    }
+    document.getElementById('userFullName').textContent = `${firstName} ${lastName}`;
+    document.getElementById('userEmail').textContent = `${email}`;
 
-    if (response.ok) {
-      document.getElementById('userFullName').textContent = data.fullName;
-      document.getElementById('userEmail').textContent = data.email;
-    }
+// Extract the user information from the URL parameters
+  // const firstName = urlParams.get("firstName");
+  // const lastName = urlParams.get("lastName");
+  // const email = urlParams.get("email"); 
 
-  }
-  catch (error) {
+  //   // const email = localStorage.getItem('email');
+  //   // const user = localStorage.getItem('fullName');
+    
+  //   if (!user) {
+  //     console.error('No user found');
+  //     return;
+  //   }
+  //   if (!email) {
+  //     console.error('No email found');
+  //     return;
+  //   }
 
-  }
+  //   if (response.ok) {
+  //     console.log(email)
+  //     document.getElementById('userFullName').textContent = `${firstName} ${lastName}`;
+  //     document.getElementById('userEmail').textContent = `${email}`;
+  //   }
+
+  // }
+  // catch (error) {
+
+  // }
 }
 
 

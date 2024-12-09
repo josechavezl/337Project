@@ -1,3 +1,5 @@
+
+
 const loginForm = document.getElementById("login-form");
 const signupForm = document.getElementById("signup-form");
 
@@ -72,6 +74,7 @@ loginForm.addEventListener("submit", async function (event) {
 
         
         if(response.ok ) {
+            console.log("ScriptJs at 75")
             localStorage.setItem('email', data.user.email);
             localStorage.setItem('fullName', data.user.name);
 
@@ -93,3 +96,4 @@ loginForm.addEventListener("submit", async function (event) {
         console.log("ERRORRR", error);
     }
 });
+

@@ -1,3 +1,4 @@
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -73,9 +74,18 @@ app.post("/login", async(req, res) => {
             return res.status(400).json({error: "Email does notexist ."});
         }
 
-        return res.redirect("/mainDash");
+        // res.status(200).json({
+        //     user: {
+        //         name: user.name,  // full name (from virtual field)
+        //         email: user.emailCreate  // email
+        //     }
+        // });
+        res.redirect(`/mainDash?firstName=${encodeURIComponent(user.firstName)}&lastName=${encodeURIComponent(user.lastName)}&email=${encodeURIComponent(user.emailCreate)}`);
+
+        
+        // res.redirect("/mainDash");
+
     }
-    
     catch (error) {
         res.status(400).json({error: "ayooooo"});
     }
@@ -127,3 +137,4 @@ app.post('/create-folder', async (req, res) => {
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
+
