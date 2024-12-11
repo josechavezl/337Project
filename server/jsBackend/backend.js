@@ -3,13 +3,15 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
+const fs = require('fs');
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const Users = require('./user.js');
 const Folders = require('./folder.js');
-const Files = require('./file.js');
+const File = require('./file.js');
 const Invitations = require('./invitation.js');
 
 const clientPath = path.join(__dirname, "../../client");
@@ -96,6 +98,8 @@ app.post("/login", async(req, res) => {
 });
 
 
+
+
 app.get("/mainDash", (req, res) => {
     res.sendFile(path.join(clientPath, 'htmlFiles', 'mainDash.html'));
 });
@@ -153,7 +157,73 @@ app.get('/get-folders', async (req, res) => {
 
 });
 
+
+
+
+
+
+
+
+
+// new 
+
+app.post("/upload", (req, res) => {
+    const fileName = req.headers["x-file-name"]; // Get file name from headers
+    const filePath = path.join(__dirname, "uploads", decodeURIComponent(fileName));
+
+    const writeStream = fs.createWriteStream(filePath);
+
+    req.pipe(writeStream);
+
+    writeStream.on("finish", async () => {
+        // Create a new file document in MongoDB with the file's metadata
+        try {
+            const newFile = new File({
+                name: fileName,
+                author: req.user._id, // Assuming user info is available in req.user
+                folder: req.body.folderId, // Assuming the folder ID is sent in the request body
+            });
+            await newFile.save(); // Save the file metadata to the database
+
+            // Optionally, add the file to a folder's file array
+            if (req.body.folderId) {
+                const folder = await Folders.findById(req.body.folderId);
+                if (folder) {
+                    folder.files.push(newFile._id); // Add the file reference to the folder
+                    await folder.save();
+                }
+            }
+
+            res.status(200).json({ message: "File uploaded successfully", fileName });
+        } catch (error) {
+            console.error("Error saving file metadata:", error);
+            res.status(500).json({ error: "Error saving file metadata" });
+        }
+    });
+
+    writeStream.on("error", (error) => {
+        console.error("Error saving file:", error);
+        res.status(500).json({ error: "File upload failed" });
+    });
+});
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });
 
+
+  

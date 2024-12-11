@@ -450,3 +450,32 @@ body {
 #uploadFileModal button:hover {
   background-color: #129c03;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+.file-item {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.file-item:hover {
+  background-color: #e0e0e0;
+}

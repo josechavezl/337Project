@@ -37,6 +37,8 @@
           </span> Upload File
         </button>
 
+  
+      
         <button id="changeDashboard" class="mainbtns">
           <i id="changeDashSwirl" class="fa-solid fa-repeat"></i>
         </button>
@@ -52,7 +54,6 @@
       </div>
 
     </nav>
-
 
 
 
@@ -146,7 +147,9 @@
           <h2 id="currentFolderTitle"></h2>
 
         </div>
-        <ul id="folderFiles"></ul>
+        <div id="folderFiles">
+          <!--FILES SHOULD APPEAR HERE-->
+        </div>
       </section>
 
 
@@ -175,19 +178,17 @@
         </div>
       </div>
 
-
-
       <!-- Add "Upload File" Modal -->
       <div id="uploadFileModal" class="modal">
         <div class="modal-content">
-          <span class="close-btn" onclick="closeModal('uploadFileModal')"
-            >&times;</span
-          >
+          <span class="close-btn" onclick="closeModal('uploadFileModal')">&times;</span>
           <h2>Upload File</h2>
-          <input type="file" id="newFileName" />
+          <input type="file" id="fileInput" />
           <button id="uploadFileBtn">Upload</button>
         </div>
       </div>
+      
+
 
 
       <!-- Help Modal content -->
@@ -231,6 +232,38 @@
       </div>
 
       
+
+
+
+
+
+
+
+      
+  <!-- View file Modal -->
+  <div id="previewFilemodal" class="modal">
+    <div class="modal-content">
+      <span id="close-btn" class="close-btn" onclick="closeModal('previewFilemodal')">&times;</span>
+      <h3>File NAME</h3>
+      
+
+
+        <!-- File Preview Section -->
+        <div class="file-preview">
+
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+          <h4>Comments</h4>
+  
+        </div>
+      </div>
+    </div>
+
+
+
+
 
     </main>
 

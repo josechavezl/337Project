@@ -3,6 +3,15 @@
 // ************************
 
 
+
+
+
+
+
+
+
+
+
 function showModal(modalId) {
   var modal = document.getElementById(modalId);
   modal.style.display = "block";
@@ -52,6 +61,13 @@ document.getElementById("newFolderBtn").addEventListener("click", () => {
 document.getElementById("newFileBtn").addEventListener("click", () => {
   showModal("uploadFileModal");
 });
+
+
+
+
+
+
+
 
 
 async function showUser() {
@@ -195,67 +211,73 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-  //****************************
-  // UPLOAD FILE FUNCTIONALITY**
-  //****************************
 
 
-  // document.addEventListener("DOMContentLoaded", () => {
-  //   const uploadFileModal = document.getElementById("uploadFileModal");
-  //   const uploadFileBtn = document.getElementById("uploadFileBtn");
-  //   const newFileNameInput = document.getElementById("newFileName");
-  //   const filesContainer = document.getElementById("folderFiles");
-  
-  //   const ExistingFiles = [
-  //     { name: "Example Folders", files: 3 },
-  //     { name: "To Remove These or rename", files: 2 },
-  //     { name: "JS file line 38-41, 100", files: 2 }
-  //   ];
-  
-  //   // Load Existing folders
-  //   function loadExistingFiles() {
-  //     ExistingFiles.forEach(folder => createFolderElement(folder));
-  //   }
-  
-  //   // Create folder element
-  //   function createFolderElement(folder) {
-  //     const folderDiv = document.createElement("div");
-  //     folderDiv.classList.add("folder");
-  //     folderDiv.innerHTML = `
-  //           <i class="fa-solid fa-folder-closed" style="color: #38b6ff"></i>
-  //           <span>${folder.name}</span>
-  //           <small>${folder.files} files</small>
-  //       `;
-  
-  //     // Add to folders container
-  //     filesContainer.appendChild(folderDiv);
-  //   }
-  
-  //   // Close New Folder Modal
-  //   function closeuploadFileModal() {
-  //     uploadFileModal.style.display = "none";
-  //     newFileNameInput.value = "";
-  //   }
-  
-  //   // Create Folder
-  //   uploadFileBtn.addEventListener("click", () => {
-  //     const folderName = newFileNameInput.value.trim();
-  
-  //     if (folderName) {
-  //       const newFolder = { name: folderName, files: 0 };
-  //       createFolderElement(newFolder);
-  //       closeuploadFileModal();
-  //     } else {
-  //       alert("Please enter a folder name");
-  //     }
-  //   });
-  
-  //   // Allow closing new folder modal with close button
-  //   const closeFolderModalBtn = uploadFileModal.querySelector(".close-btn");
-  //   closeFolderModalBtn.addEventListener("click", closeuploadFileModal);
-  
-  //   // Load existing folders on page load
-  //   loadExistingFiles();
+// ******************************
+// UPLOAD FILE FUNCTIONALITY ****
+// ******************************
+document.getElementById("uploadFileBtn").addEventListener("click", async () => {
+  const fileInput = document.getElementById("fileInput");
+  const folderFiles = document.getElementById("folderFiles");
+
+  if (!fileInput.files.length) {
+      alert("Please select a file to upload.");
+      return;
+  }
+
+  const file = fileInput.files[0]; // Get the selected file
+
+  try {
+      // Send the file as raw content
+      const response = await fetch("/upload", {
+          method: "post",
+          headers: {
+              "Content-Type": file.type, // Set the file's MIME type
+              "X-File-Name": encodeURIComponent(file.name), // Optional: Pass file name in header
+          },
+          body: file, // Send the raw file content
+      });
+
+      if (response.ok) {
+          // Append file name to the folderFiles section
+          const fileName = file.name; // Get the file name
+          const fileDiv = document.createElement("div");
+          fileDiv.textContent = fileName;
+          fileDiv.className = "file-item";
+          folderFiles.appendChild(fileDiv);
+
+           // Add click event listener to show the modal
+      fileDiv.addEventListener("click", () => {
+        const previewModal = document.getElementById("previewFilemodal");
+        if (previewModal) {
+          previewModal.style.display = "block";
+        }
+      });
+
+          console.log("File uploaded successfully!");
+      } else {
+          alert("File upload failed.");
+      }
+  } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("An error occurred while uploading the file.");
+  }
+});
+
+
+// Function to close the modal (optional, if not already implemented)
+document.getElementById("previewFilemodal").addEventListener("click", (event) => {
+  if (event.target.id === "previewFilemodal") {
+    event.target.style.display = "none"; // Close the modal when clicking outside
+  }
+});
+
+
+
+
+
+
+
 
 
 
@@ -295,12 +317,16 @@ const recentActivitySection = document.getElementById("outerLayerActivity");
 
 // Handle folder click
 foldersContainer.addEventListener("click", (e) => {
-  if (e.target.closest(".folder")) {
+    const folderElement = e.target.closest(".folder");
+
+  if (folderElement) {
+    
     // Hide Recent Activity
     recentActivitySection.style.display = "none";
 
     // Get the folder name
     const folderName = e.target.closest(".folder").querySelector("span").innerText;
+    currentFolderId = folderName; // Update the currentFolderId with the selected folder name or ID
 
     // Set the folder title and number of files
     const files = folderData[folderName] || [];
@@ -360,12 +386,12 @@ backToDashboard.addEventListener("click", () => {
 
 
 const searchInput = document.querySelector(".search-input");
-const foldersContainer = document.getElementById("foldersContainer");
+const foldersContainers = document.getElementById("foldersContainer");
 
 // Add event listener for the search input
 searchInput.addEventListener("input", (e) => {
   const query = e.target.value.toLowerCase();
-  const folderElements = foldersContainer.querySelectorAll(".folder"); // Dynamically fetch all folders
+  const folderElements = foldersContainers.querySelectorAll(".folder"); // Dynamically fetch all folders
 
   folderElements.forEach(folder => {
     const folderName = folder.querySelector("span").innerText.toLowerCase();

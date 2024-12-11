@@ -1,0 +1,63 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Gravitational constant (N*m^2/kg^2)
+G = 6.67430e-11  
+
+# Define the masses of planets (kg)
+mass_earth = 5.972e24
+mass_mars = 6.39e23
+
+# Initial positions (m)
+pos_earth = np.array([0, 0])  
+pos_mars = np.array([2.279e11, 0])  # Mars approx 227.9 million km from the sun
+pos_spacecraft = np.array([1.5e11, 0])  # Spacecraft starting between Earth and Mars
+
+# Initial velocities (m/s)
+vel_spacecraft = np.array([0, 3.0e4])  # 30 km/s tangential velocity
+
+# Time step and total time (s)
+dt = 60 * 60  # 1 hour in seconds
+total_time = 365 * 24 * 60 * 60  # 1 year in seconds
+
+# Function to calculate gravitational force
+def gravitational_force(m1, m2, r):
+    return G * m1 * m2 / np.linalg.norm(r)**2
+
+# Function to calculate acceleration due to gravity
+def acceleration(mass, r):
+    return -gravitational_force(mass, 1, r) * r / np.linalg.norm(r)
+
+# Lists to store trajectory data
+spacecraft_positions = [pos_spacecraft]
+
+# Simulate the motion
+for t in range(0, total_time, dt):
+    # Calculate the forces from both Earth and Mars on the spacecraft
+    force_earth = acceleration(mass_earth, pos_spacecraft - pos_earth)
+    force_mars = acceleration(mass_mars, pos_spacecraft - pos_mars)
+    
+    # Net acceleration on the spacecraft
+    net_acceleration = force_earth + force_mars
+    
+    # Update velocity and position using simple Euler integration
+    vel_spacecraft += net_acceleration * dt
+    pos_spacecraft += vel_spacecraft * dt
+    
+    # Store the updated position
+    spacecraft_positions.append(pos_spacecraft)
+
+# Convert position list to numpy array for easier plotting
+spacecraft_positions = np.array(spacecraft_positions)
+
+# Plot the results
+plt.figure(figsize=(8, 8))
+plt.plot(spacecraft_positions[:, 0], spacecraft_positions[:, 1], label='Spacecraft Trajectory')
+plt.scatter(pos_earth[0], pos_earth[1], color='blue', label='Earth', s=100)
+plt.scatter(pos_mars[0], pos_mars[1], color='red', label='Mars', s=100)
+plt.xlabel('X Position (m)')
+plt.ylabel('Y Position (m)')
+plt.legend()
+plt.title('Spacecraft Trajectory Simulation')
+plt.grid(True)
+plt.show()

@@ -8,7 +8,7 @@ try {
     const folderSchema = new mongoose.Schema({
         name: { type: String, required: true, unique: true },
         author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        files: { type: Array, files: [String] },
+        files: [{ type: mongoose.Schema.Types.ObjectId, ref: "File" }],
         date: { type: Date, default: Date.now },
         shared: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
     });
