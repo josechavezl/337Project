@@ -562,12 +562,11 @@ foldersContainer.addEventListener("click", (e) => {
 
   if (folderElement) {
     console.log("575")
-    async function loadExistingFiles() {
+    async function loadExistingFolders() {
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const emailP = urlParams.get("email");
         const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}`);
-        
         const ExistingFolders = await response.json();
         ExistingFolders.forEach(folder => createFileElement(folder));
       }
@@ -578,6 +577,7 @@ foldersContainer.addEventListener("click", (e) => {
 
     function createFileElement(file) {
       console.log(file.name)
+
       const fileDiv = document.createElement("div");
       fileDiv.classList.add("file");
       fileDiv.innerHTML = `
@@ -587,6 +587,8 @@ foldersContainer.addEventListener("click", (e) => {
       // Add to folders container
       filesContainer.appendChild(fileDiv);
     }
+    loadExistingFolders();
+
     // Hide Recent Activity
 
     // Get the folder name
@@ -602,8 +604,6 @@ foldersContainer.addEventListener("click", (e) => {
     <small id="filesCountFolder">${files.length} files</small>`;
 
     // Populate the files list
-    loadExistingFiles();
-
     
 
     // Hide Dashboard and show Folder Content Page
