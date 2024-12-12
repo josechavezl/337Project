@@ -21,7 +21,7 @@ app.use(express.static(clientPath));
 mongoose.connect('mongodb://127.0.0.1:27017/ViewCorp'); // DATABASE NAME, users is a collection
 
 const port = 5000;
-const hostname = "127.0.0.1";
+const hostname = "0.0.0.0";
 const database = mongoose.connection;
 
 database.once('open', ()=>{
