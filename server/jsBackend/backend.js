@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const Users = require('./user.js');
 const Folders = require('./folder.js');
-const File = require('./file.js');
+const Files = require('./file.js');
 const Invitations = require('./invitation.js');
 
 const clientPath = path.join(__dirname, "../../client");
@@ -149,7 +149,19 @@ app.get('/get-folders', async (req, res) => {
     try {
         const user = await Users.findOne({emailCreate: email});
         const folders = await Folders.find({author: user._id});
-        res.status(200).json(folders);
+        const foldersInv = await Folders.find({shared: user._id});
+
+
+
+        console.log(user);
+        console.log(folders);
+        console.log(foldersInv);
+
+        const allFolders = folders.concat(foldersInv);
+        
+        console.log(allFolders);
+
+        res.status(200).json(allFolders);
     }
     catch(error) {
         console.log("cannot show folders", error);
@@ -178,7 +190,7 @@ app.post("/upload", (req, res) => {
     writeStream.on("finish", async () => {
         // Create a new file document in MongoDB with the file's metadata
         try {
-            const newFile = new File({
+            const newFile = new Files({
                 name: fileName,
                 author: req.user._id, // Assuming user info is available in req.user
                 folder: req.body.folderId, // Assuming the folder ID is sent in the request body
@@ -208,7 +220,33 @@ app.post("/upload", (req, res) => {
 });
 
 
+app.post('/invite', async (req,res) => {
+    const {sender, recipient, folder} = req.body;
+    const user = await Users.findOne({ emailCreate: sender });
+    const user2 = await Users.findOne({emailCreate: recipient});
+    const flder = await Folders.findOne({name: folder});
 
+    try {
+        const newInvitation = new Invitations({
+            sender: user._id,
+            recipient: user2._id,
+            folder: flder._id
+        });
+        console.log(newInvitation);
+        await newInvitation.save();
+
+        await Folders.updateOne(
+            {_id: flder._id},
+            {$addToSet: {"shared": user2._id}}
+        );
+
+        res.status(201).json(newInvitation);
+    }
+
+    catch (error) {
+        console.log("error creating invitation", error);
+    }
+});
 
 
 

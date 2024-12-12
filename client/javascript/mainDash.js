@@ -331,8 +331,7 @@ document.getElementById("previewFilemodal").addEventListener("click", (event) =>
     "JS file line 38-41, 100": ["CodeSnippet.js", "page.css"]
   };
 
- 
-
+let currentFolderId = ""; 
 // Handle folder click
 foldersContainer.addEventListener("click", (e) => {
     const folderElement = e.target.closest(".folder");
@@ -395,6 +394,53 @@ backToDashboard.addEventListener("click", () => {
 
 });
 
+
+// invite
+
+const inviteCollaboratorbtn = document.getElementById("inviteCollaborator-btn");
+const inviteInputBox = document.getElementById("invite-input-box");
+
+inviteCollaboratorbtn.addEventListener("click", async () => {
+  if (!inviteInputBox) {
+    console.error("Invite input box not found. ");
+    return;
+  }
+
+  const inviteEmail = inviteInputBox.value.trim();
+
+  if (inviteEmail) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const emailP = urlParams.get("email");
+    const inviteData = { sender: emailP, recipient: inviteEmail, folder: currentFolderId };
+    console.log("Invite Data:", inviteData);
+
+    try {
+      const response = await fetch("/invite", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inviteData)
+      });
+      
+      if(response.ok) {
+        const newInvite = await response.json();
+        console.log("invitiation valid", newInvite);
+        alert("Invitation sent!");
+      }
+      else{
+        const errorInvite = await response.json();
+        alert("ERROR inviting user", errorInvite);
+      }
+  }
+  catch(error) {
+    alert("Catch error", error);
+  }
+} else {
+    alert("Please enter an email.");
+  }
+});
+
 });
 
 
@@ -431,3 +477,17 @@ searchInput.addEventListener("input", (e) => {
 
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
