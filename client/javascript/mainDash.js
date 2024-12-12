@@ -6,7 +6,7 @@
 
 
 // Show previewFilemodal modal
-// add the id of the file 
+// add the id of the file
 // document.getElementById("").addEventListener("click", () => {
 //   showModal("previewFilemodal");
 // });
@@ -15,6 +15,9 @@
 // document.getElementById("previewFilemodal").onclick = (event) => {
 //   closeModalOutside(event, "previewFilemodal");
 // };
+
+
+
 
 
 
@@ -72,10 +75,6 @@ document.getElementById("newFileBtn").addEventListener("click", () => {
 
 
 
-
-
-
-
 // Show Help modal
 document.getElementById("addCollaborators").addEventListener("click", () => {
   showModal("inviteModal");
@@ -124,6 +123,48 @@ async function showUser() {
 
   // }
 }
+
+
+
+// ************************
+// Comment Section Functionality
+// ************************
+
+
+function addComment() {
+  const authorInput = document.getElementById('comment-author');
+  const commentInput = document.getElementById('comment-text');
+  const ratingInput = document.getElementById('comment-rating');
+  const commentsContainer = document.getElementById('comments-container');
+  
+  const author = authorInput.value.trim();
+  const commentText = commentInput.value.trim();
+  const rating = parseInt(ratingInput.value);
+  
+  if (author && commentText && !isNaN(rating) && rating >= 1 && rating <= 5) {
+    const newComment = document.createElement('div');
+    newComment.classList.add('comment');
+    newComment.innerHTML = `
+      <div class="comment-author">${author} <span id="commentedColor">commented:</span></div>
+      <div class="comment-text">${commentText}</div>
+      <div class="comment-rating">${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}</div>
+    `;
+    commentsContainer.appendChild(newComment);
+    
+    // Clear input fields
+    authorInput.value = '';
+    commentInput.value = '';
+    ratingInput.value = '';
+  } else {
+    alert('Please fill in all fields with valid data.');
+  }
+}
+
+
+
+
+
+
 
 
 

@@ -193,7 +193,7 @@ body {
   align-items: flex-start;
   justify-content: center;
   cursor: pointer;
-  transition: opacity 0.3s ease, transform 0.3s ease; 
+  transition: opacity 0.3s ease, transform 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -262,7 +262,6 @@ body {
   background-color: #3ba3c3;
 }
 
-
 #outerLayerActivity {
   border: 2px solid black;
   margin: 1.5rem;
@@ -271,7 +270,6 @@ body {
 #outerLayerActivity h2 {
   margin: 1rem;
 }
-
 
 #AccountHeader {
   display: flex;
@@ -294,14 +292,8 @@ body {
   text-align: center;
 }
 
-
-
-
-
-
 /* NEWLY ADDED CSS */
 /* Mix of folder files and search buttons */
-
 
 .page {
   display: none;
@@ -314,15 +306,14 @@ body {
   opacity: 1;
 }
 
-.titleFolderWfile{
+.titleFolderWfile {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   margin: 1.2rem;
-
 }
-.titleFolderWfile h2{ 
+.titleFolderWfile h2 {
   margin-left: 1rem;
 }
 #folderFiles {
@@ -330,7 +321,7 @@ body {
   padding: 0;
   margin: 1.5rem;
 }
-#folderFiles li:hover{
+#folderFiles li:hover {
   background-color: #e0e0e0;
 }
 
@@ -341,8 +332,6 @@ body {
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-
 
 .addFile-btn {
   height: clamp(40px, 8vw, 54px);
@@ -376,7 +365,7 @@ body {
   padding: clamp(8px, 2vw, 10px) clamp(15px, 4vw, 20px);
 }
 .search-container:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 #search-icon {
   color: #9aa0a6;
@@ -401,10 +390,6 @@ body {
   background-color: transparent;
   width: 100%;
 }
-
-
-
-
 
 #uploadFileModal {
   display: none;
@@ -451,17 +436,6 @@ body {
   background-color: #129c03;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 .file-item {
   background-color: #f4f4f4;
   border-radius: 8px;
@@ -472,18 +446,13 @@ body {
   align-items: flex-start;
   justify-content: center;
   cursor: pointer;
-  transition: opacity 0.3s ease, transform 0.3s ease; 
+  transition: opacity 0.3s ease, transform 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .file-item:hover {
   background-color: #e0e0e0;
 }
-
-
-
-
-
 
 #inviteModal {
   display: none;
@@ -530,14 +499,13 @@ body {
   background-color: #129c03;
 }
 
-
-
-
-#filesCountFolder{
+#filesCountFolder {
   color: #666;
   font-size: 0.8rem;
-
 }
+
+
+
 
 
 
@@ -550,7 +518,7 @@ body {
   width: 90%;
   min-height: 70%;
   max-height: 80vh;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 #filePreviewContainer {
@@ -560,7 +528,7 @@ body {
   min-height: 70%;
   max-height: 60vh;
   position: relative;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 #filePreview {
@@ -569,7 +537,7 @@ body {
   margin: 0.1rem;
   border: 0.1rem solid black;
   overflow-y: auto;
-  max-height: 100%; 
+  max-height: 100%;
 }
 
 #fileCommentSection {
@@ -582,20 +550,88 @@ body {
   max-height: 100%;
 }
 
-#filePreview-header{
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-}
-
-#filePreview-header{
+#filePreview-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-#commentsTitle{
+#filePreview-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#commentsTitle {
   margin-left: 3rem;
+}
+
+.comment-form {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.comment-form input,
+.comment-form textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.625rem;
+  background-color: #333;
+  border: none;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.comment-form button {
+  background-color: #38b6ff;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.comment-form button:hover {
+  background-color: #3ba3c3;
+}
+
+.comment {
+  background-color: #2a2a2a;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 0.7rem;
+}
+
+.comment-author {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #38b6ff;
+  margin-bottom: 0.5rem;
+}
+
+.comment-text {
+  margin-bottom: 0.625rem;
+}
+
+.comment-rating {
+  color: #ffa500;
+  font-size: 0.875rem;
+}
+
+#comments-container {
+  max-height: 10rem;
+  overflow-y: auto;
+}
+
+#commentedColor{
+  color: #3ba3c3;
+
 }
 
 
@@ -606,10 +642,10 @@ justify-content: space-between;
 /*new upload file preview inside the modal*/
 .code-preview {
   max-height: 200px;
-  overflow:auto;  
+  overflow: auto;
   font-family: monospace;
   font-size: 0.8rem;
-  white-space: pre-wrap; 
+  white-space: pre-wrap;
   background-color: #f4f4f4;
   padding: 10px;
 }
