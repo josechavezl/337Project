@@ -214,16 +214,17 @@ app.post('/upload', async (req, res) => {
       // Metadata from the form (email, firstName, lastName)
       const { email, firstName, lastName, folderName } = req.body;
       const user = await Users.findOne({ emailCreate: email });
+      const folder = await Folders.findOne({ name: folderName, author: user._id });
+    console.log("218SIZE:",folder.length)
   
       console.log("Uploading file:", filename);
       console.log("Metadata:", { email, firstName, lastName, folderName });
   
       try {
-        const folder = await File.findOne({ name: folderName, author: user._id });
 
-            if (!folder) {
-                return res.status(404).json({ message: 'Folder not found' });
-            }
+        if (!folder) {
+            return res.status(404).json({ message: 'Folder not found' });
+        }
         // Move the file to the uploads directory
         file.mv('./uploads/' + filename, async (err) => {
           if (err) {

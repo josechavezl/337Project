@@ -201,18 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function loadExistingFiles() {
-    try {
-      const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}`);
-      const existingFiles = await response.json();
-      console.log("166 ",existingFiles.length)
-      existingFiles.forEach(file => createFileElement(file));
-    }
-    catch (error) {
-      console.log("error loading folders", error);
-    }
-  }
-
   // Create folder element
   function createFolderElement(folder) {
     const folderDiv = document.createElement("div");
@@ -449,16 +437,24 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
 
     const files = event.target.files;
     for (let file of files) {
+        console.log(file) 
         const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
 
         // Check if file extension is allowed
-        // if (!allowedExtensions.includes(fileExtension)) {
-        //     alert(`File "${file.name}" is not allowed. Allowed file types: ${allowedExtensions.join(', ')}`);
-        //     continue;
-        // }
+        if (!allowedExtensions.includes(fileExtension)) {
+            alert(`File "${file.name}" is not allowed. Allowed file types: ${allowedExtensions.join(', ')}`);
+            continue;
+        }
 
         // Determine preview handler
         let previewHandler = filePreviewHandlers['text/plain'];
+
+        if (filePreviewHandlers && filePreviewHandlers['text/plain']) {
+          let previewHandler = filePreviewHandlers['text/plain'];
+        } else {
+          console.error('File preview handler for text/plain is not defined.');
+        }
+
         if (filePreviewHandlers[file.type]) {
             previewHandler = filePreviewHandlers[file.type];
         }
