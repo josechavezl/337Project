@@ -517,7 +517,7 @@ body {
 }
 
 #inviteModal button {
-  background-color: #4fd6ff;
+  background-color: #19d104;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -527,7 +527,7 @@ body {
 }
 
 #inviteModal button:hover {
-  background-color: #3ba3c3;
+  background-color: #129c03;
 }
 
 
@@ -537,4 +537,63 @@ body {
   color: #666;
   font-size: 0.8rem;
 
+}
+
+
+
+
+.filepreview-modal-content {
+  background-color: white;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%;
+  min-height: 70%;
+  max-height: 80vh;
+  overflow: hidden; 
+}
+
+#filePreviewContainer {
+  display: flex;
+  background-color: white;
+  margin: 1rem;
+  min-height: 70%;
+  max-height: 60vh;
+  position: relative;
+  overflow: hidden; 
+}
+
+#filePreview {
+  flex: 1;
+  background-color: #e4e4e4;
+  margin: 0.1rem;
+  border: 0.1rem solid black;
+  overflow-y: auto;
+  max-height: 100%; 
+}
+
+#fileCommentSection {
+  flex: 1;
+  color: white;
+  background-color: black;
+  margin: 0.1rem;
+  border: 0.1rem solid #cbcbcb;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+#filePreview-header{
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+}
+
+#filePreview-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#commentsTitle{
+  margin-left: 3rem;
 }

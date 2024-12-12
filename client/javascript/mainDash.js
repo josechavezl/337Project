@@ -5,8 +5,16 @@
 
 
 
+// Show previewFilemodal modal
+// add the id of the file 
+// document.getElementById("").addEventListener("click", () => {
+//   showModal("previewFilemodal");
+// });
 
-
+// // Close previewFilemodal modal
+// document.getElementById("previewFilemodal").onclick = (event) => {
+//   closeModalOutside(event, "previewFilemodal");
+// };
 
 
 
@@ -155,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     folderDiv.innerHTML = `
           <i class="fa-solid fa-folder-closed" style="color: #38b6ff"></i>
           <span>${folder.name}</span>
-          <small>${folder.files} files</small>
+          <small>${folder.files.length} files</small>
       `;
 
     // Add to folders container
