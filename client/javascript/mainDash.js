@@ -86,23 +86,23 @@ document.getElementById("addCollaborators").addEventListener("click", () => {
 
 async function showUser() {
   // try {
-    const urlParams = new URLSearchParams(window.location.search);
-    const firstName = urlParams.get("firstName");
-    const lastName = urlParams.get("lastName");
-    const email = urlParams.get("email"); 
-    console.log(email)
-    
-    document.getElementById('userFullName').textContent = `${firstName} ${lastName}`;
-    document.getElementById('userEmail').textContent = `${email}`;
+  const urlParams = new URLSearchParams(window.location.search);
+  const firstName = urlParams.get("firstName");
+  const lastName = urlParams.get("lastName");
+  const email = urlParams.get("email");
+  console.log(email)
 
-// Extract the user information from the URL parameters
+  document.getElementById('userFullName').textContent = `${firstName} ${lastName}`;
+  document.getElementById('userEmail').textContent = `${email}`;
+
+  // Extract the user information from the URL parameters
   // const firstName = urlParams.get("firstName");
   // const lastName = urlParams.get("lastName");
   // const email = urlParams.get("email"); 
 
   //   // const email = localStorage.getItem('email');
   //   // const user = localStorage.getItem('fullName');
-    
+
   //   if (!user) {
   //     console.error('No user found');
   //     return;
@@ -177,13 +177,17 @@ function addComment() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+  const filesContainer = document.getElementById('folderFiles');
   const urlParams = new URLSearchParams(window.location.search);
-  const emailP = urlParams.get("email"); 
+  const emailP = urlParams.get("email");
 
   const newFolderModal = document.getElementById("newFolderModal");
   const createFolderBtn = document.getElementById("createFolderBtn");
   const newFolderNameInput = document.getElementById("newFolderName");
   const foldersContainer = document.getElementById("foldersContainer");
+
+  const uploadFileBtn = document.getElementById("uploadFileBtn")
+  const file = document.getElementById("fileInput")
 
   // Load Existing folders
   async function loadExistingFolders() {
@@ -192,7 +196,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const ExistingFolders = await response.json();
       ExistingFolders.forEach(folder => createFolderElement(folder));
     }
-    catch(error) {
+    catch (error) {
+      console.log("error loading folders", error);
+    }
+  }
+
+  async function loadExistingFiles() {
+    try {
+      const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}`);
+      const existingFiles = await response.json();
+      console.log("166 ",existingFiles.length)
+      existingFiles.forEach(file => createFileElement(file));
+    }
+    catch (error) {
       console.log("error loading folders", error);
     }
   }
@@ -211,6 +227,17 @@ document.addEventListener("DOMContentLoaded", () => {
     foldersContainer.appendChild(folderDiv);
   }
 
+  function createFileElement(file) {
+    const fileDiv = document.createElement("div");
+    fileDiv.classList.add("file");
+    fileDiv.innerHTML = `
+          <i class="fa-solid fa-folder-closed" style="color: #38b6ff"></i>
+          <span>${file.name}</span>
+      `;
+    // Add to folders container
+    filesContainer.appendChild(fileDiv);
+  }
+
   // Close New Folder Modal
   function closeNewFolderModal() {
     newFolderModal.style.display = "none";
@@ -222,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const folderName = newFolderNameInput.value.trim();
 
     if (folderName) {
-      const folderData = { name: folderName, email: emailP, files:[], shared: []};
+      const folderData = { name: folderName, email: emailP, files: [], shared: [] };
       try {
         const response = await fetch("/create-folder", {
           method: "post",
@@ -231,25 +258,25 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           body: JSON.stringify(folderData)
         });
-        
-        if(response.ok) {
+
+        if (response.ok) {
           const newFolder = await response.json();
           createFolderElement(newFolder);
         }
-        else{
+        else {
           const errorFolder = await response.json();
           alert("ERROR creating folder", errorFolder);
         }
-      closeNewFolderModal();
+        closeNewFolderModal();
+      }
+      catch (error) {
+        alert("Catch error", error);
+      }
     }
-    catch(error) {
-      alert("Catch error", error);
-    }
-  }
     else {
       alert("Please enter a folder name");
     }
-});
+  });
 
   // Allow closing new folder modal with close button
   const closeFolderModalBtn = newFolderModal.querySelector(".close-btn");
@@ -258,48 +285,162 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load existing folders on page load
   loadExistingFolders();
 
-
-
-
-
-
   
 
 
 
 
 
-// ******************************
-// UPLOAD FILE FUNCTIONALITY ****
-// ******************************
-const allowedExtensions = [
-  '.js', '.py', '.html', '.css', '.json', '.java', 
-  '.c', '.cpp', '.ts', '.jsx', '.tsx', '.php', 
-  '.rb', '.go', '.sh', '.swift', '.kt', '.rs'
-]; // Add more extensions if needed
 
-const filePreviewHandlers = {
+
+
+
+
+
+  // ******************************
+  // UPLOAD FILE FUNCTIONALITY ****
+  // ******************************
+  const allowedExtensions = [
+    '.js', '.py', '.html', '.css', '.json', '.java',
+    '.c', '.cpp', '.ts', '.jsx', '.tsx', '.php',
+    '.rb', '.go', '.sh', '.swift', '.kt', '.rs'
+  ]; // Add more extensions if needed
+
+  const filePreviewHandlers = {
     'text/plain': async (file) => {
-        const text = await file.text();
-        return `<pre class="code-preview">${text}</pre>`;
+      const text = await file.text();
+      return `<pre class="code-preview">${text}</pre>`;
     },
     'text/html': async (file) => {
-        const text = await file.text();
-        return `<iframe srcdoc="${text}"></iframe>`;
+      const text = await file.text();
+      return `<iframe srcdoc="${text}"></iframe>`;
     },
     'application/json': async (file) => {
-        const text = await file.text();
-        return `<pre class="code-preview">${JSON.stringify(JSON.parse(text), null, 2)}</pre>`;
+      const text = await file.text();
+      return `<pre class="code-preview">${JSON.stringify(JSON.parse(text), null, 2)}</pre>`;
     },
     'application/javascript': async (file) => {
-        const text = await file.text();
-        return `<pre class="code-preview">${text}</pre>`;
+      const text = await file.text();
+      return `<pre class="code-preview">${text}</pre>`;
     },
     'text/css': async (file) => {
-        const text = await file.text();
-        return `<pre class="code-preview">${text}</pre>`;
+      const text = await file.text();
+      return `<pre class="code-preview">${text}</pre>`;
     }
-};
+  };
+
+  // UPLOADING
+  document.getElementById('uploadForm').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Prevent form from submitting normally
+
+    const formData = new FormData();
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+
+    if (!file) {
+      alert('Please select a file to upload');
+      return;
+    }
+
+    // Get query params for email, first name, last name
+    const urlParams = new URLSearchParams(window.location.search);
+    const firstName = urlParams.get("firstName");
+    const lastName = urlParams.get("lastName");
+    const emailurl = urlParams.get("email");
+
+    // Append file and metadata to the FormData object
+    formData.append('file', file);
+    formData.append('email', emailurl);
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+
+    const folderName = document.getElementById("folder").textContent
+    formData.append("folderName", folderName)
+    console.log("FOLDERNAME 292:",folderName)
+
+    try {
+      // Send the form data (file + metadata) to the server
+      const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // / Add the uploaded file to the preview container
+        const folderFilesDiv = document.getElementById("folderFiles");
+        const fileElement = document.createElement("div");
+        fileElement.textContent = file.name;
+        folderFilesDiv.appendChild(fileElement);
+        alert('File uploaded successfully');
+        console.log('File uploaded:', data);
+      } else {
+        const error = await response.json();
+        alert('Error uploading file: ' + error.message);
+      }
+    } catch (error) {
+      console.error('316 Error:', error);
+      alert('Error uploading file');
+    }
+  });
+
+  // formData.append('file', file);
+
+  // try {
+  //   // Make the request to upload the file
+  //   const response = await fetch('/upload', {
+  //     method: 'POST',
+  //     body: formData,
+  //   });
+
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     console.log('File uploaded successfully:', data);
+  //     alert('File uploaded successfully!');
+  //   } else {
+  //     const error = await response.json();
+  //     alert('Error uploading file: ' + error.message);
+  //   }
+  // } catch (error) {
+  //   console.error('Error:', error);
+  //   alert('Error uploading file');
+  // }
+});
+
+// Create Folder
+// uploadFileBtn.addEventListener("click", async () => {
+//   const fileName = file.value.trim();
+//   console.log("258",fileName)
+
+//   if (folderName) {
+//     const folderData = { name: folderName, email: emailP, files:[], shared: []};
+//     try {
+//       const response = await fetch("/create-folder", {
+//         method: "post",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(folderData)
+//       });
+
+//       if(response.ok) {
+//         const newFolder = await response.json();
+//         createFolderElement(newFolder);
+//       }
+//       else{
+//         const errorFolder = await response.json();
+//         alert("ERROR creating folder", errorFolder);
+//       }
+//     closeNewFolderModal();
+//   }
+//   catch(error) {
+//     alert("Catch error", error);
+//   }
+// }
+//   else {
+//     alert("Please enter a folder name");
+//   }
+// });
 
 // File selection and preview handling
 document.getElementById('fileInput').addEventListener('change', async (event) => {
@@ -311,10 +452,10 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
         const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
 
         // Check if file extension is allowed
-        if (!allowedExtensions.includes(fileExtension)) {
-            alert(`File "${file.name}" is not allowed. Allowed file types: ${allowedExtensions.join(', ')}`);
-            continue;
-        }
+        // if (!allowedExtensions.includes(fileExtension)) {
+        //     alert(`File "${file.name}" is not allowed. Allowed file types: ${allowedExtensions.join(', ')}`);
+        //     continue;
+        // }
 
         // Determine preview handler
         let previewHandler = filePreviewHandlers['text/plain'];
@@ -325,12 +466,12 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
         // Create preview card
         const previewCard = document.createElement('div');
         previewCard.className = 'file-preview-card';
-        
+
         // File name
         const fileName = document.createElement('div');
         fileName.textContent = file.name;
         fileName.className = 'file-preview-card-file-name';
-        
+
         // Preview content
         const previewContent = document.createElement('div');
         previewContent.innerHTML = await previewHandler(file);
@@ -338,10 +479,11 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
 
         previewCard.appendChild(fileName);
         previewCard.appendChild(previewContent);
-        
+
         filesContainer.appendChild(previewCard);
     }
 });
+
 
 // document.getElementById("uploadForm").addEventListener("submit", async (event) => {
 //   event.preventDefault();
@@ -404,41 +546,42 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
 // ************************
 
 
-  const folderContentPage = document.getElementById("folderContentPage");
-  const dashboardPage = document.getElementById("outerLayerFolder");
-  const backToDashboard = document.getElementById("backToDashboard");
-  const currentFolderTitle = document.getElementById("currentFolderTitle");
-  const folderFiles = document.getElementById("folderFiles");
+const folderContentPage = document.getElementById("folderContentPage");
+const dashboardPage = document.getElementById("outerLayerFolder");
+const backToDashboard = document.getElementById("backToDashboard");
+const currentFolderTitle = document.getElementById("currentFolderTitle");
+const folderFiles = document.getElementById("folderFiles");
 
-  // new folder button
-  const newFolderButton = document.getElementById("newFolderBtn");
-  // new file button 
-  const newFileButton = document.getElementById("newFileBtn");
-
-
-  const addCollaborators = document.getElementById("addCollaborators");
+// new folder button
+const newFolderButton = document.getElementById("newFolderBtn");
+// new file button 
+const newFileButton = document.getElementById("newFileBtn");
 
 
-  const folderSearchButton = document.getElementById("search-container");
-  const fileSearchButton = document.getElementById("search-container-files");
-  
-  const folderData = {
-    "Example Folders": ["File1.jsx", "File2.js", "File3.html"],
-    "To Remove These or rename": ["mainDash.html", "mainDash.js"],
-    "JS file line 38-41, 100": ["CodeSnippet.js", "page.css"]
-  };
+const addCollaborators = document.getElementById("addCollaborators");
 
-let currentFolderId = ""; 
+
+const folderSearchButton = document.getElementById("search-container");
+const fileSearchButton = document.getElementById("search-container-files");
+
+const folderData = {
+  "Example Folders": ["File1.jsx", "File2.js", "File3.html"],
+  "To Remove These or rename": ["mainDash.html", "mainDash.js"],
+  "JS file line 38-41, 100": ["CodeSnippet.js", "page.css"]
+};
+
+let currentFolderId = "";
 // Handle folder click
 foldersContainer.addEventListener("click", (e) => {
-    const folderElement = e.target.closest(".folder");
+  const folderElement = e.target.closest(".folder");
 
   if (folderElement) {
-    
+
     // Hide Recent Activity
 
     // Get the folder name
     const folderName = e.target.closest(".folder").querySelector("span").innerText;
+    document.getElementById("folder").textContent = folderName
     currentFolderId = folderName; // Update the currentFolderId with the selected folder name or ID
 
     // Set the folder title and number of files
@@ -446,14 +589,14 @@ foldersContainer.addEventListener("click", (e) => {
 
     currentFolderTitle.innerHTML = `
     <div>${folderName}</div>
-    <small id="filesCountFolder">${files.length} files</small>`; 
+    <small id="filesCountFolder">${files.length} files</small>`;
 
     // Populate the files list
     folderFiles.innerHTML = files.map(file => `<li>${file}</li>`).join("");
 
     // Hide Dashboard and show Folder Content Page
     dashboardPage.style.display = "none";
-    
+
     // Hide New folder button and show upload file button
     newFolderButton.style.display = "none";
     newFileButton.style.display = "block";
@@ -519,25 +662,23 @@ inviteCollaboratorbtn.addEventListener("click", async () => {
         },
         body: JSON.stringify(inviteData)
       });
-      
-      if(response.ok) {
+
+      if (response.ok) {
         const newInvite = await response.json();
         console.log("invitiation valid", newInvite);
         alert("Invitation sent!");
       }
-      else{
+      else {
         const errorInvite = await response.json();
         alert("ERROR inviting user", errorInvite);
       }
-  }
-  catch(error) {
-    alert("Catch error", error);
-  }
-} else {
+    }
+    catch (error) {
+      alert("Catch error", error);
+    }
+  } else {
     alert("Please enter an email.");
   }
-});
-
 });
 
 
@@ -570,7 +711,7 @@ searchInput.addEventListener("input", (e) => {
     } else {
       folder.style.display = "none"; // Hide non-matching folders
     }
-  });  
+  });
 
 
 });

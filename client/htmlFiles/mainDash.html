@@ -210,8 +210,10 @@
           >
           <h2>Upload File</h2>
           <form id="uploadForm" enctype="multipart/form-data">
-          <input type="file" id="fileInput" name="file" required />
-          <button type="submit" id="uploadFileBtn">Upload</button>
+            <input type="file" id="fileInput" name="file" required />
+            <div hidden id="folder"></div>
+            <!-- <input type="submit" value="upload"> -->
+            <button type="submit" id="uploadFileBtn">Upload</button>
           </form>
           <div id="filesContainer" class="files-preview-container"></div>
         </div>

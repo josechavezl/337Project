@@ -1,0 +1,10 @@
+parent(grandmama,pancho).
+parent(grandmama,gomez).
+parent(hester,morticia).
+parent(hester,ophelia).
+parent(unknown,hester).
+parent(unknown,fester).
+parent(gomez,pugsley).
+parent(gomez,wednesday).
+parent(morticia,pugsley).
+parent(morticia,wednesday).

@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
+const upload = require('express-fileupload')
+
 
 
 app.use(express.json());
@@ -168,59 +170,87 @@ app.get('/get-folders', async (req, res) => {
 
 });
 
+app.get('/get-files', async(req,res) => {
+    const {email} = req.query;
+    try {
+        const user = await Users.findOne({emailCreate: email});
 
+        const folders = await Folders.find({author: user._id});
+        const foldersInv = await Folders.find({shared: user._id});
+        const allFiles = [];
+        const allFolders = folders.concat(foldersInv);
+        for (const folder of allFolders) {
+            if (folder.files && folder.files.length > 0) {
+              // Add the files from each folder to the allFiles array
+              const populatedFolder = await Folders.findById(folder._id).populate('files');
+              populatedFolder.files.forEach(file => {
+                allFiles.push(file);
+              });
+            }
+          }
+          console.log("SIZREEE:", allFiles.length)
+          console.log("189",allFiles[0].name)
+          console.log("allFiles:", allFiles);
+          
+        
+          allFiles.forEach(file => {
+            console.log(`191-File Name: ${file.name}`);
+          });
+          
+        res.status(200).json(allFiles);
 
+    }
+    catch(error) {
+        console.log("cannot show folders", error);
+    }
+} )
 
+app.use(upload())
+app.post('/upload', async (req, res) => {
+    if (req.files && req.files.file) {
+      const file = req.files.file;
+      const filename = file.name;
+  
+      // Metadata from the form (email, firstName, lastName)
+      const { email, firstName, lastName, folderName } = req.body;
+      const user = await Users.findOne({ emailCreate: email });
+  
+      console.log("Uploading file:", filename);
+      console.log("Metadata:", { email, firstName, lastName, folderName });
+  
+      try {
+        const folder = await File.findOne({ name: folderName, author: user._id });
 
+            if (!folder) {
+                return res.status(404).json({ message: 'Folder not found' });
+            }
+        // Move the file to the uploads directory
+        file.mv('./uploads/' + filename, async (err) => {
+          if (err) {
+            console.error("Error during file upload:", err);
+            return res.status(500).json({ message: 'Error uploading file' });
+          }
+          console.log("227:",filename)
 
-// const multer = require("multer");
-// const path = require("path");
-// const File = require("./file.js");
-
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, path.join(__dirname, "uploads"))
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, `${Date.now()}-${file.originalname}`);
-//   },
-// });
-// const upload = multer({ storage });
-
-
-// app.post('/upload', upload.single('file'), async (req, res) => {
-//     const { email } = req.body; 
-
-//     try {
-//         // Fetch user by email
-//         const user = await Users.findOne({ emailCreate: email });
-
-//         if (!user) {
-//             return res.status(404).json({ success: false, message: "User not found" });
-//         }
-
-//         // Create a new file entry in the database
-//         const newFile = new File({
-//             name: req.file.filename,
-//             author: user._id,   
-//         });
-
-//         await newFile.save();
-
-//         res.status(201).json({ success: true, file: newFile });
-//     } catch (error) {
-//         console.error("Error saving file metadata:", error);
-//         res.status(500).json({ success: false, message: "Error saving file metadata." });
-//     }
-// });
-
-
-
-
-
-
-
-
+          const newFile = new File({
+            name: filename,
+            author:user._id,
+            folder: folder._id,
+          });
+          await newFile.save()
+          folder.files.push(newFile);
+          await folder.save();
+          // Return success response
+          res.json({ message: 'File uploaded successfully', filename: filename, email, firstName, lastName });
+        });
+      } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error uploading file' });
+      }
+    } else {
+      res.status(400).json({ message: 'No file uploaded' });
+    }
+  });
 
 
 app.post('/invite', async (req,res) => {
