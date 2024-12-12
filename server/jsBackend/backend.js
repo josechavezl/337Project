@@ -210,48 +210,53 @@ app.post('/upload', async (req, res) => {
     if (req.files && req.files.file) {
       const file = req.files.file;
       const filename = file.name;
-  
-      // Metadata from the form (email, firstName, lastName)
       const { email, firstName, lastName, folderName } = req.body;
+  
       const user = await Users.findOne({ emailCreate: email });
       const folder = await Folders.findOne({ name: folderName, author: user._id });
-    console.log("218SIZE:",folder.length)
+  
+      if (!folder) {
+        return res.status(404).json({ message: 'Folder not found' });
+      }
   
       console.log("Uploading file:", filename);
       console.log("Metadata:", { email, firstName, lastName, folderName });
   
       try {
-
-        if (!folder) {
-            return res.status(404).json({ message: 'Folder not found' });
-        }
-        // Move the file to the uploads directory
         file.mv('./uploads/' + filename, async (err) => {
           if (err) {
             console.error("Error during file upload:", err);
             return res.status(500).json({ message: 'Error uploading file' });
           }
-          console.log("227:",filename)
-
+          console.log("File uploaded successfully:", filename);
+  
           const newFile = new File({
             name: filename,
-            author:user._id,
+            author: user._id,
             folder: folder._id,
+            path: './uploads/' + filename, 
           });
-          await newFile.save()
-          folder.files.push(newFile);
+            await newFile.save();
+  
+          folder.files.push(newFile);  
           await folder.save();
-          // Return success response
-          res.json({ message: 'File uploaded successfully', filename: filename, email, firstName, lastName });
+          res.json({
+            message: 'File uploaded successfully',
+            filename: filename,
+            email,
+            firstName,
+            lastName
+          });
         });
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error during file upload:', error);
         res.status(500).json({ message: 'Error uploading file' });
       }
     } else {
       res.status(400).json({ message: 'No file uploaded' });
     }
   });
+  
 
 
 app.post('/invite', async (req,res) => {

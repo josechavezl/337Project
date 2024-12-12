@@ -215,17 +215,6 @@ document.addEventListener("DOMContentLoaded", () => {
     foldersContainer.appendChild(folderDiv);
   }
 
-  function createFileElement(file) {
-    const fileDiv = document.createElement("div");
-    fileDiv.classList.add("file");
-    fileDiv.innerHTML = `
-          <i class="fa-solid fa-folder-closed" style="color: #38b6ff"></i>
-          <span>${file.name}</span>
-      `;
-    // Add to folders container
-    filesContainer.appendChild(fileDiv);
-  }
-
   // Close New Folder Modal
   function closeNewFolderModal() {
     newFolderModal.style.display = "none";
@@ -572,7 +561,32 @@ foldersContainer.addEventListener("click", (e) => {
   const folderElement = e.target.closest(".folder");
 
   if (folderElement) {
+    console.log("575")
+    async function loadExistingFiles() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const emailP = urlParams.get("email");
+        const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}`);
+        
+        const ExistingFolders = await response.json();
+        ExistingFolders.forEach(folder => createFileElement(folder));
+      }
+      catch (error) {
+        console.log("error loading folders", error);
+      }
+    }
 
+    function createFileElement(file) {
+      console.log(file.name)
+      const fileDiv = document.createElement("div");
+      fileDiv.classList.add("file");
+      fileDiv.innerHTML = `
+            <i class="fa-solid fa-folder-closed" style="color: #38b6ff"></i>
+            <span>${file.name}</span>
+        `;
+      // Add to folders container
+      filesContainer.appendChild(fileDiv);
+    }
     // Hide Recent Activity
 
     // Get the folder name
@@ -588,7 +602,9 @@ foldersContainer.addEventListener("click", (e) => {
     <small id="filesCountFolder">${files.length} files</small>`;
 
     // Populate the files list
-    folderFiles.innerHTML = files.map(file => `<li>${file}</li>`).join("");
+    loadExistingFiles();
+
+    
 
     // Hide Dashboard and show Folder Content Page
     dashboardPage.style.display = "none";
