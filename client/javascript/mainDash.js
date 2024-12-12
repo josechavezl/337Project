@@ -68,6 +68,13 @@ document.getElementById("newFileBtn").addEventListener("click", () => {
 
 
 
+// Show Help modal
+document.getElementById("addCollaborators").addEventListener("click", () => {
+  showModal("inviteModal");
+});
+
+
+
 
 
 async function showUser() {
@@ -207,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
+  
 
 
 
@@ -303,6 +310,10 @@ document.getElementById("previewFilemodal").addEventListener("click", (event) =>
   // new file button 
   const newFileButton = document.getElementById("newFileBtn");
 
+
+  const addCollaborators = document.getElementById("addCollaborators");
+
+
   const folderSearchButton = document.getElementById("search-container");
   const fileSearchButton = document.getElementById("search-container-files");
   
@@ -313,7 +324,6 @@ document.getElementById("previewFilemodal").addEventListener("click", (event) =>
   };
 
  
-const recentActivitySection = document.getElementById("outerLayerActivity");
 
 // Handle folder click
 foldersContainer.addEventListener("click", (e) => {
@@ -322,7 +332,6 @@ foldersContainer.addEventListener("click", (e) => {
   if (folderElement) {
     
     // Hide Recent Activity
-    recentActivitySection.style.display = "none";
 
     // Get the folder name
     const folderName = e.target.closest(".folder").querySelector("span").innerText;
@@ -330,7 +339,10 @@ foldersContainer.addEventListener("click", (e) => {
 
     // Set the folder title and number of files
     const files = folderData[folderName] || [];
-    currentFolderTitle.innerText = `${folderName} - ${files.length} files`; 
+
+    currentFolderTitle.innerHTML = `
+    <div>${folderName}</div>
+    <small id="filesCountFolder">${files.length} files</small>`; 
 
     // Populate the files list
     folderFiles.innerHTML = files.map(file => `<li>${file}</li>`).join("");
@@ -349,6 +361,10 @@ foldersContainer.addEventListener("click", (e) => {
 
     fileSearchButton.style.display = "flex";
 
+
+
+    addCollaborators.style.display = "block";
+
   }
 });
 
@@ -356,7 +372,6 @@ foldersContainer.addEventListener("click", (e) => {
 // Back to Dashboard
 backToDashboard.addEventListener("click", () => {
   // Show Recent Activity
-  recentActivitySection.style.display = "block";
 
   folderContentPage.style.display = "none";
   folderContentPage.classList.remove("active");
@@ -366,6 +381,9 @@ backToDashboard.addEventListener("click", () => {
 
   folderSearchButton.style.display = "flex";
   fileSearchButton.style.display = "none";
+
+
+  addCollaborators.style.display = "none";
 
 });
 
