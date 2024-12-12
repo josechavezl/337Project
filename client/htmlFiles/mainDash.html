@@ -209,11 +209,13 @@
             >&times;</span
           >
           <h2>Upload File</h2>
-          <input type="file" id="fileInput" />
-          <button id="uploadFileBtn">Upload</button>
+          <form id="uploadForm" enctype="multipart/form-data">
+          <input type="file" id="fileInput" name="file" required />
+          <button type="submit" id="uploadFileBtn">Upload</button>
+          </form>
+          <div id="filesContainer" class="files-preview-container"></div>
         </div>
       </div>
-
 
 
 

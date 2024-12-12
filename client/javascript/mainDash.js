@@ -231,61 +231,117 @@ document.addEventListener("DOMContentLoaded", () => {
 // ******************************
 // UPLOAD FILE FUNCTIONALITY ****
 // ******************************
-document.getElementById("uploadFileBtn").addEventListener("click", async () => {
-  const fileInput = document.getElementById("fileInput");
-  const folderFiles = document.getElementById("folderFiles");
+const allowedExtensions = [
+  '.js', '.py', '.html', '.css', '.json', '.java', 
+  '.c', '.cpp', '.ts', '.jsx', '.tsx', '.php', 
+  '.rb', '.go', '.sh', '.swift', '.kt', '.rs'
+]; // Add more extensions if needed
 
-  if (!fileInput.files.length) {
-      alert("Please select a file to upload.");
-      return;
-  }
+const filePreviewHandlers = {
+    'text/plain': async (file) => {
+        const text = await file.text();
+        return `<pre class="code-preview">${text}</pre>`;
+    },
+    'text/html': async (file) => {
+        const text = await file.text();
+        return `<iframe srcdoc="${text}"></iframe>`;
+    },
+    'application/json': async (file) => {
+        const text = await file.text();
+        return `<pre class="code-preview">${JSON.stringify(JSON.parse(text), null, 2)}</pre>`;
+    },
+    'application/javascript': async (file) => {
+        const text = await file.text();
+        return `<pre class="code-preview">${text}</pre>`;
+    },
+    'text/css': async (file) => {
+        const text = await file.text();
+        return `<pre class="code-preview">${text}</pre>`;
+    }
+};
 
-  const file = fileInput.files[0]; // Get the selected file
+// File selection and preview handling
+document.getElementById('fileInput').addEventListener('change', async (event) => {
+    const filesContainer = document.getElementById('filesContainer');
+    filesContainer.innerHTML = ''; // Clear previous previews
 
-  try {
-      // Send the file as raw content
-      const response = await fetch("/upload", {
-          method: "post",
-          headers: {
-              "Content-Type": file.type, // Set the file's MIME type
-              "X-File-Name": encodeURIComponent(file.name), // Optional: Pass file name in header
-          },
-          body: file, // Send the raw file content
-      });
+    const files = event.target.files;
+    for (let file of files) {
+        const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
 
-      if (response.ok) {
-          // Append file name to the folderFiles section
-          const fileName = file.name; // Get the file name
-          const fileDiv = document.createElement("div");
-          fileDiv.textContent = fileName;
-          fileDiv.className = "file-item";
-          folderFiles.appendChild(fileDiv);
-
-           // Add click event listener to show the modal
-      fileDiv.addEventListener("click", () => {
-        const previewModal = document.getElementById("previewFilemodal");
-        if (previewModal) {
-          previewModal.style.display = "block";
+        // Check if file extension is allowed
+        if (!allowedExtensions.includes(fileExtension)) {
+            alert(`File "${file.name}" is not allowed. Allowed file types: ${allowedExtensions.join(', ')}`);
+            continue;
         }
-      });
 
-          console.log("File uploaded successfully!");
-      } else {
-          alert("File upload failed.");
-      }
-  } catch (error) {
-      console.error("Error uploading file:", error);
-      alert("An error occurred while uploading the file.");
-  }
+        // Determine preview handler
+        let previewHandler = filePreviewHandlers['text/plain'];
+        if (filePreviewHandlers[file.type]) {
+            previewHandler = filePreviewHandlers[file.type];
+        }
+
+        // Create preview card
+        const previewCard = document.createElement('div');
+        previewCard.className = 'file-preview-card';
+        
+        // File name
+        const fileName = document.createElement('div');
+        fileName.textContent = file.name;
+        fileName.className = 'file-preview-card-file-name';
+        
+        // Preview content
+        const previewContent = document.createElement('div');
+        previewContent.innerHTML = await previewHandler(file);
+        previewContent.className = 'file-preview';
+
+        previewCard.appendChild(fileName);
+        previewCard.appendChild(previewContent);
+        
+        filesContainer.appendChild(previewCard);
+    }
 });
 
+// document.getElementById("uploadForm").addEventListener("submit", async (event) => {
+//   event.preventDefault();
 
-// Function to close the modal (optional, if not already implemented)
-document.getElementById("previewFilemodal").addEventListener("click", (event) => {
-  if (event.target.id === "previewFilemodal") {
-    event.target.style.display = "none"; // Close the modal when clicking outside
-  }
-});
+//   const formData = new FormData();
+//   const fileInput = document.getElementById("fileInput");
+
+//   if (!fileInput.files[0]) {
+//     alert("Please select a file to upload.");
+//     return;
+//   }
+
+//   formData.append("file", fileInput.files[0]);
+
+//   try {
+//     const response = await fetch("/upload", {
+//       method: "POST",
+//       body: formData,
+//     });
+
+//     const result = await response.json();
+
+//     if (response.ok) {
+//       // Add the uploaded file to the preview container
+//       const folderFilesDiv = document.getElementById("folderFiles");
+//       const fileElement = document.createElement("div");
+//       fileElement.textContent = result.file.name;
+//       folderFilesDiv.appendChild(fileElement);
+//     } else {
+//       alert(result.message || "File upload failed.");
+//     }
+//   } catch (error) {
+//     console.error("Error uploading file:", error);
+//     alert("An unexpected error occurred while uploading the file.");
+//   }
+// });
+
+
+
+
+
 
 
 

@@ -414,7 +414,6 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -444,6 +443,7 @@ body {
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
+  margin: 0.5rem;
   transition: background-color 0.3s ease;
 }
 
@@ -596,4 +596,20 @@ justify-content: space-between;
 
 #commentsTitle{
   margin-left: 3rem;
+}
+
+
+
+
+
+
+/*new upload file preview inside the modal*/
+.code-preview {
+  max-height: 200px;
+  overflow:auto;  
+  font-family: monospace;
+  font-size: 0.8rem;
+  white-space: pre-wrap; 
+  background-color: #f4f4f4;
+  padding: 10px;
 }

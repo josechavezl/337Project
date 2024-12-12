@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
-const fs = require('fs');
 
 
 app.use(express.json());
@@ -11,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const Users = require('./user.js');
 const Folders = require('./folder.js');
-const Files = require('./file.js');
+const File = require('./file.js');
 const Invitations = require('./invitation.js');
 
 const clientPath = path.join(__dirname, "../../client");
@@ -174,50 +173,54 @@ app.get('/get-folders', async (req, res) => {
 
 
 
+// const multer = require("multer");
+// const path = require("path");
+// const File = require("./file.js");
+
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, path.join(__dirname, "uploads"))
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${Date.now()}-${file.originalname}`);
+//   },
+// });
+// const upload = multer({ storage });
+
+
+// app.post('/upload', upload.single('file'), async (req, res) => {
+//     const { email } = req.body; 
+
+//     try {
+//         // Fetch user by email
+//         const user = await Users.findOne({ emailCreate: email });
+
+//         if (!user) {
+//             return res.status(404).json({ success: false, message: "User not found" });
+//         }
+
+//         // Create a new file entry in the database
+//         const newFile = new File({
+//             name: req.file.filename,
+//             author: user._id,   
+//         });
+
+//         await newFile.save();
+
+//         res.status(201).json({ success: true, file: newFile });
+//     } catch (error) {
+//         console.error("Error saving file metadata:", error);
+//         res.status(500).json({ success: false, message: "Error saving file metadata." });
+//     }
+// });
 
 
 
-// new 
 
-app.post("/upload", (req, res) => {
-    const fileName = req.headers["x-file-name"]; // Get file name from headers
-    const filePath = path.join(__dirname, "uploads", decodeURIComponent(fileName));
 
-    const writeStream = fs.createWriteStream(filePath);
 
-    req.pipe(writeStream);
 
-    writeStream.on("finish", async () => {
-        // Create a new file document in MongoDB with the file's metadata
-        try {
-            const newFile = new Files({
-                name: fileName,
-                author: req.user._id, // Assuming user info is available in req.user
-                folder: req.body.folderId, // Assuming the folder ID is sent in the request body
-            });
-            await newFile.save(); // Save the file metadata to the database
 
-            // Optionally, add the file to a folder's file array
-            if (req.body.folderId) {
-                const folder = await Folders.findById(req.body.folderId);
-                if (folder) {
-                    folder.files.push(newFile._id); // Add the file reference to the folder
-                    await folder.save();
-                }
-            }
-
-            res.status(200).json({ message: "File uploaded successfully", fileName });
-        } catch (error) {
-            console.error("Error saving file metadata:", error);
-            res.status(500).json({ error: "Error saving file metadata" });
-        }
-    });
-
-    writeStream.on("error", (error) => {
-        console.error("Error saving file:", error);
-        res.status(500).json({ error: "File upload failed" });
-    });
-});
 
 
 app.post('/invite', async (req,res) => {
