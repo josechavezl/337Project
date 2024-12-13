@@ -537,7 +537,7 @@ document.getElementById('uploadFileBtn').addEventListener('click', () => {
     
     // TODO: Implement actual file upload logic
     console.log('Files ready to upload:', files);
-    alert('File upload functionality not yet implemented');
+    //alert('File upload functionality not yet implemented');
 });
 
 

@@ -1,0 +1,96 @@
+/* Jose Santiago Campa Morales (jscm1607 / 23766826)
+- September 27th, 2024
+- CSC 337 - Web Programming
+- Project #3 - PriceCo CSS Styling
+- style.css: This page is the stylesheet C for Project 3.
+It includes fixed floating sections on the upper corners. */
+
+body {
+    overflow-x: hidden;
+    margin: -1px;
+    font-family: Arial;
+}
+
+#header {
+    position: relative;
+    float: left;
+    top: 0;
+    width: 250px;
+    height: 275px;
+    background-color: royalblue;
+    text-align: center;
+    border: 3px solid blue;
+    color: yellow;
+    font-family: Arial;
+}
+
+#pricecoLogo {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#navigation {
+    position: relative;
+    float: right;
+    top: 0;
+    width: 250px;
+    height: 275px;
+    background-color: deepskyblue;
+    border: 3px solid blue;
+    text-align: right;
+}
+
+.navButton {
+    padding: 25px;
+    display: block;
+    margin-bottom: -5px;
+    font-size: 18px;
+}
+
+#content {
+    text-align: center;
+    background-color: skyblue;
+    margin-bottom: -60px;
+    padding-bottom: 5px;
+}
+
+.productImg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+    width: 150px;
+    height: auto;
+}
+
+.styleButton {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: black;
+    color: white;
+    opacity: 0.3;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    z-index: 1000;
+}
+
+#styleA {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+#styleB {
+    position: fixed;
+    bottom: 0;
+    left: 90px;
+}
+
+#styleC {
+    position: fixed;
+    bottom: 0;
+    left: 180px;
+}

@@ -17,7 +17,7 @@ const Comments = require('./comment.js');
 const clientPath = path.join(__dirname, "../../client");
 
 app.use(express.static(clientPath));
-mongoose.connect('mongodb://127.0.0.1:27017/ViewCorp'); // DATABASE NAME, users is a collection
+mongoose.connect('mongodb://127.0.0.1:27017/ViewCorp');
 
 const port = 5000;
 const hostname = "127.0.0.1";
@@ -80,16 +80,7 @@ app.post("/login", async(req, res) => {
             return res.status(400).json({error: "Email does notexist ."});
         }
 
-        // res.status(200).json({
-        //     user: {
-        //         name: user.name,  // full name (from virtual field)
-        //         email: user.emailCreate  // email
-        //     }
-        // });
         res.redirect(`/mainDash?firstName=${encodeURIComponent(user.firstName)}&lastName=${encodeURIComponent(user.lastName)}&email=${encodeURIComponent(user.emailCreate)}`);
-
-        
-        // res.redirect("/mainDash");
 
     }
     catch (error) {
