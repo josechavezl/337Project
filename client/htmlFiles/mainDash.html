@@ -1,227 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../css/mainDash.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-    <title>ViewCorp</title>
-  </head>
 
-  <body>
-  
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/mainDash.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <title>ViewCorp</title>
+</head>
 
+<body>
+  <!--**************-->
+  <!--NAVBAR CONTENT-->
+  <!--**************-->
 
+  <nav class="navbar">
+    <h1 id="userDashTitle">User Dashboard</h1>
 
+    <div class="sideButtons">
+      <button class="addFolder-btn" id="newFolderBtn">
+        <span class="plus"><i class="fa-solid fa-folder-plus"></i> </span> New
+        Folder
+      </button>
 
+      <button class="addFile-btn" id="newFileBtn" style="display: none">
+        <span class="plus"><i class="fa-solid fa-file-import"></i> </span>
+        Upload File
+      </button>
 
+      <button id="addCollaborators" class="mainbtns" style="display: none">
+        <i class="fa-solid fa-user-plus"></i>
+      </button>
 
+      <button id="myBtn" onclick="showModal()" class="mainbtns">
+        <i class="fa-solid fa-circle-question"></i>
+      </button>
 
+      <button id="account" onclick="showModal()" class="mainbtns">
+        <i class="fa-solid fa-user"></i>
+      </button>
 
+    </div>
+  </nav>
 
-    <!--**************-->
-    <!--NAVBAR CONTENT-->
-    <!--**************-->
+  <!--**************-->
+  <!--FOLDER SEARCH CONTENT-->
+  <!--**************-->
+  <section class="search-bar-section">
+    <div class="search-container" id="search-container">
+      <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+      <input type="text" class="search-input" placeholder="Search folders..." />
+    </div>
 
-    <nav class="navbar">
-      <h1 id="userDashTitle">User Dashboard</h1>
+    <!--FILE SEARCH CONTENT (STAYS HIDDEN)-->
+    <div class="search-container-files" style="display: none" id="search-container-files">
+      <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+      <input type="text" class="search-input-files" placeholder="Search files..." />
+    </div>
+  </section>
 
-      <div class="sideButtons">
-        <button class="addFolder-btn" id="newFolderBtn">
-          <span class="plus"><i class="fa-solid fa-folder-plus"></i> </span> New
-          Folder
-        </button>
+  <!--**************-->
+  <!--MAIN SECTION -->
+  <!--**************-->
+  <main>
 
-        <button class="addFile-btn" id="newFileBtn" style="display: none">
-          <span class="plus"><i class="fa-solid fa-file-import"></i> </span>
-          Upload File
-        </button>
+    <!-- Folder Section-->
+    <section id="outerLayerFolder">
+      <h2>Your Folders</h2>
 
-        <button id="addCollaborators" class="mainbtns" style="display: none">
-          <i class="fa-solid fa-user-plus"></i>
-        </button>
-
-        <button id="myBtn" onclick="showModal()" class="mainbtns">
-          <i class="fa-solid fa-circle-question"></i>
-        </button>
-
-        <button id="account" onclick="showModal()" class="mainbtns">
-          <i class="fa-solid fa-user"></i>
-        </button>
-
+      <!-- New folders -->
+      <div id="foldersContainer" class="folders-grid">
+        <!--NEW Folder Detail Will Appear Hear -->
       </div>
-    </nav>
+    </section>
 
+    <!-- File Section -->
+    <section id="folderContentPage" class="page" style="display: none">
+      <div class="titleFolderWfile">
+        <button id="backToDashboard" class="mainbtns">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
 
-
-
-
-
-
-
-  
-
-
-
-    <!--**************-->
-    <!--FOLDER SEARCH CONTENT-->
-    <!--**************-->
-    <section class="search-bar-section">
-      <div class="search-container" id="search-container">
-        <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
-        <input
-          type="text"
-          class="search-input"
-          placeholder="Search folders..."
-        />
+        <h2 id="currentFolderTitle"></h2>
       </div>
-
-
-
-
-
-
-
-      <!--FILE SEARCH CONTENT (STAYS HIDDEN)-->
-      <div
-        class="search-container-files"
-        style="display: none"
-        id="search-container-files"
-      >
-        <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
-        <input
-          type="text"
-          class="search-input-files"
-          placeholder="Search files..."
-        />
+      <div id="folderFiles">
+        <!--FILES SHOULD APPEAR HERE-->
       </div>
     </section>
 
 
-
-
-
-
-
-
-
-
-
-
     <!--**************-->
-    <!--MAIN SECTION -->
+    <!--Modals Only Below -->
     <!--**************-->
-    <main>
 
-
-
-
-
-
-      <!-- Folder Section-->
-      <section id="outerLayerFolder">
-        <h2>Your Folders</h2>
-
-        <!-- New folders -->
-        <div id="foldersContainer" class="folders-grid">
-          <!--NEW Folder Detail Will Appear Hear -->
-        </div>
-      </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <!-- File Section -->
-      <section id="folderContentPage" class="page" style="display: none">
-        <div class="titleFolderWfile">
-          <button id="backToDashboard" class="mainbtns">
-            <i class="fa-solid fa-arrow-left"></i>
-          </button>
-
-          <h2 id="currentFolderTitle"></h2>
-        </div>
-        <div id="folderFiles">
-          <!--FILES SHOULD APPEAR HERE-->
-        </div>
-      </section>
-
-
-
-
-
-
-
-
-
-
-
-      <!--**************-->
-      <!--Modals Only Below -->
-      <!--**************-->
-
-
-
-
-
-
-      <!-- Create Folder Modal -->
-      <div id="newFolderModal" class="modal">
-        <div class="modal-content">
-          <span
-            class="close-btn"
-            onclick="closeNewFolderModal('newFolderModal')"
-            >&times;</span
-          >
-          <h2>Create New Folder</h2>
-          <input
-            type="text"
-            id="newFolderName"
-            placeholder="Folder Name"
-            required
-          />
-          <button id="createFolderBtn">Create</button>
-        </div>
+    <!-- Create Folder Modal -->
+    <div id="newFolderModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeNewFolderModal('newFolderModal')">&times;</span>
+        <h2>Create New Folder</h2>
+        <input type="text" id="newFolderName" placeholder="Folder Name" required />
+        <button id="createFolderBtn">Create</button>
       </div>
+    </div>
 
-
-
-
-
-
-      <!-- Add "Upload File" Modal -->
-      <div id="uploadFileModal" class="modal">
-        <div class="modal-content">
-          <span class="close-btn" onclick="closeModal('uploadFileModal')"
-            >&times;</span
-          >
-          <h2>Upload File</h2>
-          <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" id="fileInput" name="file" required />
-            <div hidden id="folder"></div>
-            <!-- <input type="submit" value="upload"> -->
-            <button type="submit" id="uploadFileBtn">Upload</button>
-          </form>
-          <div id="filesContainer" class="files-preview-container"></div>
-        </div>
+    <!-- Add "Upload File" Modal -->
+    <div id="uploadFileModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('uploadFileModal')">&times;</span>
+        <h2>Upload File</h2>
+        <form id="uploadForm" enctype="multipart/form-data">
+          <input type="file" id="fileInput" name="file" required />
+          <div hidden id="folder"></div>
+          <!-- <input type="submit" value="upload"> -->
+          <button type="submit" id="uploadFileBtn">Upload</button>
+        </form>
+        <div id="filesContainer" class="files-preview-container"></div>
       </div>
-
-
-
-
+    </div>
 
       <!-- Help Modal content -->
       <div id="helpModal" class="modal">
@@ -249,61 +144,57 @@
 
 
 
+    <!-- Help Modal content -->
+    <div id="helpModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('helpModal')">&times;</span>
+        <i class="fa-solid fa-circle-question" id="HelpHeader"><br />
+          <h2>Help</h2>
+        </i>
+        <p id="HelpText">
+          Create or join a work environment and enjoy a collaborative space
+          like no other!<br /><br />
+          Inside a work environment, create folders to upload your work, i.e.,
+          code scripts, spreadsheets or document reports. Let others comment
+          and rate your work!<br /><br />
+          You get what you give! Inside <b>ViewCorp</b>, we expect every user
+          to comment and rate everyone's work. That's how we grow.<br /><br />
+        </p>
+      </div>
+    </div>
 
-      <!-- Account Modal content -->
-      <div id="accountModal" class="modal">
-        <div class="modal-content">
-          <span class="close-btn" onclick="closeModal('accountModal')"
-            >&times;</span
-          >
-          <i class="fa-solid fa-user" id="AccountHeader"
-            ><br />
+    <!-- Account Modal content -->
+    <div id="accountModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('accountModal')">&times;</span>
+        <i class="fa-solid fa-user" id="AccountHeader"><br />
 
-            <h2>Account</h2></i
-          >
+          <h2>Account</h2>
+        </i>
 
-          <!-- fetch from database the name and the email-->
-          <div id="AccountText">
-            <h4>Full Name</h4>
-            <span id="userFullName"></span>
-            <h4>Email Address</h4>
-            <span id="userEmail"></span>
-          </div>
+        <!-- fetch from database the name and the email-->
+        <div id="AccountText">
+          <h4>Full Name</h4>
+          <span id="userFullName"></span>
+          <h4>Email Address</h4>
+          <span id="userEmail"></span>
         </div>
       </div>
+    </div>
 
+    <!-- Invite Collaborators Modal-->
+    <div id="inviteModal" class="modal">
+      <div class="modal-content">
+        <span id="close-btn" class="close-btn" onclick="closeModal('inviteModal')">&times;</span>
+        <h3>Invite Collaborators</h3>
 
+        <input id="invite-input-box" class="invite-input" type="email"
+          pattern="[a-z0-9._%+\-]+@[a-z0-9._%+\-]+\.[a-z]{2,}$" placeholder="Email" required /><br />
 
+        <button id="inviteCollaborator-btn">Invite</button>
 
-
-
-
-
-      <!-- Invite Collaborators Modal-->
-
-      <div id="inviteModal" class="modal">
-        <div class="modal-content">
-          <span
-            id="close-btn"
-            class="close-btn"
-            onclick="closeModal('inviteModal')"
-            >&times;</span
-          >
-          <h3>Invite Collaborators</h3>
-
-          <input
-            id="invite-input-box"
-            class="invite-input"
-            type="email"
-            pattern="[a-z0-9._%+\-]+@[a-z0-9._%+\-]+\.[a-z]{2,}$"
-            placeholder="Email"
-            required
-          /><br />
-
-          <button id="inviteCollaborator-btn">Invite</button>
-
-        </div>
       </div>
+    </div>
 
 
       <!-- Preview File Modal content -->
