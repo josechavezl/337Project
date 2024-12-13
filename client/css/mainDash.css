@@ -649,3 +649,26 @@ body {
   background-color: #f4f4f4;
   padding: 10px;
 }
+
+
+
+
+.file{
+  width: 100%;
+  height: 3rem;
+  overflow: auto;
+  margin: 1rem;
+  background-color: #f4f4f4;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.file i {
+  margin: 0.3rem;
+}
+
+.file span{
+  margin: 0.2rem;
+}

@@ -131,7 +131,7 @@ async function showUser() {
 // ************************
 
 
-async function addComment() {
+function addComment() {
   const authorInput = document.getElementById('comment-author');
   const commentInput = document.getElementById('comment-text');
   const ratingInput = document.getElementById('comment-rating');
@@ -155,34 +155,6 @@ async function addComment() {
     authorInput.value = '';
     commentInput.value = '';
     ratingInput.value = '';
-
-    if (commentText) {
-      const commentData = { comment: commentText, author: author, file, rating: rating };
-      try {
-        const response = await fetch("/comment", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(commentData)
-        });
-
-        if (response.ok) {
-          const newCommentD = await response.json();
-          console.log("COMMENT", newCommentD);
-        }
-        else {
-          const errorComment = await response.json();
-          alert("ERROR creating comment", errorComment);
-        }
-      }
-      catch (error) {
-        alert("Catch error", error);
-      }
-    }
-    else {
-      alert("Please type comment");
-    }
   } else {
     alert('Please fill in all fields with valid data.');
   }
@@ -229,31 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("error loading folders", error);
     }
   }
-
-    // Load Existing files
-    async function loadExistingFiles() {
-      try {
-        folderFiles.innerHTML = ""; // Clear previous file elements
-        const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}`);
-        const ExistingFiles = await response.json();
-        ExistingFiles.forEach(file => {
-          const fileLink = document.createElement("a");
-          fileLink.textContent = file.name;
-          fileLink.href = `/uploads/${file.name}`;
-          fileLink.target = "_blank";
-
-          // / Add the uploaded file to the preview container
-          const folderFilesDiv = document.getElementById("folderFiles");
-          const fileElement = document.createElement("div");
-        // fileElement.textContent = file.name;
-          folderFilesDiv.appendChild(fileElement.appendChild(fileLink));
-      });
-      }
-      catch (error) {
-        console.log("error loading folders", error);
-      }
-    }
-
 
   // Create folder element
   function createFolderElement(folder) {
@@ -318,10 +265,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load existing folders on page load
   loadExistingFolders();
-  loadExistingFiles();
 
   
-
 
 
 
@@ -335,34 +280,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ******************************
   // UPLOAD FILE FUNCTIONALITY ****
   // ******************************
-  const allowedExtensions = [
-    '.js', '.py', '.html', '.css', '.json', '.java',
-    '.c', '.cpp', '.ts', '.jsx', '.tsx', '.php',
-    '.rb', '.go', '.sh', '.swift', '.kt', '.rs'
-  ]; // Add more extensions if needed
-
-  const filePreviewHandlers = {
-    'text/plain': async (file) => {
-      const text = await file.text();
-      return `<pre class="code-preview">${text}</pre>`;
-    },
-    'text/html': async (file) => {
-      const text = await file.text();
-      return `<iframe srcdoc="${text}"></iframe>`;
-    },
-    'application/json': async (file) => {
-      const text = await file.text();
-      return `<pre class="code-preview">${JSON.stringify(JSON.parse(text), null, 2)}</pre>`;
-    },
-    'application/javascript': async (file) => {
-      const text = await file.text();
-      return `<pre class="code-preview">${text}</pre>`;
-    },
-    'text/css': async (file) => {
-      const text = await file.text();
-      return `<pre class="code-preview">${text}</pre>`;
-    }
-  };
 
   // UPLOADING
   document.getElementById('uploadForm').addEventListener('submit', async function (event) {
@@ -376,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert('Please select a file to upload');
       return;
     }
-
+    
     // Get query params for email, first name, last name
     const urlParams = new URLSearchParams(window.location.search);
     const firstName = urlParams.get("firstName");
@@ -402,17 +319,11 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (response.ok) {
         const data = await response.json();
-
-        const fileLink = document.createElement("a");
-        fileLink.textContent = data.filename;
-        fileLink.href = `/uploads/${data.filename}`;
-        fileLink.target = "_blank";
-
         // / Add the uploaded file to the preview container
         const folderFilesDiv = document.getElementById("folderFiles");
         const fileElement = document.createElement("div");
-       // fileElement.textContent = file.name;
-        folderFilesDiv.appendChild(fileElement.appendChild(fileLink));
+        fileElement.textContent = file.name;
+        folderFilesDiv.appendChild(fileElement);
         alert('File uploaded successfully');
         console.log('File uploaded:', data);
       } else {
@@ -425,156 +336,152 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // formData.append('file', file);
 
-  // try {
-  //   // Make the request to upload the file
-  //   const response = await fetch('/upload', {
-  //     method: 'POST',
-  //     body: formData,
-  //   });
-
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     console.log('File uploaded successfully:', data);
-  //     alert('File uploaded successfully!');
-  //   } else {
-  //     const error = await response.json();
-  //     alert('Error uploading file: ' + error.message);
-  //   }
-  // } catch (error) {
-  //   console.error('Error:', error);
-  //   alert('Error uploading file');
-  // }
 });
+const allowedExtensions = ['.js', '.py', '.html', '.css', '.json', '.java', '.c', '.cpp', '.ts']; // Add more extensions if needed
 
-// Create Folder
-// uploadFileBtn.addEventListener("click", async () => {
-//   const fileName = file.value.trim();
-//   console.log("258",fileName)
-
-//   if (folderName) {
-//     const folderData = { name: folderName, email: emailP, files:[], shared: []};
-//     try {
-//       const response = await fetch("/create-folder", {
-//         method: "post",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(folderData)
-//       });
-
-//       if(response.ok) {
-//         const newFolder = await response.json();
-//         createFolderElement(newFolder);
-//       }
-//       else{
-//         const errorFolder = await response.json();
-//         alert("ERROR creating folder", errorFolder);
-//       }
-//     closeNewFolderModal();
-//   }
-//   catch(error) {
-//     alert("Catch error", error);
-//   }
-// }
-//   else {
-//     alert("Please enter a folder name");
-//   }
-// });
-
-// File selection and preview handling
-document.getElementById('fileInput').addEventListener('change', async (event) => {
-    const folderFiles = document.getElementById('folderFiles');
-    folderFiles.innerHTML = ''; // Clear previous previews
-
-    const files = event.target.files;
-    for (let file of files) {
-        console.log(file) 
-        const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
-
-        // Check if file extension is allowed
-        if (!allowedExtensions.includes(fileExtension)) {
-            alert(`File "${file.name}" is not allowed. Allowed file types: ${allowedExtensions.join(', ')}`);
-            continue;
-        }
-
-        // Determine preview handler
-        let previewHandler = filePreviewHandlers['text/plain'];
-
-        if (filePreviewHandlers && filePreviewHandlers['text/plain']) {
-          let previewHandler = filePreviewHandlers['text/plain'];
-        } else {
-          console.error('File preview handler for text/plain is not defined.');
-        }
-
-        if (filePreviewHandlers[file.type]) {
-            previewHandler = filePreviewHandlers[file.type];
-        }
-
-        // Create preview card
-        const previewCard = document.createElement('div');
-        previewCard.className = 'file-preview-card';
-
-        // File name
-        const fileName = document.createElement('div');
-        fileName.textContent = file.name;
-        fileName.className = 'file-preview-card-file-name';
-
-        // Preview content
-        const previewContent = document.createElement('div');
-        previewContent.innerHTML = await previewHandler(file);
-        previewContent.className = 'file-preview';
-
-        previewCard.appendChild(fileName);
-        previewCard.appendChild(previewContent);
-
-        folderFiles.appendChild(previewCard);
+const filePreviewHandlers = {
+    'text/plain': async (file) => {
+        const text = await file.text();
+        return `<pre class="code-preview">${text}</pre>`;
+    },
+    'text/html': async (file) => {
+        const text = await file.text();
+        return `<iframe srcdoc="${text}" class="w-full h-64 border"></iframe>`;
+    },
+    'application/json': async (file) => {
+        const text = await file.text();
+        return `<pre class="code-preview">${JSON.stringify(JSON.parse(text), null, 2)}</pre>`;
+    },
+    'application/javascript': async (file) => {
+        const text = await file.text();
+        return `<pre class="code-preview">${text}</pre>`;
+    },
+    'text/css': async (file) => {
+        const text = await file.text();
+        return `<pre class="code-preview">${text}</pre>`;
     }
+};
+
+document.getElementById('fileInput').addEventListener('change', async (event) => {
+  const filesContainer = document.getElementById('filesContainer');
+  const filePreview = document.getElementById('filePreview');
+  const files = event.target.files;
+
+  const existingPreviews = JSON.parse(localStorage.getItem('filePreviews')) || [];
+  const previews = [...existingPreviews];
+
+  // Loop through selected files
+  for (let file of files) {
+      const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+
+      // Check for allowed extensions
+      if (!allowedExtensions.includes(fileExtension)) {
+          alert(`File "${file.name}" is not allowed.`);
+          continue;
+      }
+
+      // Determine preview handler
+      let previewHandler = filePreviewHandlers['text/plain'];
+      if (filePreviewHandlers[file.type]) {
+          previewHandler = filePreviewHandlers[file.type];
+      }
+
+      // Generate preview content
+      const previewContent = await previewHandler(file);
+
+      // Check if preview already exists
+      if (previews.some(preview => preview.name === file.name)) {
+          alert(`Preview for "${file.name}" already exists.`);
+          continue;
+      }
+
+      // Append preview to the modal
+      const previewCard = document.createElement('div');
+      previewCard.className = 'file-preview-card mb-2 p-2 border rounded';
+
+      const fileName = document.createElement('div');
+      fileName.textContent = file.name;
+      fileName.className = 'font-bold mb-2';
+
+      const modalPreviewContent = document.createElement('div');
+      modalPreviewContent.innerHTML = previewContent;
+      modalPreviewContent.className = 'file-preview';
+
+      previewCard.appendChild(fileName);
+      previewCard.appendChild(modalPreviewContent);
+      filesContainer.appendChild(previewCard);
+
+      // Append preview to the filePreview section
+      const filePreviewContent = document.createElement('div');
+      filePreviewContent.innerHTML = `<h4>${file.name}</h4>` + previewContent;
+      filePreviewContent.className = 'file-preview';
+      filePreview.appendChild(filePreviewContent);
+
+      // Save the preview
+      previews.push({ name: file.name, content: previewContent });
+  }
+
+  // Save all previews to localStorage
+  localStorage.setItem('filePreviews', JSON.stringify(previews));
 });
 
 
-// document.getElementById("uploadForm").addEventListener("submit", async (event) => {
-//   event.preventDefault();
+document.getElementById('folderFiles').addEventListener('click', (event) => {
+  const clickedFileElement = event.target.closest('.file'); 
+  if (!clickedFileElement) return; 
 
-//   const formData = new FormData();
-//   const fileInput = document.getElementById("fileInput");
+  const clickedFileName = clickedFileElement.querySelector('span').textContent; // Get the file name
+  const filePreview = document.getElementById('filePreview');
+  const previews = JSON.parse(localStorage.getItem('filePreviews')) || []; // Get saved previews
 
-//   if (!fileInput.files[0]) {
-//     alert("Please select a file to upload.");
-//     return;
-//   }
+  // Find the clicked file's preview content
+  const clickedFilePreview = previews.find(preview => preview.name === clickedFileName);
 
-//   formData.append("file", fileInput.files[0]);
+  if (clickedFilePreview) {
+      // Clear previous preview
+      filePreview.innerHTML = '';
 
-//   try {
-//     const response = await fetch("/upload", {
-//       method: "POST",
-//       body: formData,
-//     });
+      // Add the clicked file's preview
+      const filePreviewContent = document.createElement('div');
+      filePreviewContent.innerHTML = `<h4>${clickedFileName}</h4>` + clickedFilePreview.content;
+      filePreviewContent.className = 'file-preview';
+      filePreview.appendChild(filePreviewContent);
+  } else {
+      alert(`Preview for "${clickedFileName}" not found.`);
+      previewContainer.innerHTML = ''; // Clear the preview area
 
-//     const result = await response.json();
-
-//     if (response.ok) {
-//       // Add the uploaded file to the preview container
-//       const folderFilesDiv = document.getElementById("folderFiles");
-//       const fileElement = document.createElement("div");
-//       fileElement.textContent = result.file.name;
-//       folderFilesDiv.appendChild(fileElement);
-//     } else {
-//       alert(result.message || "File upload failed.");
-//     }
-//   } catch (error) {
-//     console.error("Error uploading file:", error);
-//     alert("An unexpected error occurred while uploading the file.");
-//   }
-// });
+  }
+});
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  const filePreview = document.getElementById('filePreview');
+  const previews = JSON.parse(localStorage.getItem('filePreviews')) || [];
+
+  filePreview.innerHTML = ''; // Clear existing content
+
+  previews.forEach(preview => {
+      const filePreviewContent = document.createElement('div');
+      filePreviewContent.innerHTML = `<h4>${preview.name}</h4>` + preview.content;
+      filePreviewContent.className = 'file-preview';
+      filePreview.appendChild(filePreviewContent);
+  });
+});
 
 
-
-
+// Placeholder upload function (you'll replace with actual upload logic)
+document.getElementById('uploadFileBtn').addEventListener('click', () => {
+    const files = document.getElementById('fileInput').files;
+    if (files.length === 0) {
+        alert('Please select files to upload');
+        return;
+    }
+    
+    // TODO: Implement actual file upload logic
+    console.log('Files ready to upload:', files);
+    alert('File upload functionality not yet implemented');
+});
 
 
 
@@ -625,7 +532,6 @@ foldersContainer.addEventListener("click", (e) => {
   const folderElement = e.target.closest(".folder");
 
   if (folderElement) {
-    console.log("575")
     async function loadExistingFolders() {
       try {
         const urlParams = new URLSearchParams(window.location.search);
@@ -638,14 +544,18 @@ foldersContainer.addEventListener("click", (e) => {
         console.log("error loading folders", error);
       }
     }
+    
 
+
+
+    
     function createFileElement(file) {
-      console.log(file.name)
 
       const fileDiv = document.createElement("div");
       fileDiv.classList.add("file");
+      
       fileDiv.innerHTML = `
-            <i class="fa-solid fa-folder-closed" style="color: #38b6ff"></i>
+            <i class="fa-solid fa-file" style="color: #3ba3c3"></i>
             <span>${file.name}</span>
         `;
       // Add to folders container
@@ -660,12 +570,9 @@ foldersContainer.addEventListener("click", (e) => {
     document.getElementById("folder").textContent = folderName
     currentFolderId = folderName; // Update the currentFolderId with the selected folder name or ID
 
-    // Set the folder title and number of files
-    const files = folderData[folderName] || [];
-
+    // Set the folder title           
     currentFolderTitle.innerHTML = `
-    <div>${folderName}</div>
-    <small id="filesCountFolder">${files.length} files</small>`;
+    <div>${folderName}</div>`;
 
     // Populate the files list
     
@@ -713,7 +620,6 @@ backToDashboard.addEventListener("click", () => {
   addCollaborators.style.display = "none";
 
 });
-
 
 // invite
 
@@ -767,6 +673,14 @@ inviteCollaboratorbtn.addEventListener("click", async () => {
 
 
 
+document.getElementById("folderFiles").addEventListener("click", () => {
+  showModal("previewFilemodal");
+});
+
+// Close previewFilemodal modal
+document.getElementById("previewFilemodal").onclick = (event) => {
+  closeModalOutside(event, "previewFilemodal");
+};
 
 
 

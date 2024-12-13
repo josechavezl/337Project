@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
+const upload = require('express-fileupload')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -12,7 +13,6 @@ const Folders = require('./folder.js');
 const Files = require('./file.js');
 const Invitations = require('./invitation.js');
 const Comments = require('./comment.js');
-const fileUpload = require('express-fileupload');
 
 const clientPath = path.join(__dirname, "../../client");
 
@@ -151,6 +151,8 @@ app.get('/get-folders', async (req, res) => {
         const folders = await Folders.find({author: user._id});
         const foldersInv = await Folders.find({shared: user._id});
 
+
+
         console.log(user);
         console.log(folders);
         console.log(foldersInv);
@@ -176,13 +178,12 @@ app.get('/get-files', async(req,res) => {
         const foldersInv = await Folders.find({shared: user._id});
         const allFiles = [];
         const allFolders = folders.concat(foldersInv);
-
         for (const folder of allFolders) {
             if (folder.files && folder.files.length > 0) {
               // Add the files from each folder to the allFiles array
               const populatedFolder = await Folders.findById(folder._id).populate('files');
               populatedFolder.files.forEach(file => {
-                allFiles.push({name: file.name, path: `/uploads/${file.name}`});
+                allFiles.push(file);
               });
             }
           }
@@ -203,8 +204,8 @@ app.get('/get-files', async(req,res) => {
     }
 } )
 
-app.use(fileUpload());
-app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
+app.use(upload())
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.post('/upload', async (req, res) => {
     if (req.files && req.files.file) {
@@ -245,8 +246,7 @@ app.post('/upload', async (req, res) => {
             filename: filename,
             email,
             firstName,
-            lastName,
-            fileId: newFile._id
+            lastName
           });
         });
       } catch (error) {
@@ -258,6 +258,7 @@ app.post('/upload', async (req, res) => {
     }
   });
   
+
 
 
 app.post('/invite', async (req,res) => {
@@ -289,8 +290,8 @@ app.post('/invite', async (req,res) => {
 });
 
 
-app.get('/get-comments', async (req,res) => {
-    const {comment, author, file, rating} = req.body;
+app.post('/get-comments', async (req,res) => {
+    const {comment, author, file} = req.body;
     const user = await Users.findOne({emailCreate: author});
     const fle = await Files.findOne({name: file});
     const flder = await Folders.findOne({files: fle._id});
@@ -323,8 +324,8 @@ app.get('/get-comments', async (req,res) => {
 
 
 
-app.post('/comment', async (req,res) => {
-    const {comment, author, file, rating} = req.body;
+app.get('/comment', async (req,res) => {
+    const {comment, author, file} = req.body;
     const user = await Users.findOne({emailCreate: author});
     const fle = await Files.findOne({name: file});
     const flder = await Folders.findOne({files: fle._id});
@@ -356,7 +357,6 @@ app.post('/comment', async (req,res) => {
     }
 });
   
-
 
 
 
