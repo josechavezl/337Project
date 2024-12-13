@@ -12,11 +12,11 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="../css/mainDash.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/mainDash.css">
   <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>ViewCorp</title>
 </head>
 
@@ -57,18 +57,18 @@
   <!--**************-->
   <!--FOLDER SEARCH CONTENT-->
   <!--**************-->
-  <section class="search-bar-section">
+  <div class="search-bar-section">
     <div class="search-container" id="search-container">
-      <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
-      <input type="text" class="search-input" placeholder="Search folders..." />
+      <i class="fa-solid fa-magnifying-glass" id="search-icon1"></i>
+      <input type="text" class="search-input" placeholder="Search folders...">
     </div>
 
     <!--FILE SEARCH CONTENT (STAYS HIDDEN)-->
     <div class="search-container-files" style="display: none" id="search-container-files">
-      <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
-      <input type="text" class="search-input-files" placeholder="Search files..." />
+      <i class="fa-solid fa-magnifying-glass" id="search-icon2"></i>
+      <input type="text" class="search-input-files" placeholder="Search files...">
     </div>
-  </section>
+  </div>
 
   <!--**************-->
   <!--MAIN SECTION -->
@@ -92,7 +92,7 @@
           <i class="fa-solid fa-arrow-left"></i>
         </button>
 
-        <h2 id="currentFolderTitle"></h2>
+        <h2 id="currentFolderTitle">.</h2>
       </div>
       <div id="folderFiles">
         <!--FILES SHOULD APPEAR HERE-->
