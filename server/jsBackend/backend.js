@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const Users = require('./user.js');
 const Folders = require('./folder.js');
-const File = require('./file.js');
+const Files = require('./file.js');
 const Invitations = require('./invitation.js');
 const Comments = require('./comment.js');
 
@@ -231,7 +231,7 @@ app.post('/upload', async (req, res) => {
           }
           console.log("File uploaded successfully:", filename);
   
-          const newFile = new File({
+          const newFile = new Files({
             name: filename,
             author: user._id,
             folder: folder._id,
@@ -289,7 +289,7 @@ app.post('/invite', async (req,res) => {
 });
 
 
-app.post('/comment', async (req,res) => {
+app.post('/get-comments', async (req,res) => {
     const {comment, author, file} = req.body;
     const user = await Users.findOne({emailCreate: author});
     const fle = await Files.findOne({name: file});
@@ -323,7 +323,38 @@ app.post('/comment', async (req,res) => {
 
 
 
+app.get('/comment', async (req,res) => {
+    const {comment, author, file} = req.body;
+    const user = await Users.findOne({emailCreate: author});
+    const fle = await Files.findOne({name: file});
+    const flder = await Folders.findOne({files: fle._id});
 
+
+    try {
+        const newComment = new Comments({
+            comment,
+            author: user._id,
+            file: fle._id,
+            rating
+        });
+        console.log(newComment);
+        await newComment.save();
+
+
+        await Folders.updateOne(
+            {_id: flder._id},
+            {$addToSet: {"files": fle._id}}
+        );
+
+
+        res.status(201).json(newComment);
+    }
+
+
+    catch (error) {
+        console.log("error creating invitation", error);
+    }
+});
   
 
 
