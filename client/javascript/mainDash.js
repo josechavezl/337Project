@@ -131,7 +131,7 @@ async function showUser() {
 // ************************
 
 
-function addComment() {
+async function addComment() {
   const authorInput = document.getElementById('comment-author');
   const commentInput = document.getElementById('comment-text');
   const ratingInput = document.getElementById('comment-rating');
@@ -155,6 +155,34 @@ function addComment() {
     authorInput.value = '';
     commentInput.value = '';
     ratingInput.value = '';
+
+    if (commentText) {
+      const commentData = { comment: commentText, author: author, file, rating: rating };
+      try {
+        const response = await fetch("/comment", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(commentData)
+        });
+
+        if (response.ok) {
+          const newCommentD = await response.json();
+          console.log("COMMENT", newCommentD);
+        }
+        else {
+          const errorComment = await response.json();
+          alert("ERROR creating comment", errorComment);
+        }
+      }
+      catch (error) {
+        alert("Catch error", error);
+      }
+    }
+    else {
+      alert("Please type comment");
+    }
   } else {
     alert('Please fill in all fields with valid data.');
   }
@@ -201,6 +229,31 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("error loading folders", error);
     }
   }
+
+    // Load Existing files
+    async function loadExistingFiles() {
+      try {
+        folderFiles.innerHTML = ""; // Clear previous file elements
+        const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}`);
+        const ExistingFiles = await response.json();
+        ExistingFiles.forEach(file => {
+          const fileLink = document.createElement("a");
+          fileLink.textContent = file.name;
+          fileLink.href = `/uploads/${file.name}`;
+          fileLink.target = "_blank";
+
+          // / Add the uploaded file to the preview container
+          const folderFilesDiv = document.getElementById("folderFiles");
+          const fileElement = document.createElement("div");
+        // fileElement.textContent = file.name;
+          folderFilesDiv.appendChild(fileElement.appendChild(fileLink));
+      });
+      }
+      catch (error) {
+        console.log("error loading folders", error);
+      }
+    }
+
 
   // Create folder element
   function createFolderElement(folder) {
@@ -265,6 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load existing folders on page load
   loadExistingFolders();
+  loadExistingFiles();
 
   
 
@@ -348,11 +402,17 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (response.ok) {
         const data = await response.json();
+
+        const fileLink = document.createElement("a");
+        fileLink.textContent = data.filename;
+        fileLink.href = `/uploads/${data.filename}`;
+        fileLink.target = "_blank";
+
         // / Add the uploaded file to the preview container
         const folderFilesDiv = document.getElementById("folderFiles");
         const fileElement = document.createElement("div");
-        fileElement.textContent = file.name;
-        folderFilesDiv.appendChild(fileElement);
+       // fileElement.textContent = file.name;
+        folderFilesDiv.appendChild(fileElement.appendChild(fileLink));
         alert('File uploaded successfully');
         console.log('File uploaded:', data);
       } else {
