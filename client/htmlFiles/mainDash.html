@@ -322,7 +322,7 @@
             <span
             id="close-btn"
             class="close-btn"
-            onclick="closeModal('previewFilemodal')"
+            onclick="closeModal('previewFilemodal');"
             >&times;</span>
 
           </div>
@@ -341,7 +341,7 @@
                 <!-- Comments will be dynamically added here -->
               </div>
               <div class="comment-form">
-                <input type="text" id="comment-author" placeholder="Your Name" />
+                <input type="email" id="comment-email" placeholder="Your Email" />
                 <textarea id="comment-text" placeholder="Enter your comment..."></textarea>
                 <input type="number" id="comment-rating" min="1" max="5" step="1" placeholder="⭐ Rating (1-5)" />
                 <button onclick="addComment()">Submit</button>

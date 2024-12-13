@@ -290,62 +290,54 @@ app.post('/invite', async (req,res) => {
 });
 
 
-app.post('/get-comments', async (req,res) => {
-    const {comment, author, file} = req.body;
-    const user = await Users.findOne({emailCreate: author});
-    const fle = await Files.findOne({name: file});
-    const flder = await Folders.findOne({files: fle._id});
-
-
+app.get('/get-comments', async (req,res) => {
+    const {fileName} = req.query;
     try {
-        const newComment = new Comments({
-            comment: comment,
-            author: user._id,
-            file: fle._id
-        });
-        console.log(newComment);
-        await newComment.save();
+        const file = await Files.findOne({name: fileName});
+        if (!file) {
+            return res.status(404).json({ error: "File not found" });
+        }
+        const comments = await Comments.find({file: file._id}).populate('author', 'emailCreate');
+        console.log("comments:", comments);
 
-
-        await Folders.updateOne(
-            {_id: flder._id},
-            {$addToSet: {"files": fle._id}}
-        );
-
-
-        res.status(201).json(newComment);
+        res.status(200).json(comments);
     }
 
-
     catch (error) {
-        console.log("error creating invitation", error);
+        console.log("error loading comments", error);
     }
 });
 
 
 
-app.get('/comment', async (req,res) => {
-    const {comment, author, file} = req.body;
-    const user = await Users.findOne({emailCreate: author});
-    const fle = await Files.findOne({name: file});
-    const flder = await Folders.findOne({files: fle._id});
+app.post('/comment', async (req,res) => {
+    const {comment, email, fileName, rating} = req.body;
+    console.log(req.body);
 
+    if (!comment || !email || !fileName || !rating) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
 
     try {
+        const user = await Users.findOne({emailCreate: email});
+        const file = await Files.findOne({name: fileName});
+
+        if(!user) {
+            return res.status(400).json({error: "User does not exist!"});
+        }
+
+        if (!file) {
+            return res.status(400).json({ error: `${fileName} not found!` });
+        }
+
         const newComment = new Comments({
             comment,
             author: user._id,
-            file: fle._id,
+            file: file._id,
             rating
         });
-        console.log(newComment);
+        console.log("saved", newComment);
         await newComment.save();
-
-
-        await Folders.updateOne(
-            {_id: flder._id},
-            {$addToSet: {"files": fle._id}}
-        );
 
 
         res.status(201).json(newComment);
@@ -353,7 +345,7 @@ app.get('/comment', async (req,res) => {
 
 
     catch (error) {
-        console.log("error creating invitation", error);
+        console.log("error creating comment", error);
     }
 });
   
