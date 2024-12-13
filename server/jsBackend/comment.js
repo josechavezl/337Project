@@ -1,8 +1,15 @@
+/* ViewCorp
+- Ben Patrick Bruso
+- Jose Luis Chavez
+- Dipson K C 
+- Jose Santiago Campa Morales
+- CSC337: Web Programming
+- Final Project
+- comment.js: This includes the schema for comments to use in the backend. */
+
 const mongoose = require('mongoose');
 
-
 let Comment;
-
 
 try {
     Comment = mongoose.model("Comment");
@@ -14,10 +21,7 @@ try {
         date: { type: Date, default: Date.now },
         rating: { type: Number, min: 1, max: 5, required: true }
     });
-
-
     Comment = mongoose.model("Comment", commentSchema);
 }
-
 
 module.exports = Comment;

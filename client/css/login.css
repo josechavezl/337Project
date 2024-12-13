@@ -1,3 +1,12 @@
+/* ViewCorp
+- Ben Patrick Bruso
+- Jose Luis Chavez
+- Dipson K C 
+- Jose Santiago Campa Morales
+- CSC337: Web Programming
+- Final Project
+- login.css: This is the stylesheet of login.html. */
+
 * {
     overflow: hidden;
     font-family: Helvetica, sans-serif;
@@ -56,7 +65,6 @@ input:focus{
     box-shadow: 0 4px 6px rgba(0,0,0, 0.2);
 }
 
-
 input[type=submit] {
     cursor: pointer;
     font-weight: bolder;
@@ -73,10 +81,7 @@ input[type=submit] {
     height: 3rem;
     width: 30%;
 }
-/*
-edit: dipson 
-added hover effect
-*/
+
 #loginButton:hover {
     background-color: #3ba3c3;
 }
@@ -85,10 +90,7 @@ added hover effect
     color: white;
     background-color: #19d104;
 }
-/*
-edit: dipson 
-added hover effect
-*/
+
 #createButton:hover{
     background-color: #129c03;
 }

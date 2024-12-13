@@ -1,4 +1,13 @@
-
+/* ViewCorp
+- Ben Patrick Bruso
+- Jose Luis Chavez
+- Dipson K C 
+- Jose Santiago Campa Morales
+- CSC337: Web Programming
+- Final Project
+- script.css: This is the script for both the login and the signup
+- pages. We use basic js functions to retrieve information from the
+- backend and show it to the user. */
 
 const loginForm = document.getElementById("login-form");
 const signupForm = document.getElementById("signup-form");
@@ -7,6 +16,7 @@ const ucr = document.getElementById("user-created-response");
 const uce = document.getElementById("user-created-error");
 const ule = document.getElementById("user-login-error");
 
+// Signup Form Functionality
 signupForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
@@ -27,7 +37,7 @@ signupForm.addEventListener("submit", async function (event) {
         let data = await response.json();
         console.log("response:", data);
 
-        
+        // Message
         if(response.ok) {
             console.log('GOOD RESPONSE!');
 
@@ -52,6 +62,7 @@ signupForm.addEventListener("submit", async function (event) {
 });
 
 
+// Login Form Functionality
 loginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
     
@@ -78,10 +89,6 @@ loginForm.addEventListener("submit", async function (event) {
             localStorage.setItem('email', data.user.email);
             localStorage.setItem('fullName', data.user.name);
 
-            /*if(data.redirected) {
-                console.log('GOOD RESPONSE!', data.redirect);
-                window.location.href = data.redirect;
-            }*/
         }
         else {
             console.log('BAD RESPONSE!');

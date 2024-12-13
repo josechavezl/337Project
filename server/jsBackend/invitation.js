@@ -1,3 +1,12 @@
+/* ViewCorp
+- Ben Patrick Bruso
+- Jose Luis Chavez
+- Dipson K C 
+- Jose Santiago Campa Morales
+- CSC337: Web Programming
+- Final Project
+- invitation.js: This includes the schema for invitations to use in the backend. */
+
 const mongoose = require('mongoose');
 
 let Invitation;
@@ -12,7 +21,6 @@ try {
         date: { type: Date, default: Date.now },
         isAccepted: { type: Boolean, default: false }
     });
-
     Invitation = mongoose.model("Invitation", invitationSchema);
 }
 

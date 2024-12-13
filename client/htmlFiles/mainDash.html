@@ -1,3 +1,13 @@
+<!--- ViewCorp
+- Ben Patrick Bruso
+- Jose Luis Chavez
+- Dipson K C 
+- Jose Santiago Campa Morales
+- CSC337: Web Programming
+- Final Project
+- mainDash.html: This is the main dashboard there the user can see
+- folders and files, as well as the help and user buttons. -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +15,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="../css/mainDash.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <title>ViewCorp</title>
 </head>
 
@@ -118,32 +129,6 @@
       </div>
     </div>
 
-      <!-- Help Modal content -->
-      <div id="helpModal" class="modal">
-        <div class="modal-content">
-          <span class="close-btn" onclick="closeModal('helpModal')"
-            >&times;</span
-          >
-          <i class="fa-solid fa-circle-question" id="HelpHeader"
-            ><br />
-            <h2>Help</h2></i
-          >
-          <p id="HelpText">
-            Create or join folder environments and enjoy a collaborative space
-            like no other!<br /><br />
-            Inside a folder environment, upload your work, i.e.,
-            code scripts. Let others comment
-            and rate your work!<br /><br />
-            You get what you give! Inside <b>ViewCorp</b>, we expect every user
-            to comment and rate everyone's work. That's how we grow.<br /><br />
-          </p>
-        </div>
-      </div>
-
-
-
-
-
     <!-- Help Modal content -->
     <div id="helpModal" class="modal">
       <div class="modal-content">
@@ -152,10 +137,10 @@
           <h2>Help</h2>
         </i>
         <p id="HelpText">
-          Create or join a work environment and enjoy a collaborative space
+          Create or join folder environments and enjoy a collaborative space
           like no other!<br /><br />
-          Inside a work environment, create folders to upload your work, i.e.,
-          code scripts, spreadsheets or document reports. Let others comment
+          Inside a folder environment, upload your work, i.e.,
+          code scripts. Let others comment
           and rate your work!<br /><br />
           You get what you give! Inside <b>ViewCorp</b>, we expect every user
           to comment and rate everyone's work. That's how we grow.<br /><br />
@@ -197,57 +182,40 @@
     </div>
 
 
-      <!-- Preview File Modal content -->
-
-
-      <div id="previewFilemodal" class="modal">
-        <div class="filepreview-modal-content">
-          
-          <div id="filePreview-header">
-
-            <h2 id="fileTitle">File Preview</h2>
-            
-            <h2 id="commentsTitle">Comments</h2>
-
-
-            <span
-            id="close-btn"
-            class="close-btn"
-            onclick="closeModal('previewFilemodal');"
-            >&times;</span>
-
+    <!-- Preview File Modal content -->
+    <div id="previewFilemodal" class="modal">
+      <div class="filepreview-modal-content">
+        <div id="filePreview-header">
+          <h2 id="fileTitle">File Preview</h2>
+          <h2 id="commentsTitle">Comments</h2>
+          <span id="close-btn" class="close-btn" onclick="closeModal('previewFilemodal')">&times;</span>
+        </div>
+        <div id="filePreviewContainer">
+          <div id="filePreview">
+            <!-- File preview content -->
           </div>
-
-          
-
-          <div id="filePreviewContainer">
-            
-            <div id="filePreview">
-              <!-- File preview content -->
- 
+          <div id="fileCommentSection">
+            <div id="comments-container">
+              <!-- Comments will be dynamically added here -->
             </div>
-            
-            <div id="fileCommentSection">
-              <div id="comments-container">
-                <!-- Comments will be dynamically added here -->
-              </div>
-              <div class="comment-form">
-                <input type="email" id="comment-email" placeholder="Your Email" />
-                <textarea id="comment-text" placeholder="Enter your comment..."></textarea>
-                <input type="number" id="comment-rating" min="1" max="5" step="1" placeholder="⭐ Rating (1-5)" />
-                <button onclick="addComment()">Submit</button>
-              </div>
-
+            <div class="comment-form">
+              <input type="text" id="comment-author" placeholder="Your Name" />
+              <textarea id="comment-text" placeholder="Enter your comment..."></textarea>
+              <input type="number" id="comment-rating" min="1" max="5" step="1" placeholder="⭐ Rating (1-5)" />
+              <button onclick="addComment()">Submit</button>
             </div>
 
           </div>
 
         </div>
+
       </div>
-      
-    </main>
+    </div>
 
-  </body>
+  </main>
 
-  <script src="../javascript/mainDash.js"></script>
+</body>
+
+<script src="../javascript/mainDash.js"></script>
+
 </html>

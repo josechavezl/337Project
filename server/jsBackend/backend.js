@@ -1,3 +1,13 @@
+/* ViewCorp
+- Ben Patrick Bruso
+- Jose Luis Chavez
+- Dipson K C 
+- Jose Santiago Campa Morales
+- CSC337: Web Programming
+- Final Project
+- backend.js: This is the mai backend script for our project.
+- We used MongoDB for our database and have various get/post
+- instances for different user actions. */
 
 const express = require('express');
 const app = express();
@@ -54,6 +64,7 @@ app.post("/signup", async (req, res) => {
             return res.status(400).json({error: "Email in use."});
         }
 
+        // create user
         const user = new Users({
             firstName,
             lastName,
@@ -69,6 +80,7 @@ app.post("/signup", async (req, res) => {
     }
 });
 
+
 app.post("/login", async(req, res) => {
     console.log(req.body);
     const {emailLogin} = req.body;
@@ -80,7 +92,10 @@ app.post("/login", async(req, res) => {
             return res.status(400).json({error: "Email does notexist ."});
         }
 
-        res.redirect(`/mainDash?firstName=${encodeURIComponent(user.firstName)}&lastName=${encodeURIComponent(user.lastName)}&email=${encodeURIComponent(user.emailCreate)}`);
+        // information in URL
+        res.redirect(`/mainDash?firstName=${encodeURIComponent(user.firstName)}
+        &lastName=${encodeURIComponent(user.lastName)}
+        &email=${encodeURIComponent(user.emailCreate)}`);
 
     }
     catch (error) {
@@ -89,19 +104,18 @@ app.post("/login", async(req, res) => {
 });
 
 
-
-
 app.get("/mainDash", (req, res) => {
     res.sendFile(path.join(clientPath, 'htmlFiles', 'mainDash.html'));
 });
 
+// User button
 app.post("/show-user", async (req, res) => {
     const {emailLogin} = req.body;
 
     try {
         const user = await Users.findOne({emailCreate: emailLogin});
 
-        if (!user) {  // access dashboard
+        if (!user) {
             return res.status(400).json({error: "USER does notexist ."});
         }
 
@@ -115,10 +129,12 @@ app.post("/show-user", async (req, res) => {
     }
 });
 
-
+// Folder Functionality
 app.post('/create-folder', async (req, res) => {
     const {name, email, files, shared} = req.body;
     const user = await Users.findOne({ emailCreate: email });
+
+    // create folder
     try {
         const newFolder = new Folders({
             name,
@@ -148,6 +164,7 @@ app.get('/get-folders', async (req, res) => {
         console.log(folders);
         console.log(foldersInv);
 
+        // include folders invited to and created
         const allFolders = folders.concat(foldersInv);
         
         console.log(allFolders);
@@ -160,6 +177,8 @@ app.get('/get-folders', async (req, res) => {
 
 });
 
+
+// File Functionality
 app.get('/get-files', async(req,res) => {
     const {email} = req.query;
     try {
@@ -177,16 +196,7 @@ app.get('/get-files', async(req,res) => {
                 allFiles.push(file);
               });
             }
-          }
-          console.log("SIZREEE:", allFiles.length)
-          console.log("189",allFiles[0].name)
-          console.log("allFiles:", allFiles);
-          
-        
-          allFiles.forEach(file => {
-            console.log(`191-File Name: ${file.name}`);
-          });
-          
+          }          
         res.status(200).json(allFiles);
 
     }
@@ -195,9 +205,11 @@ app.get('/get-files', async(req,res) => {
     }
 } )
 
+// Upload folder for user files.
 app.use(upload())
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Upload function
 app.post('/upload', async (req, res) => {
     if (req.files && req.files.file) {
       const file = req.files.file;
@@ -214,6 +226,7 @@ app.post('/upload', async (req, res) => {
       console.log("Uploading file:", filename);
       console.log("Metadata:", { email, firstName, lastName, folderName });
   
+      // express-fileupload
       try {
         file.mv('./uploads/' + filename, async (err) => {
           if (err) {
@@ -222,6 +235,7 @@ app.post('/upload', async (req, res) => {
           }
           console.log("File uploaded successfully:", filename);
   
+          // new file
           const newFile = new Files({
             name: filename,
             author: user._id,
@@ -250,14 +264,14 @@ app.post('/upload', async (req, res) => {
   });
   
 
-
-
+// Invitation functionality
 app.post('/invite', async (req,res) => {
     const {sender, recipient, folder} = req.body;
     const user = await Users.findOne({ emailCreate: sender });
     const user2 = await Users.findOne({emailCreate: recipient});
     const flder = await Folders.findOne({name: folder});
 
+    // new invitation
     try {
         const newInvitation = new Invitations({
             sender: user._id,
@@ -267,6 +281,7 @@ app.post('/invite', async (req,res) => {
         console.log(newInvitation);
         await newInvitation.save();
 
+        // add shared users
         await Folders.updateOne(
             {_id: flder._id},
             {$addToSet: {"shared": user2._id}}
@@ -281,6 +296,7 @@ app.post('/invite', async (req,res) => {
 });
 
 
+// Comments functionality
 app.get('/get-comments', async (req,res) => {
     const {fileName} = req.query;
     try {
@@ -288,6 +304,7 @@ app.get('/get-comments', async (req,res) => {
         if (!file) {
             return res.status(404).json({ error: "File not found" });
         }
+        // Add author and email
         const comments = await Comments.find({file: file._id}).populate('author', 'emailCreate');
         console.log("comments:", comments);
 
@@ -300,11 +317,11 @@ app.get('/get-comments', async (req,res) => {
 });
 
 
-
 app.post('/comment', async (req,res) => {
     const {comment, email, fileName, rating} = req.body;
     console.log(req.body);
 
+    // make sure fields are filled
     if (!comment || !email || !fileName || !rating) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
@@ -321,6 +338,7 @@ app.post('/comment', async (req,res) => {
             return res.status(400).json({ error: `${fileName} not found!` });
         }
 
+        // new comment
         const newComment = new Comments({
             comment,
             author: user._id,
@@ -340,9 +358,6 @@ app.post('/comment', async (req,res) => {
     }
 });
   
-
-
-
 
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);

@@ -1,11 +1,19 @@
+/* ViewCorp
+- Ben Patrick Bruso
+- Jose Luis Chavez
+- Dipson K C 
+- Jose Santiago Campa Morales
+- CSC337: Web Programming
+- Final Project
+- signup.css: This is the stylesheet of signup.html. */
+
+
 * {
     overflow: hidden;
     font-family: Helvetica, sans-serif;
 }
-/*
-edit: dipson 
-removerd the white margin on the top of the page
-*/
+
+
 body{
     margin: 0px;
 }
@@ -73,10 +81,8 @@ input[type=submit] {
     color: white;
     background-color: #4fd6ff;
 }
-/*
-edit: dipson 
-added hover effect
-*/
+
+
 #loginButton:hover {
     background-color: #3ba3c3;
 }
@@ -86,10 +92,7 @@ added hover effect
     background-color: #19d104;
     height: 3rem;
 }
-/*
-edit: dipson 
-added hover effect
-*/
+
 #createButton:hover{
     background-color: #129c03;
 }

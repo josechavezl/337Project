@@ -1,29 +1,18 @@
+/* ViewCorp
+- Ben Patrick Bruso
+- Jose Luis Chavez
+- Dipson K C 
+- Jose Santiago Campa Morales
+- CSC337: Web Programming
+- Final Project
+- mainDash.js: This is the script for the main dashboard.
+- It has many event listeners and async functions to 
+- fetch information from the backend. */
+
+
 // ************************
 // Open and Close Modals Functions
 // ************************
-
-//const res = require("express/lib/response");
-
-
-
-
-// Show previewFilemodal modal
-// add the id of the file
-// document.getElementById("").addEventListener("click", () => {
-//   showModal("previewFilemodal");
-// });
-
-// // Close previewFilemodal modal
-// document.getElementById("previewFilemodal").onclick = (event) => {
-//   closeModalOutside(event, "previewFilemodal");
-// };
-
-
-
-
-
-
-
 
 function showModal(modalId) {
   var modal = document.getElementById(modalId);
@@ -83,11 +72,7 @@ document.getElementById("addCollaborators").addEventListener("click", () => {
 });
 
 
-
-
-
 async function showUser() {
-  // try {
   const urlParams = new URLSearchParams(window.location.search);
   const firstName = urlParams.get("firstName");
   const lastName = urlParams.get("lastName");
@@ -97,134 +82,42 @@ async function showUser() {
   document.getElementById('userFullName').textContent = `${firstName} ${lastName}`;
   document.getElementById('userEmail').textContent = `${email}`;
 
-  // Extract the user information from the URL parameters
-  // const firstName = urlParams.get("firstName");
-  // const lastName = urlParams.get("lastName");
-  // const email = urlParams.get("email"); 
-
-  //   // const email = localStorage.getItem('email');
-  //   // const user = localStorage.getItem('fullName');
-
-  //   if (!user) {
-  //     console.error('No user found');
-  //     return;
-  //   }
-  //   if (!email) {
-  //     console.error('No email found');
-  //     return;
-  //   }
-
-  //   if (response.ok) {
-  //     console.log(email)
-  //     document.getElementById('userFullName').textContent = `${firstName} ${lastName}`;
-  //     document.getElementById('userEmail').textContent = `${email}`;
-  //   }
-
-  // }
-  // catch (error) {
-
-  // }
 }
-
 
 
 // ************************
 // Comment Section Functionality
 // ************************
 
-
-async function addComment() {
-  const emailInput = document.getElementById('comment-email');
+function addComment() {
+  const authorInput = document.getElementById('comment-author');
   const commentInput = document.getElementById('comment-text');
   const ratingInput = document.getElementById('comment-rating');
   const commentsContainer = document.getElementById('comments-container');
-  
-  const email = emailInput.value.trim();
+
+  const author = authorInput.value.trim();
   const commentText = commentInput.value.trim();
   const rating = parseInt(ratingInput.value);
-  
-  if (email && commentText && !isNaN(rating) && rating >= 1 && rating <= 5) {
-    try {
-      const newComment = document.createElement('div');
-      newComment.classList.add('comment');
-      newComment.innerHTML = `
-      <div class="comment-email">${email} <span id="commentedColor">commented:</span></div>
+
+  // Checks for valid author, comment text, and rating is between 1-5
+  if (author && commentText && !isNaN(rating) && rating >= 1 && rating <= 5) {
+    const newComment = document.createElement('div');
+    newComment.classList.add('comment');
+    newComment.innerHTML = `
+      <div class="comment-author">${author} <span id="commentedColor">commented:</span></div>
       <div class="comment-text">${commentText}</div>
       <div class="comment-rating">${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}</div>
-      `;
-      commentsContainer.appendChild(newComment);
-      // Clear input fields
-      emailInput.value = '';
-      commentInput.value = '';
-      ratingInput.value = '';
+    `;
+    commentsContainer.appendChild(newComment);
 
-      const commentData = {comment: commentText, fileName: fileName, email: email, rating: rating}
-      console.log("comment", commentData);
-      console.log("fileName:", fileName);
-      
-      const response = await fetch('/comment', {
-        method: 'post',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(commentData)
-      });
-      if (!response.ok) {
-        const errorDetails = await response.json(); // To capture error response body
-        console.log("Error Details:", errorDetails);
-        alert("Error creating comment: " + errorDetails.error);
-      }
-      else {
-        const newCommentRes = await response.json();
-        console.log("Response", newCommentRes);
-      }
-    }
-    catch(error) {
-      console.error("ERROR", error)
-      alert("Error with the comment!", error);
-    }
+    // Clear input fields
+    authorInput.value = '';
+    commentInput.value = '';
+    ratingInput.value = '';
   } else {
     alert('Please fill in all fields with valid data.');
   }
 }
-
-
-async function loadComments() {
-  const commentsContainer = document.getElementById('comments-container');
-  try {
-    console.log(`comments from ${fileName}`);
-    const response = await fetch(`/get-comments?fileName=${fileName}`);
-    const ExistingComments = await response.json();
-    console.log("comments from db:", ExistingComments);
-
-    ExistingComments.forEach(comment => {
-      console.log("email:", comment.author.emailCreate);
-      console.log("comment:", comment.comment);
-      console.log("rating:", comment.rating);
-
-      const extComment = document.createElement('div');
-      extComment.classList.add('comment');
-      extComment.innerHTML = `
-      <div class="comment-email">${comment.author.emailCreate} <span id="commentedColor">commented:</span></div>
-      <div class="comment-text">${comment.comment}</div>
-      <div class="comment-rating">${'★'.repeat(comment.rating)}${'☆'.repeat(5 - comment.rating)}</div>
-      `;
-      commentsContainer.appendChild(extComment);
-    });
-  }
-  catch(error) {
-    console.error("error", error);
-    alert("Error loading comments", error);
-  }
-}
-
-
-
-
-
-
-
-
 
 // ************************
 // New Folder Functionality
@@ -236,6 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const emailP = urlParams.get("email");
 
+  // Creates html elements for the new folder
   const newFolderModal = document.getElementById("newFolderModal");
   const createFolderBtn = document.getElementById("createFolderBtn");
   const newFolderNameInput = document.getElementById("newFolderName");
@@ -257,10 +151,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Create folder element
+  // Creates folder element and addes to the folder container
   function createFolderElement(folder) {
-      if ([...foldersContainer.children].some(child => child.textContent.trim() === folder.name)) {
-        return; // Skip duplicate folder
+    if ([...foldersContainer.children].some(child => child.textContent.trim() === folder.name)) {
+      return; // Skip duplicate folder
     }
     const folderDiv = document.createElement("div");
     folderDiv.classList.add("folder");
@@ -283,7 +177,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Create Folder
   createFolderBtn.addEventListener("click", async () => {
     const folderName = newFolderNameInput.value.trim();
-
     if (folderName) {
       const folderData = { name: folderName, email: emailP, files: [], shared: [] };
       try {
@@ -320,15 +213,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load existing folders on page load
   loadExistingFolders();
-  
-
-
-
-
-
-
-
-
 
 
   // ******************************
@@ -347,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert('Please select a file to upload');
       return;
     }
-    
+
     // Get query params for email, first name, last name
     const urlParams = new URLSearchParams(window.location.search);
     const firstName = urlParams.get("firstName");
@@ -362,23 +246,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const folderName = document.getElementById("folder").textContent
     formData.append("folderName", folderName)
-    console.log("FOLDERNAME 292:",folderName)
-
     try {
-      // Send the form data (file + metadata) to the server
+      // Send the form data, file and metadata, to the server
       const response = await fetch('/upload', {
         method: 'POST',
         body: formData,
       });
-      
+
       if (response.ok) {
         const data = await response.json();
-        // / Add the uploaded file to the preview container
+        // / Adds the uploaded file to the folder and creates a html element for it
         const folderFilesDiv = document.getElementById("folderFiles");
-        const fileElement = document.createElement("div");
-        fileElement.textContent = file.name;
-        folderFilesDiv.appendChild(fileElement);
-        alert('File uploaded successfully');
+        const fileDiv = document.createElement("div");
+        fileDiv.classList.add("file");
+        fileDiv.innerHTML = `
+            <i class="fa-solid fa-file" style="color: #3ba3c3"></i>
+            <span>${file.name}</span>
+        `;
+        // Add to folders container
+        folderFiles.appendChild(fileDiv);
         console.log('File uploaded:', data);
       } else {
         const error = await response.json();
@@ -392,29 +278,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 });
-const allowedExtensions = ['.js', '.py', '.html', '.css', '.json', '.java', '.c', '.cpp', '.ts']; // Add more extensions if needed
+
+ // Add more extensions if needed
+const allowedExtensions = ['.js', '.py', '.html', '.css', '.json', '.java', '.c', '.cpp', '.ts'];
 
 const filePreviewHandlers = {
-    'text/plain': async (file) => {
-        const text = await file.text();
-        return `<pre class="code-preview">${text}</pre>`;
-    },
-    'text/html': async (file) => {
-        const text = await file.text();
-        return `<iframe srcdoc="${text}" class="w-full h-64 border"></iframe>`;
-    },
-    'application/json': async (file) => {
-        const text = await file.text();
-        return `<pre class="code-preview">${JSON.stringify(JSON.parse(text), null, 2)}</pre>`;
-    },
-    'application/javascript': async (file) => {
-        const text = await file.text();
-        return `<pre class="code-preview">${text}</pre>`;
-    },
-    'text/css': async (file) => {
-        const text = await file.text();
-        return `<pre class="code-preview">${text}</pre>`;
-    }
+  'text/plain': async (file) => {
+    const text = await file.text();
+    return `<pre class="code-preview">${text}</pre>`;
+  },
+  'text/html': async (file) => {
+    const text = await file.text();
+    return `<iframe srcdoc="${text}" class="w-full h-64 border"></iframe>`;
+  },
+  'application/json': async (file) => {
+    const text = await file.text();
+    return `<pre class="code-preview">${JSON.stringify(JSON.parse(text), null, 2)}</pre>`;
+  },
+  'application/javascript': async (file) => {
+    const text = await file.text();
+    return `<pre class="code-preview">${text}</pre>`;
+  },
+  'text/css': async (file) => {
+    const text = await file.text();
+    return `<pre class="code-preview">${text}</pre>`;
+  }
 };
 
 document.getElementById('fileInput').addEventListener('change', async (event) => {
@@ -425,69 +313,67 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
   const existingPreviews = JSON.parse(localStorage.getItem('filePreviews')) || [];
   const previews = [...existingPreviews];
 
-  // Loop through selected files
+  // Go through selected files of the wanted folder
   for (let file of files) {
-      const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+    const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
 
-      // Check for allowed extensions
-      if (!allowedExtensions.includes(fileExtension)) {
-          alert(`File "${file.name}" is not allowed.`);
-          continue;
-      }
+    // Check for allowed extensions
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert(`File "${file.name}" is not allowed.`);
+      continue;
+    }
 
-      // Determine preview handler
-      let previewHandler = filePreviewHandlers['text/plain'];
-      if (filePreviewHandlers[file.type]) {
-          previewHandler = filePreviewHandlers[file.type];
-      }
+    // Determine preview handler
+    let previewHandler = filePreviewHandlers['text/plain'];
+    if (filePreviewHandlers[file.type]) {
+      previewHandler = filePreviewHandlers[file.type];
+    }
 
-      // Generate preview content
-      const previewContent = await previewHandler(file);
+    // Generate preview content
+    const previewContent = await previewHandler(file);
 
-      // Check if preview already exists
-      if (previews.some(preview => preview.name === file.name)) {
-          alert(`Preview for "${file.name}" already exists.`);
-          continue;
-      }
+    // Check if preview already exists
+    if (previews.some(preview => preview.name === file.name)) {
+      alert(`Preview for "${file.name}" already exists.`);
+      continue;
+    }
 
-      // Append preview to the modal
-      const previewCard = document.createElement('div');
-      previewCard.className = 'file-preview-card mb-2 p-2 border rounded';
+    // Append preview to the modal
+    const previewCard = document.createElement('div');
+    previewCard.className = 'file-preview-card mb-2 p-2 border rounded';
 
-      const fileName = document.createElement('div');
-      fileName.textContent = file.name;
-      fileName.className = 'font-bold mb-2';
+    const fileName = document.createElement('div');
+    fileName.textContent = file.name;
+    fileName.className = 'font-bold mb-2';
 
-      const modalPreviewContent = document.createElement('div');
-      modalPreviewContent.innerHTML = previewContent;
-      modalPreviewContent.className = 'file-preview';
+    const modalPreviewContent = document.createElement('div');
+    modalPreviewContent.innerHTML = previewContent;
+    modalPreviewContent.className = 'file-preview';
 
-      previewCard.appendChild(fileName);
-      previewCard.appendChild(modalPreviewContent);
-      filesContainer.appendChild(previewCard);
+    previewCard.appendChild(fileName);
+    previewCard.appendChild(modalPreviewContent);
+    filesContainer.appendChild(previewCard);
 
-      // Append preview to the filePreview section
-      const filePreviewContent = document.createElement('div');
-      filePreviewContent.innerHTML = `<h4>${file.name}</h4>` + previewContent;
-      filePreviewContent.className = 'file-preview';
-      filePreview.appendChild(filePreviewContent);
+    // Append preview to the filePreview section
+    const filePreviewContent = document.createElement('div');
+    filePreviewContent.innerHTML = `<h4>${file.name}</h4>` + previewContent;
+    filePreviewContent.className = 'file-preview';
+    filePreview.appendChild(filePreviewContent);
 
-      // Save the preview
-      previews.push({ name: file.name, content: previewContent });
+    // Save the preview
+    previews.push({ name: file.name, content: previewContent });
   }
 
   // Save all previews to localStorage
   localStorage.setItem('filePreviews', JSON.stringify(previews));
 });
 
-let fileName = null;
 
 document.getElementById('folderFiles').addEventListener('click', (event) => {
-  const clickedFileElement = event.target.closest('.file'); 
-  if (!clickedFileElement) return; 
+  const clickedFileElement = event.target.closest('.file');
+  if (!clickedFileElement) return;
 
-  const clickedFileName = clickedFileElement.querySelector('span').textContent; // Get the file name
-  fileName = clickedFileName;
+  const clickedFileName = clickedFileElement.querySelector('span').textContent; // Get file name
   const filePreview = document.getElementById('filePreview');
   const previews = JSON.parse(localStorage.getItem('filePreviews')) || []; // Get saved previews
 
@@ -495,23 +381,22 @@ document.getElementById('folderFiles').addEventListener('click', (event) => {
   const clickedFilePreview = previews.find(preview => preview.name === clickedFileName);
 
   if (clickedFilePreview) {
-      // Clear previous preview
-      filePreview.innerHTML = '';
+    // Clear previous preview
+    filePreview.innerHTML = '';
 
-      // Add the clicked file's preview
-      const filePreviewContent = document.createElement('div');
-      filePreviewContent.innerHTML = `<h4>${clickedFileName}</h4>` + clickedFilePreview.content;
-      filePreviewContent.className = 'file-preview';
-      filePreview.appendChild(filePreviewContent);
+    // Add the clicked file's preview
+    const filePreviewContent = document.createElement('div');
+    filePreviewContent.innerHTML = `<h4>${clickedFileName}</h4>` + clickedFilePreview.content;
+    filePreviewContent.className = 'file-preview';
+    filePreview.appendChild(filePreviewContent);
   } else {
-      alert(`Preview for "${clickedFileName}" not found.`);
-      previewContainer.innerHTML = ''; // Clear the preview area
+    alert(`Preview for "${clickedFileName}" not found.`);
+    previewContainer.innerHTML = ''; // Clear the preview area
 
   }
-  loadComments();
 });
 
-
+// Creates the preview for the file
 document.addEventListener('DOMContentLoaded', () => {
   const filePreview = document.getElementById('filePreview');
   const previews = JSON.parse(localStorage.getItem('filePreviews')) || [];
@@ -519,39 +404,26 @@ document.addEventListener('DOMContentLoaded', () => {
   filePreview.innerHTML = ''; // Clear existing content
 
   previews.forEach(preview => {
-      const filePreviewContent = document.createElement('div');
-      filePreviewContent.innerHTML = `<h4>${preview.name}</h4>` + preview.content;
-      filePreviewContent.className = 'file-preview';
-      filePreview.appendChild(filePreviewContent);
+    const filePreviewContent = document.createElement('div');
+    filePreviewContent.innerHTML = `<h4>${preview.name}</h4>` + preview.content;
+    filePreviewContent.className = 'file-preview';
+    filePreview.appendChild(filePreviewContent);
   });
 });
 
 
 // Placeholder upload function (you'll replace with actual upload logic)
 document.getElementById('uploadFileBtn').addEventListener('click', () => {
-    const files = document.getElementById('fileInput').files;
-    if (files.length === 0) {
-        alert('Please select files to upload');
-        return;
-    }
-    
-    // TODO: Implement actual file upload logic
-    console.log('Files ready to upload:', files);
-    //alert('File upload functionality not yet implemented');
+  const files = document.getElementById('fileInput').files;
+  if (files.length === 0) {
+    alert('Please select files to upload');
+    return;
+  }
+
+  // TODO: Implement actual file upload logic
+  console.log('Files ready to upload:', files);
+  //alert('File upload functionality not yet implemented');
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // ************************
@@ -584,33 +456,30 @@ const folderData = {
 };
 
 let currentFolderId = "";
-// Handle folder click
+// Handle folder click, displays files as well
 foldersContainer.addEventListener("click", (e) => {
   const folderElement = e.target.closest(".folder");
 
   if (folderElement) {
+    const folderName = e.target.closest(".folder").querySelector("span").innerText;
+    document.getElementById("folder").textContent = folderName
     async function loadExistingFolders() {
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const emailP = urlParams.get("email");
-        const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}`);
-        const ExistingFolders = await response.json();
-        ExistingFolders.forEach(folder => createFileElement(folder));
+        const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}
+        &folderName=${encodeURIComponent(folderName)}`);
+        const ExistingFiles = await response.json();
+        ExistingFiles.forEach(file => createFileElement(file));
       }
       catch (error) {
         console.log("error loading folders", error);
       }
     }
-    
-
-
-
-    
     function createFileElement(file) {
-
       const fileDiv = document.createElement("div");
       fileDiv.classList.add("file");
-      
+
       fileDiv.innerHTML = `
             <i class="fa-solid fa-file" style="color: #3ba3c3"></i>
             <span>${file.name}</span>
@@ -619,37 +488,23 @@ foldersContainer.addEventListener("click", (e) => {
       folderFiles.appendChild(fileDiv);
     }
     loadExistingFolders();
-
-    // Hide Recent Activity
-    
     // Get the folder name
-    const folderName = e.target.closest(".folder").querySelector("span").innerText;
-    document.getElementById("folder").textContent = folderName
-    currentFolderId = folderName; // Update the currentFolderId with the selected folder name or ID
+
+    currentFolderId = folderName;
 
     // Set the folder title           
     currentFolderTitle.innerHTML = `
     <div>${folderName}</div>`;
-
-    // Populate the files list
-    
-
     // Hide Dashboard and show Folder Content Page
     dashboardPage.style.display = "none";
 
     // Hide New folder button and show upload file button
     newFolderButton.style.display = "none";
     newFileButton.style.display = "block";
-
     folderContentPage.style.display = "block";
     folderContentPage.classList.add("active");
-
     folderSearchButton.style.display = "none";
-
     fileSearchButton.style.display = "flex";
-
-
-
     addCollaborators.style.display = "block";
 
   }
@@ -659,21 +514,15 @@ foldersContainer.addEventListener("click", (e) => {
 // Back to Dashboard
 backToDashboard.addEventListener("click", () => {
   // Show Recent Activity
-
-
-    folderFiles.innerHTML = ""; // Clear files when returning to the dashboard
-
-
+  // Clear files when returning to the dashboard
+  folderFiles.innerHTML = ""; 
   folderContentPage.style.display = "none";
   folderContentPage.classList.remove("active");
   dashboardPage.style.display = "block";
   newFileButton.style.display = "none";
   newFolderButton.style.display = "block";
-
   folderSearchButton.style.display = "flex";
   fileSearchButton.style.display = "none";
-
-
   addCollaborators.style.display = "none";
 
 });
@@ -724,12 +573,6 @@ inviteCollaboratorbtn.addEventListener("click", async () => {
   }
 });
 
-
-
-
-
-
-
 document.getElementById("folderFiles").addEventListener("click", () => {
   showModal("previewFilemodal");
 });
@@ -752,7 +595,8 @@ const foldersContainers = document.getElementById("foldersContainer");
 // Add event listener for the search input
 searchInput.addEventListener("input", (e) => {
   const query = e.target.value.toLowerCase();
-  const folderElements = foldersContainers.querySelectorAll(".folder"); // Dynamically fetch all folders
+  // Dynamically fetch all folders
+  const folderElements = foldersContainers.querySelectorAll(".folder");
 
   folderElements.forEach(folder => {
     const folderName = folder.querySelector("span").innerText.toLowerCase();
@@ -766,17 +610,3 @@ searchInput.addEventListener("input", (e) => {
 
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-

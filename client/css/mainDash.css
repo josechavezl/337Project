@@ -1,3 +1,12 @@
+/* ViewCorp
+- Ben Patrick Bruso
+- Jose Luis Chavez
+- Dipson K C 
+- Jose Santiago Campa Morales
+- CSC337: Web Programming
+- Final Project
+- mainDash.css: This is the stylesheet of mainDash.html. */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -505,11 +514,6 @@ body {
 }
 
 
-
-
-
-
-
 .filepreview-modal-content {
   background-color: white;
   margin: auto;
@@ -634,12 +638,6 @@ body {
 
 }
 
-
-
-
-
-
-/*new upload file preview inside the modal*/
 .code-preview {
   max-height: 200px;
   overflow: auto;
@@ -649,9 +647,6 @@ body {
   background-color: #f4f4f4;
   padding: 10px;
 }
-
-
-
 
 .file{
   width: 100%;
