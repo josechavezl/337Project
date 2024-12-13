@@ -532,11 +532,14 @@ foldersContainer.addEventListener("click", (e) => {
   const folderElement = e.target.closest(".folder");
 
   if (folderElement) {
+    const folderName = e.target.closest(".folder").querySelector("span").innerText;
+    document.getElementById("folder").textContent = folderName
     async function loadExistingFolders() {
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const emailP = urlParams.get("email");
-        const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}`);
+        console.log("540:",folderName)
+        const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}&folderName=${encodeURIComponent(folderName)}`);
         const ExistingFolders = await response.json();
         ExistingFolders.forEach(folder => createFileElement(folder));
       }
@@ -566,8 +569,7 @@ foldersContainer.addEventListener("click", (e) => {
     // Hide Recent Activity
     
     // Get the folder name
-    const folderName = e.target.closest(".folder").querySelector("span").innerText;
-    document.getElementById("folder").textContent = folderName
+    
     currentFolderId = folderName; // Update the currentFolderId with the selected folder name or ID
 
     // Set the folder title           

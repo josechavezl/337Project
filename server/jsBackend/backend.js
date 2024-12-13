@@ -170,11 +170,11 @@ app.get('/get-folders', async (req, res) => {
 });
 
 app.get('/get-files', async(req,res) => {
-    const {email} = req.query;
+    const {email,folderName} = req.query;
     try {
         const user = await Users.findOne({emailCreate: email});
 
-        const folders = await Folders.find({author: user._id});
+        const folders = await Folders.find({name: folderName});
         const foldersInv = await Folders.find({shared: user._id});
         const allFiles = [];
         const allFolders = folders.concat(foldersInv);
