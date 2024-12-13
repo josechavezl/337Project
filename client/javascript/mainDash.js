@@ -177,7 +177,7 @@ function addComment() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  const filesContainer = document.getElementById('folderFiles');
+  const folderFiles = document.getElementById('folderFiles');
   const urlParams = new URLSearchParams(window.location.search);
   const emailP = urlParams.get("email");
 
@@ -192,6 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load Existing folders
   async function loadExistingFolders() {
     try {
+      folderFiles.innerHTML = ""; // Clear previous file elements
       const response = await fetch(`/get-folders?email=${encodeURIComponent(emailP)}`);
       const ExistingFolders = await response.json();
       ExistingFolders.forEach(folder => createFolderElement(folder));
@@ -203,6 +204,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Create folder element
   function createFolderElement(folder) {
+      if ([...foldersContainer.children].some(child => child.textContent.trim() === folder.name)) {
+        return; // Skip duplicate folder
+    }
     const folderDiv = document.createElement("div");
     folderDiv.classList.add("folder");
     folderDiv.innerHTML = `
@@ -341,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
         method: 'POST',
         body: formData,
       });
-
+      
       if (response.ok) {
         const data = await response.json();
         // / Add the uploaded file to the preview container
@@ -421,8 +425,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // File selection and preview handling
 document.getElementById('fileInput').addEventListener('change', async (event) => {
-    const filesContainer = document.getElementById('filesContainer');
-    filesContainer.innerHTML = ''; // Clear previous previews
+    const folderFiles = document.getElementById('folderFiles');
+    folderFiles.innerHTML = ''; // Clear previous previews
 
     const files = event.target.files;
     for (let file of files) {
@@ -465,7 +469,7 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
         previewCard.appendChild(fileName);
         previewCard.appendChild(previewContent);
 
-        filesContainer.appendChild(previewCard);
+        folderFiles.appendChild(previewCard);
     }
 });
 
@@ -585,12 +589,12 @@ foldersContainer.addEventListener("click", (e) => {
             <span>${file.name}</span>
         `;
       // Add to folders container
-      filesContainer.appendChild(fileDiv);
+      folderFiles.appendChild(fileDiv);
     }
     loadExistingFolders();
 
     // Hide Recent Activity
-
+    
     // Get the folder name
     const folderName = e.target.closest(".folder").querySelector("span").innerText;
     document.getElementById("folder").textContent = folderName
@@ -631,6 +635,10 @@ foldersContainer.addEventListener("click", (e) => {
 // Back to Dashboard
 backToDashboard.addEventListener("click", () => {
   // Show Recent Activity
+
+
+    folderFiles.innerHTML = ""; // Clear files when returning to the dashboard
+
 
   folderContentPage.style.display = "none";
   folderContentPage.classList.remove("active");
