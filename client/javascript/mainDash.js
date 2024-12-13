@@ -321,10 +321,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
         // / Add the uploaded file to the preview container
         const folderFilesDiv = document.getElementById("folderFiles");
-        const fileElement = document.createElement("div");
-        fileElement.textContent = file.name;
-        folderFilesDiv.appendChild(fileElement);
-        alert('File uploaded successfully');
+
+        const fileDiv = document.createElement("div");
+        fileDiv.classList.add("file");
+        fileDiv.innerHTML = `
+            <i class="fa-solid fa-file" style="color: #3ba3c3"></i>
+            <span>${file.name}</span>
+        `;
+      // Add to folders container
+      folderFiles.appendChild(fileDiv);
         console.log('File uploaded:', data);
       } else {
         const error = await response.json();
