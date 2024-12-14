@@ -12,11 +12,11 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="../css/mainDash.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/mainDash.css">
   <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <title>ViewCorp</title>
 </head>
 
@@ -57,18 +57,18 @@
   <!--**************-->
   <!--FOLDER SEARCH CONTENT-->
   <!--**************-->
-  <section class="search-bar-section">
+  <div class="search-bar-section">
     <div class="search-container" id="search-container">
       <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
-      <input type="text" class="search-input" placeholder="Search folders..." />
+      <input type="text" class="search-input" placeholder="Search folders...">
     </div>
 
     <!--FILE SEARCH CONTENT (STAYS HIDDEN)-->
     <div class="search-container-files" style="display: none" id="search-container-files">
-      <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
-      <input type="text" class="search-input-files" placeholder="Search files..." />
+      <i class="fa-solid fa-magnifying-glass" id="search-icon2"></i>
+      <input type="text" class="search-input-files" placeholder="Search files...">
     </div>
-  </section>
+  </div>
 
   <!--**************-->
   <!--MAIN SECTION -->
@@ -76,28 +76,28 @@
   <main>
 
     <!-- Folder Section-->
-    <section id="outerLayerFolder">
+    <div id="outerLayerFolder">
       <h2>Your Folders</h2>
 
       <!-- New folders -->
       <div id="foldersContainer" class="folders-grid">
         <!--NEW Folder Detail Will Appear Hear -->
       </div>
-    </section>
+    </div>
 
     <!-- File Section -->
-    <section id="folderContentPage" class="page" style="display: none">
+    <div id="folderContentPage" class="page" style="display: none">
       <div class="titleFolderWfile">
         <button id="backToDashboard" class="mainbtns">
           <i class="fa-solid fa-arrow-left"></i>
         </button>
 
-        <h2 id="currentFolderTitle"></h2>
+        <h2 id="currentFolderTitle">Folder Name</h2>
       </div>
       <div id="folderFiles">
         <!--FILES SHOULD APPEAR HERE-->
       </div>
-    </section>
+    </div>
 
 
     <!--**************-->
@@ -109,7 +109,7 @@
       <div class="modal-content">
         <span class="close-btn" onclick="closeNewFolderModal('newFolderModal')">&times;</span>
         <h2>Create New Folder</h2>
-        <input type="text" id="newFolderName" placeholder="Folder Name" required />
+        <input type="text" id="newFolderName" placeholder="Folder Name" required>
         <button id="createFolderBtn">Create</button>
       </div>
     </div>
@@ -120,7 +120,7 @@
         <span class="close-btn" onclick="closeModal('uploadFileModal')">&times;</span>
         <h2>Upload File</h2>
         <form id="uploadForm" enctype="multipart/form-data">
-          <input type="file" id="fileInput" name="file" required />
+          <input type="file" id="fileInput" name="file" required>
           <div hidden id="folder"></div>
           <!-- <input type="submit" value="upload"> -->
           <button type="submit" id="uploadFileBtn">Upload</button>
@@ -133,17 +133,19 @@
     <div id="helpModal" class="modal">
       <div class="modal-content">
         <span class="close-btn" onclick="closeModal('helpModal')">&times;</span>
-        <i class="fa-solid fa-circle-question" id="HelpHeader"><br />
-          <h2>Help</h2>
-        </i>
+        <h2>
+          <i class="fa-solid fa-circle-question" id="HelpHeader"><br>
+            Help
+          </i>
+        </h2>
         <p id="HelpText">
           Create or join folder environments and enjoy a collaborative space
-          like no other!<br /><br />
+          like no other!<br><br>
           Inside a folder environment, upload your work, i.e.,
           code scripts. Let others comment
-          and rate your work!<br /><br />
+          and rate your work!<br><br>
           You get what you give! Inside <b>ViewCorp</b>, we expect every user
-          to comment and rate everyone's work. That's how we grow.<br /><br />
+          to comment and rate everyone's work. That's how we grow.<br><br>
         </p>
       </div>
     </div>
@@ -152,10 +154,11 @@
     <div id="accountModal" class="modal">
       <div class="modal-content">
         <span class="close-btn" onclick="closeModal('accountModal')">&times;</span>
-        <i class="fa-solid fa-user" id="AccountHeader"><br />
-
-          <h2>Account</h2>
-        </i>
+        <h2>
+          <i class="fa-solid fa-user" id="AccountHeader"><br>
+            Account
+          </i>
+        </h2>
 
         <!-- fetch from database the name and the email-->
         <div id="AccountText">
@@ -174,7 +177,7 @@
         <h3>Invite Collaborators</h3>
 
         <input id="invite-input-box" class="invite-input" type="email"
-          pattern="[a-z0-9._%+\-]+@[a-z0-9._%+\-]+\.[a-z]{2,}$" placeholder="Email" required /><br />
+          pattern="[a-z0-9._%+\-]+@[a-z0-9._%+\-]+\.[a-z]{2,}$" placeholder="Email" required><br>
 
         <button id="inviteCollaborator-btn">Invite</button>
 
@@ -188,7 +191,7 @@
         <div id="filePreview-header">
           <h2 id="fileTitle">File Preview</h2>
           <h2 id="commentsTitle">Comments</h2>
-          <span id="close-btn" class="close-btn" onclick="closeModal('previewFilemodal')">&times;</span>
+          <span id="close-btn2" class="close-btn" onclick="closeModal('previewFilemodal')">&times;</span>
         </div>
         <div id="filePreviewContainer">
           <div id="filePreview">
@@ -199,9 +202,9 @@
               <!-- Comments will be dynamically added here -->
             </div>
             <div class="comment-form">
-              <input type="text" id="comment-author" placeholder="Your Name" />
+              <input type="text" id="comment-author" placeholder="Your Name">
               <textarea id="comment-text" placeholder="Enter your comment..."></textarea>
-              <input type="number" id="comment-rating" min="1" max="5" step="1" placeholder="⭐ Rating (1-5)" />
+              <input type="number" id="comment-rating" min="1" max="5" step="1" placeholder="⭐ Rating (1-5)">
               <button onclick="addComment()">Submit</button>
             </div>
 
@@ -214,8 +217,8 @@
 
   </main>
 
-</body>
+  <script src="../javascript/mainDash.js"></script>
 
-<script src="../javascript/mainDash.js"></script>
+</body>
 
 </html>
