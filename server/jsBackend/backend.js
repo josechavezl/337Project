@@ -297,7 +297,6 @@ app.post('/invite', async (req,res) => {
 });
 
 
-// Comments functionality
 app.get('/get-comments', async (req,res) => {
     const {fileName} = req.query;
     try {
@@ -305,7 +304,6 @@ app.get('/get-comments', async (req,res) => {
         if (!file) {
             return res.status(404).json({ error: "File not found" });
         }
-        // Add author and email
         const comments = await Comments.find({file: file._id}).populate('author', 'emailCreate');
         console.log("comments:", comments);
 
@@ -318,11 +316,11 @@ app.get('/get-comments', async (req,res) => {
 });
 
 
+
 app.post('/comment', async (req,res) => {
     const {comment, email, fileName, rating} = req.body;
     console.log(req.body);
 
-    // make sure fields are filled
     if (!comment || !email || !fileName || !rating) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
@@ -339,7 +337,6 @@ app.post('/comment', async (req,res) => {
             return res.status(400).json({ error: `${fileName} not found!` });
         }
 
-        // new comment
         const newComment = new Comments({
             comment,
             author: user._id,

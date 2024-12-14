@@ -89,33 +89,88 @@ async function showUser() {
 // Comment Section Functionality
 // ************************
 
-function addComment() {
-  const authorInput = document.getElementById('comment-author');
+async function addComment() {
+  const emailInput = document.getElementById('comment-email');
   const commentInput = document.getElementById('comment-text');
   const ratingInput = document.getElementById('comment-rating');
   const commentsContainer = document.getElementById('comments-container');
-
-  const author = authorInput.value.trim();
+  
+  const email = emailInput.value.trim();
   const commentText = commentInput.value.trim();
   const rating = parseInt(ratingInput.value);
-
-  // Checks for valid author, comment text, and rating is between 1-5
-  if (author && commentText && !isNaN(rating) && rating >= 1 && rating <= 5) {
-    const newComment = document.createElement('div');
-    newComment.classList.add('comment');
-    newComment.innerHTML = `
-      <div class="comment-author">${author} <span id="commentedColor">commented:</span></div>
+  
+  if (email && commentText && !isNaN(rating) && rating >= 1 && rating <= 5) {
+    try {
+      const newComment = document.createElement('div');
+      newComment.classList.add('comment');
+      newComment.innerHTML = `
+      <div class="comment-email">${email} <span id="commentedColor">commented:</span></div>
       <div class="comment-text">${commentText}</div>
       <div class="comment-rating">${'★'.repeat(rating)}${'☆'.repeat(5 - rating)}</div>
-    `;
-    commentsContainer.appendChild(newComment);
+      `;
+      commentsContainer.appendChild(newComment);
+      // Clear input fields
+      emailInput.value = '';
+      commentInput.value = '';
+      ratingInput.value = '';
 
-    // Clear input fields
-    authorInput.value = '';
-    commentInput.value = '';
-    ratingInput.value = '';
+      const commentData = {comment: commentText, fileName: fileName, email: email, rating: rating}
+      console.log("comment", commentData);
+      console.log("fileName:", fileName);
+      
+      const response = await fetch('/comment', {
+        method: 'post',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(commentData)
+      });
+      if (!response.ok) {
+        const errorDetails = await response.json(); // To capture error response body
+        console.log("Error Details:", errorDetails);
+        alert("Error creating comment: " + errorDetails.error);
+      }
+      else {
+        const newCommentRes = await response.json();
+        console.log("Response", newCommentRes);
+      }
+    }
+    catch(error) {
+      console.error("ERROR", error)
+      alert("Error with the comment!", error);
+    }
   } else {
     alert('Please fill in all fields with valid data.');
+  }
+}
+
+
+async function loadComments() {
+  const commentsContainer = document.getElementById('comments-container');
+  try {
+    console.log(`comments from ${fileName}`);
+    const response = await fetch(`/get-comments?fileName=${fileName}`);
+    const ExistingComments = await response.json();
+    console.log("comments from db:", ExistingComments);
+
+    ExistingComments.forEach(comment => {
+      console.log("email:", comment.author.emailCreate);
+      console.log("comment:", comment.comment);
+      console.log("rating:", comment.rating);
+
+      const extComment = document.createElement('div');
+      extComment.classList.add('comment');
+      extComment.innerHTML = `
+      <div class="comment-email">${comment.author.emailCreate} <span id="commentedColor">commented:</span></div>
+      <div class="comment-text">${comment.comment}</div>
+      <div class="comment-rating">${'★'.repeat(comment.rating)}${'☆'.repeat(5 - comment.rating)}</div>
+      `;
+      commentsContainer.appendChild(extComment);
+    });
+  }
+  catch(error) {
+    console.error("error", error);
+    alert("Error loading comments", error);
   }
 }
 
@@ -369,11 +424,14 @@ document.getElementById('fileInput').addEventListener('change', async (event) =>
 });
 
 
-document.getElementById('folderFiles').addEventListener('click', (event) => {
-  const clickedFileElement = event.target.closest('.file');
-  if (!clickedFileElement) return;
+let fileName = null;
 
-  const clickedFileName = clickedFileElement.querySelector('span').textContent; // Get file name
+document.getElementById('folderFiles').addEventListener('click', (event) => {
+  const clickedFileElement = event.target.closest('.file'); 
+  if (!clickedFileElement) return; 
+
+  const clickedFileName = clickedFileElement.querySelector('span').textContent; // Get the file name
+  fileName = clickedFileName;
   const filePreview = document.getElementById('filePreview');
   const previews = JSON.parse(localStorage.getItem('filePreviews')) || []; // Get saved previews
 
@@ -381,20 +439,22 @@ document.getElementById('folderFiles').addEventListener('click', (event) => {
   const clickedFilePreview = previews.find(preview => preview.name === clickedFileName);
 
   if (clickedFilePreview) {
-    // Clear previous preview
-    filePreview.innerHTML = '';
+      // Clear previous preview
+      filePreview.innerHTML = '';
 
-    // Add the clicked file's preview
-    const filePreviewContent = document.createElement('div');
-    filePreviewContent.innerHTML = `<h4>${clickedFileName}</h4>` + clickedFilePreview.content;
-    filePreviewContent.className = 'file-preview';
-    filePreview.appendChild(filePreviewContent);
+      // Add the clicked file's preview
+      const filePreviewContent = document.createElement('div');
+      filePreviewContent.innerHTML = `<h4>${clickedFileName}</h4>` + clickedFilePreview.content;
+      filePreviewContent.className = 'file-preview';
+      filePreview.appendChild(filePreviewContent);
   } else {
-    alert(`Preview for "${clickedFileName}" not found.`);
-    previewContainer.innerHTML = ''; // Clear the preview area
+      alert(`Preview for "${clickedFileName}" not found.`);
+      previewContainer.innerHTML = ''; // Clear the preview area
 
   }
+  loadComments();
 });
+
 
 // Creates the preview for the file
 document.addEventListener('DOMContentLoaded', () => {
