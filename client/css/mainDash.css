@@ -106,7 +106,7 @@ body {
 .search-container:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Updated shadow on click or focus */
 }
-#search-icon {
+#search-icon2 {
   color: #9aa0a6;
   margin-right: clamp(10px, 3vw, 15px);
   font-size: clamp(0.9rem, 3vw, 1rem);
@@ -376,7 +376,7 @@ body {
 .search-container:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
-#search-icon {
+#search-icon1 {
   color: #9aa0a6;
   margin-right: clamp(10px, 3vw, 15px);
   font-size: clamp(0.9rem, 3vw, 1rem);

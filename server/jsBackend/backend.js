@@ -92,10 +92,8 @@ app.post("/login", async(req, res) => {
             return res.status(400).json({error: "Email does notexist ."});
         }
 
-        // information in URL
-        res.redirect(`/mainDash?firstName=${encodeURIComponent(user.firstName)}
-        &lastName=${encodeURIComponent(user.lastName)}
-        &email=${encodeURIComponent(user.emailCreate)}`);
+        // information in URL: CANNOT MAKE IT SHORTER DUE TO ERROR
+        res.redirect(`/mainDash?firstName=${encodeURIComponent(user.firstName)}&lastName=${encodeURIComponent(user.lastName)}&email=${encodeURIComponent(user.emailCreate)}`);
 
     }
     catch (error) {
@@ -183,7 +181,10 @@ app.get('/get-files', async(req,res) => {
     const {email} = req.query;
     try {
         const user = await Users.findOne({emailCreate: email});
-
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+    
         const folders = await Folders.find({author: user._id});
         const foldersInv = await Folders.find({shared: user._id});
         const allFiles = [];
@@ -201,7 +202,7 @@ app.get('/get-files', async(req,res) => {
 
     }
     catch(error) {
-        console.log("cannot show folders", error);
+        console.log("cannot show files", error);
     }
 } )
 
@@ -296,7 +297,6 @@ app.post('/invite', async (req,res) => {
 });
 
 
-// Comments functionality
 app.get('/get-comments', async (req,res) => {
     const {fileName} = req.query;
     try {
@@ -304,7 +304,6 @@ app.get('/get-comments', async (req,res) => {
         if (!file) {
             return res.status(404).json({ error: "File not found" });
         }
-        // Add author and email
         const comments = await Comments.find({file: file._id}).populate('author', 'emailCreate');
         console.log("comments:", comments);
 
@@ -317,11 +316,11 @@ app.get('/get-comments', async (req,res) => {
 });
 
 
+
 app.post('/comment', async (req,res) => {
     const {comment, email, fileName, rating} = req.body;
     console.log(req.body);
 
-    // make sure fields are filled
     if (!comment || !email || !fileName || !rating) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
@@ -338,7 +337,6 @@ app.post('/comment', async (req,res) => {
             return res.status(400).json({ error: `${fileName} not found!` });
         }
 
-        // new comment
         const newComment = new Comments({
             comment,
             author: user._id,

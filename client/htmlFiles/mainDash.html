@@ -59,7 +59,7 @@
   <!--**************-->
   <div class="search-bar-section">
     <div class="search-container" id="search-container">
-      <i class="fa-solid fa-magnifying-glass" id="search-icon"></i>
+      <i class="fa-solid fa-magnifying-glass" id="search-icon1"></i>
       <input type="text" class="search-input" placeholder="Search folders...">
     </div>
 
@@ -92,7 +92,7 @@
           <i class="fa-solid fa-arrow-left"></i>
         </button>
 
-        <h2 id="currentFolderTitle">Folder Name</h2>
+        <h2 id="currentFolderTitle">.</h2>
       </div>
       <div id="folderFiles">
         <!--FILES SHOULD APPEAR HERE-->
@@ -202,7 +202,7 @@
               <!-- Comments will be dynamically added here -->
             </div>
             <div class="comment-form">
-              <input type="text" id="comment-author" placeholder="Your Name">
+              <input type="text" id="comment-email" placeholder="Your Email" />
               <textarea id="comment-text" placeholder="Enter your comment..."></textarea>
               <input type="number" id="comment-rating" min="1" max="5" step="1" placeholder="⭐ Rating (1-5)">
               <button onclick="addComment()">Submit</button>
