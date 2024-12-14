@@ -462,13 +462,14 @@ foldersContainer.addEventListener("click", (e) => {
 
   if (folderElement) {
     const folderName = e.target.closest(".folder").querySelector("span").innerText;
-    document.getElementById("folder").textContent = folderName
+    document.getElementById("folder").textContent = folderName;
     async function loadExistingFolders() {
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const emailP = urlParams.get("email");
-        const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}
-        &folderName=${encodeURIComponent(folderName)}`);
+        console.log(emailP);
+        //CANNOT MAKE IT SHORTER DUE TO ERROR
+        const response = await fetch(`/get-files?email=${encodeURIComponent(emailP)}&folderName=${encodeURIComponent(folderName)}`);
         const ExistingFiles = await response.json();
         ExistingFiles.forEach(file => createFileElement(file));
       }

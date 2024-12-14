@@ -92,10 +92,8 @@ app.post("/login", async(req, res) => {
             return res.status(400).json({error: "Email does notexist ."});
         }
 
-        // information in URL
-        res.redirect(`/mainDash?firstName=${encodeURIComponent(user.firstName)}
-        &lastName=${encodeURIComponent(user.lastName)}
-        &email=${encodeURIComponent(user.emailCreate)}`);
+        // information in URL: CANNOT MAKE IT SHORTER DUE TO ERROR
+        res.redirect(`/mainDash?firstName=${encodeURIComponent(user.firstName)}&lastName=${encodeURIComponent(user.lastName)}&email=${encodeURIComponent(user.emailCreate)}`);
 
     }
     catch (error) {
@@ -183,7 +181,10 @@ app.get('/get-files', async(req,res) => {
     const {email} = req.query;
     try {
         const user = await Users.findOne({emailCreate: email});
-
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+    
         const folders = await Folders.find({author: user._id});
         const foldersInv = await Folders.find({shared: user._id});
         const allFiles = [];
@@ -201,7 +202,7 @@ app.get('/get-files', async(req,res) => {
 
     }
     catch(error) {
-        console.log("cannot show folders", error);
+        console.log("cannot show files", error);
     }
 } )
 
